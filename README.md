@@ -1,2 +1,2 @@
 # FluffyBento
-IAT 410 Team FluffyBento
+IAT 410 Team FluffyBento: Emily, Andy, Howard
