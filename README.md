@@ -1,2 +1,7 @@
-# FluffyBento
-IAT 410 Team FluffyBento: Emily, Andy, Howard
+# Welcome
+Hello! Welcome to Team FluffyBento's IAT 410 Blog.
+
+## Our members are:
+* Emily
+* Howard
+* Andy
