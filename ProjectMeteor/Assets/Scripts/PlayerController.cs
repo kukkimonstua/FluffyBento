@@ -4,27 +4,47 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    
+
+    private Rigidbody rb;
     public float moveSpeed = 5.0f;
     public float jumpForce = 10.0f;
-    private Rigidbody rb;
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2.0f;
+
     public Transform worldOrigin;
     public Transform playerOrigin;
 
-    private Vector3 offsetFromCentre;
+    private float offsetFromCentre;
+    private float currentPlayerAngle;
+    private bool isGrounded;
 
-    void Start()
+    void Awake()
     {
+        isGrounded = false;
         rb = GetComponent<Rigidbody>();
         //Get this working later so you can manually set the player's position away from center
-        //offsetFromCentre = transform.position - worldOrigin.position;
+        offsetFromCentre = Vector3.Distance(transform.position, worldOrigin.position);
     }
 
     // Update is called once per frame
     void Update()
     {
-        worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * moveSpeed, 0.0f);
-        playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * -30); //10 is temp
+        worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
+        playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * offsetFromCentre);
         playerOrigin.rotation = worldOrigin.rotation;
+        currentPlayerAngle = transform.eulerAngles.y;
+        if (currentPlayerAngle > 180) currentPlayerAngle -= 360;
+        if (Input.GetAxis("Horizontal") > 0 && currentPlayerAngle > -90 + playerOrigin.eulerAngles.y)
+        {
+            Debug.Log(currentPlayerAngle);
+            transform.Rotate(0f, -10.0f, 0f, Space.Self);
+        }
+        if (Input.GetAxis("Horizontal") < 0 && currentPlayerAngle < 90 + playerOrigin.eulerAngles.y) 
+        {
+            Debug.Log(currentPlayerAngle);
+            transform.Rotate(0f, 10.0f, 0f, Space.Self);
+        }
 
 
         //sets only the x and y values of the player to match the player's origin
@@ -33,11 +53,27 @@ public class PlayerController : MonoBehaviour
         pos.z = playerOrigin.position.z;
         transform.position = pos;
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && isGrounded)
         {
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+            isGrounded = false;
+            //rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+            rb.velocity = Vector3.up * jumpForce;
+        }
+        if(rb.velocity.y < 0)
+        {
+            rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+        } else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+        {
+            rb.velocity += Vector3.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            isGrounded = true;
+        }
+    }
 
 }
