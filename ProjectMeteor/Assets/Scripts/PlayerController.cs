@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    
-
     private Rigidbody rb;
     public float moveSpeed = 5.0f;
     public float jumpForce = 10.0f;
@@ -16,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public Transform playerOrigin;
 
     private float offsetFromCentre;
-    private float currentPlayerAngle;
+
     private bool isGrounded;
 
     void Awake()
@@ -33,19 +31,8 @@ public class PlayerController : MonoBehaviour
         worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
         playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * offsetFromCentre);
         playerOrigin.rotation = worldOrigin.rotation;
-        currentPlayerAngle = transform.eulerAngles.y;
-        if (currentPlayerAngle > 180) currentPlayerAngle -= 360;
-        if (Input.GetAxis("Horizontal") > 0 && currentPlayerAngle > -90 + playerOrigin.eulerAngles.y)
-        {
-            Debug.Log(currentPlayerAngle);
-            transform.Rotate(0f, -10.0f, 0f, Space.Self);
-        }
-        if (Input.GetAxis("Horizontal") < 0 && currentPlayerAngle < 90 + playerOrigin.eulerAngles.y) 
-        {
-            Debug.Log(currentPlayerAngle);
-            transform.Rotate(0f, 10.0f, 0f, Space.Self);
-        }
 
+        transform.rotation = playerOrigin.rotation; //perhaps temporary solution?
 
         //sets only the x and y values of the player to match the player's origin
         var pos = transform.position;
