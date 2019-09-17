@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
 
     public Transform worldOrigin;
     public Transform playerOrigin;
-
     private float offsetFromCentre;
 
     private bool isGrounded;
@@ -21,7 +20,6 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = false;
         rb = GetComponent<Rigidbody>();
-        //Get this working later so you can manually set the player's position away from center
         offsetFromCentre = Vector3.Distance(transform.position, worldOrigin.position);
     }
 
