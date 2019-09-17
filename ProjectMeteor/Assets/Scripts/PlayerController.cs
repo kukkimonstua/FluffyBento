@@ -34,8 +34,10 @@ public class PlayerController : MonoBehaviour
 
         //sets only the x and y values of the player to match the player's origin
         var pos = transform.position;
+        var ppos = transform.position;
         pos.x = playerOrigin.position.x;
         pos.z = playerOrigin.position.z;
+        ppos.y = -0.8f;
         transform.position = pos;
 
         if (Input.GetButtonDown("Jump") && isGrounded)
@@ -51,6 +53,12 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity += Vector3.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
         }
+
+        if (rb.position.y < -1f) //Emily 9/16
+        {
+           transform.position = ppos;
+        }
+        //Debug.Log(rb.position.y);
     }
 
     private void OnCollisionEnter(Collision collision)
