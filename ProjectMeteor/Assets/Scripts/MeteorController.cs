@@ -20,9 +20,9 @@ public class MeteorController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!MeteorManager.MeteorsPaused())
+        if (!MeteorManager.meteorsPaused)
         {
-            transform.Translate(Vector3.up * -fallSpeed * Time.deltaTime);
+            transform.Translate(Vector3.up * -1 * MeteorManager.fallSpeed * Time.deltaTime);
         }
 
     }

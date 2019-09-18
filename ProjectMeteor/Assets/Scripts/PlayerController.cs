@@ -16,11 +16,16 @@ public class PlayerController : MonoBehaviour
     private float offsetFromCentre;
 
     private bool isGrounded;
+    private bool holdingSword;
+    [SerializeField] private GameObject sword;
 
     public Text promptText;
 
     void Awake()
     {
+        holdingSword = false;
+        sword.SetActive(false);
+
         isGrounded = false;
         rb = GetComponent<Rigidbody>();
         offsetFromCentre = Vector3.Distance(transform.position, worldOrigin.position);
@@ -76,10 +81,35 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Meteor"))
         {
-            promptText.gameObject.SetActive(true);
-            if(Input.GetButtonDown("Fire1"))
+            if(holdingSword)
             {
-                attackMeteor(other.gameObject);
+                promptText.text = "Click to Attack!";
+                promptText.gameObject.SetActive(true);
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    Debug.Log("ATTACKED!");
+                    attackMeteor(other.gameObject);
+                    holdingSword = false;
+                    sword.SetActive(false);
+                    promptText.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                promptText.text = "You need a sword!";
+                promptText.gameObject.SetActive(true);
+            }
+        }
+        if (other.gameObject.CompareTag("Sword"))
+        {
+            promptText.text = "Click to Equip!";
+            promptText.gameObject.SetActive(true);
+            if (Input.GetButtonDown("Fire1"))
+            {
+                holdingSword = true;
+                sword.SetActive(true);
+
+                pickUpSword(other.gameObject);
                 promptText.gameObject.SetActive(false);
             }
         }
@@ -95,6 +125,11 @@ public class PlayerController : MonoBehaviour
 
         Destroy(meteor);
 
+    }
+
+    private void pickUpSword(GameObject sword)
+    {
+        Destroy(sword);
     }
 
 }
