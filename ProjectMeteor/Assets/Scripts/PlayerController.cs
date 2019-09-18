@@ -21,8 +21,12 @@ public class PlayerController : MonoBehaviour
 
     public Text promptText;
 
+    private bool attackingMeteor;
+
     void Awake()
     {
+        attackingMeteor = false;
+
         holdingSword = false;
         sword.SetActive(false);
 
@@ -34,7 +38,11 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
+        if (!attackingMeteor)
+        {
+            worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
+        }
+
         playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * offsetFromCentre);
         playerOrigin.rotation = worldOrigin.rotation;
 
@@ -79,30 +87,32 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Meteor"))
+        if (other.gameObject.CompareTag("Meteor") && !attackingMeteor)
         {
-            if(holdingSword)
-            {
-                promptText.text = "Click to Attack!";
-                promptText.gameObject.SetActive(true);
-                if (Input.GetButtonDown("Fire1"))
-                {
-                    Debug.Log("ATTACKED!");
-                    attackMeteor(other.gameObject);
-                    holdingSword = false;
-                    sword.SetActive(false);
-                    promptText.gameObject.SetActive(false);
-                }
-            }
-            else
+            if (!holdingSword)
             {
                 promptText.text = "You need a sword!";
                 promptText.gameObject.SetActive(true);
             }
+            else
+            {
+                promptText.text = "CTRL to Attack!";
+                promptText.gameObject.SetActive(true);
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    promptText.gameObject.SetActive(false);
+                    StartCoroutine(AttackOnMeteor(transform, other.gameObject, 3.0f));
+
+                    //attackMeteor(other.gameObject);
+                    
+                    
+                }
+            }
+            
         }
         if (other.gameObject.CompareTag("Sword"))
         {
-            promptText.text = "Click to Equip!";
+            promptText.text = "CTRL to Equip!";
             promptText.gameObject.SetActive(true);
             if (Input.GetButtonDown("Fire1"))
             {
@@ -120,11 +130,36 @@ public class PlayerController : MonoBehaviour
         promptText.gameObject.SetActive(false);
     }
 
-    private void attackMeteor(GameObject meteor)
+    private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
     {
+        //Make sure there is only one instance of this function running
+        if (attackingMeteor)
+        {
+            yield break; ///exit if this is still running
+        }
+        attackingMeteor = true;
+        MeteorManager.meteorsPaused = true;
+
+        float counter = 0;
+
+        //Get the current position of the object to be moved
+        Vector3 startPos = fromPosition.position;
+        Vector3 toPosition = Vector3.Lerp(meteor.transform.position, fromPosition.position, 0.5f); //halfway
+
+
+        while (counter < duration)
+        {
+            counter += Time.deltaTime;
+            fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
+            yield return null;
+        }
+        MeteorManager.meteorsPaused = false;
+        attackingMeteor = false;
+
+        holdingSword = false;
+        sword.SetActive(false);
 
         Destroy(meteor);
-
     }
 
     private void pickUpSword(GameObject sword)

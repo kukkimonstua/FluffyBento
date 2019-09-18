@@ -24,9 +24,9 @@ public class CameraController : MonoBehaviour
         zoom = zoomLevel + Mathf.Abs(lowestMeteorPosition - 300.0f) / 3;
 
         //Player on high platforms
-        if (player.position.y > 5) zoom += (player.position.y - 5) * 2; //This is adjustable
+        if (player.position.y > 5) zoom += (player.position.y - 5.0f) * 3 / 2; //This is adjustable
 
-        transform.position = playerOrigin.position + (playerOrigin.transform.forward * zoom) + (playerOrigin.transform.up * zoom / 3);
+        transform.position = playerOrigin.position + (playerOrigin.transform.forward * zoom) + (playerOrigin.transform.up * zoom / 2.5f);
         transform.rotation = playerOrigin.rotation;
         transform.Rotate(5.0f - zoom / 5, 180.0f, 0, Space.Self);
     }

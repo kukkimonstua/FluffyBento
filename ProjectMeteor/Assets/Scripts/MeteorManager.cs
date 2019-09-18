@@ -29,8 +29,8 @@ public class MeteorManager : MonoBehaviour
 
     void Update()
     {
-        if (pauseMeteors && !meteorsPaused) meteorsPaused = true; //Pauses the meteors        
-        if (!pauseMeteors && meteorsPaused) meteorsPaused = false; //Unpauses the meteors
+        //if (pauseMeteors && !meteorsPaused) meteorsPaused = true; //Pauses the meteors        
+        //if (!pauseMeteors && meteorsPaused) meteorsPaused = false; //Unpauses the meteors
         fallSpeed = meteorSpeed;
 
         if (!meteorsPaused)
