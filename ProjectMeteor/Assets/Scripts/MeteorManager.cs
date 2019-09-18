@@ -9,20 +9,36 @@ public class MeteorManager : MonoBehaviour
 
     public GameObject meteor;
     public float spawnRate = 5.0f;
+    private float spawnTimer = 0.0f;
 
     public Transform meteorOrigin;
     public Transform spawnPoint;
+
+    public bool pauseMeteors = false; //for Inspector usage, may not be necessary
+    private static bool meteorsPaused = false;
 
     void Start()
     {
         //offsetFromCentre = Vector3.Distance(playerOrigin.transform.position, meteorOrigin.position);
         offsetFromCentre = 500.0f;
-        InvokeRepeating("SpawnMeteor", spawnRate, spawnRate);
+        //InvokeRepeating("SpawnMeteor", spawnRate, spawnRate);
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (pauseMeteors && !meteorsPaused) meteorsPaused = true; //Pauses the meteors        
+        if (!pauseMeteors && meteorsPaused) meteorsPaused = false; //Unpauses the meteors
+        
+
+        if (!meteorsPaused)
+        {
+            spawnTimer += Time.deltaTime;
+            if (spawnTimer > spawnRate)
+            {
+                spawnTimer = 0.0f;
+                SpawnMeteor();
+            }
+        }
     }
 
     void SpawnMeteor()
@@ -41,5 +57,10 @@ public class MeteorManager : MonoBehaviour
         // Find a random index between zero and one less than the number of spawn points.
         //int spawnPointIndex = Random.Range(0, spawnPoints.Length);
 
+    }
+
+    public static bool MeteorsPaused()
+    {
+        return meteorsPaused;
     }
 }

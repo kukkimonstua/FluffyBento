@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class PlayerController : MonoBehaviour
     private float offsetFromCentre;
 
     private bool isGrounded;
+
+    public Text promptText;
 
     void Awake()
     {
@@ -67,6 +70,31 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Meteor"))
+        {
+            promptText.gameObject.SetActive(true);
+            if(Input.GetButtonDown("Fire1"))
+            {
+                attackMeteor(other.gameObject);
+                promptText.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        promptText.gameObject.SetActive(false);
+    }
+
+    private void attackMeteor(GameObject meteor)
+    {
+
+        Destroy(meteor);
+
     }
 
 }
