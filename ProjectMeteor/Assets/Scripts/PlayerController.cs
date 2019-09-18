@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
         //Get the current position of the object to be moved
         Vector3 startPos = fromPosition.position;
         Vector3 toPosition = Vector3.Lerp(meteor.transform.position, fromPosition.position, 0.5f); //halfway
-
+        CameraController.cameraState = 2;
 
         while (counter < duration)
         {
@@ -160,6 +160,7 @@ public class PlayerController : MonoBehaviour
         sword.SetActive(false);
 
         Destroy(meteor);
+        CameraController.cameraState = 1;
     }
 
     private void pickUpSword(GameObject sword)
