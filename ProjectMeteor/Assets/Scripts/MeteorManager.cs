@@ -10,6 +10,7 @@ public class MeteorManager : MonoBehaviour
     public GameObject meteor;
     public float spawnDelay = 5.0f;
     private float spawnTimer = 0.0f;
+    public float spawnHeight = 300.0f;
 
     public Transform meteorOrigin;
     public Transform spawnPoint;
@@ -29,8 +30,10 @@ public class MeteorManager : MonoBehaviour
 
     void Update()
     {
+        //Use this if you need to test behaviour related to meteors in the main game
         //if (pauseMeteors && !meteorsPaused) meteorsPaused = true; //Pauses the meteors        
         //if (!pauseMeteors && meteorsPaused) meteorsPaused = false; //Unpauses the meteors
+
         fallSpeed = meteorSpeed;
 
         if (!meteorsPaused)
@@ -47,7 +50,7 @@ public class MeteorManager : MonoBehaviour
     void SpawnMeteor()
     {
         meteorOrigin.Rotate(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-        spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * offsetFromCentre) + (playerOrigin.transform.up * 250);
+        spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * offsetFromCentre) + (playerOrigin.transform.up * spawnHeight);
         Instantiate(meteor, spawnPoint.position, spawnPoint.rotation);
 
         // If the player has no health left...

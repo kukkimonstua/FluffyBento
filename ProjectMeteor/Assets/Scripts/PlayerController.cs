@@ -21,11 +21,14 @@ public class PlayerController : MonoBehaviour
 
     public Text promptText;
 
-    private bool attackingMeteor;
+    public GameObject timingWindow;
+    
+
+    private int playerState;
 
     void Awake()
     {
-        attackingMeteor = false;
+        playerState = 1;
 
         holdingSword = false;
         sword.SetActive(false);
@@ -38,43 +41,58 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!attackingMeteor)
+        switch (playerState)
         {
-            worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
+            case 3:                
+                break; //No fall multiplier for a floaty death is totally intentional
+
+            case 2:
+                rb.velocity = Vector3.up * 0;
+                break;
+
+            default:
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+                    playerState = 3;
+                    CameraController.SwitchToEndingCamera();
+                }
+
+                worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
+
+                playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * offsetFromCentre);
+                playerOrigin.rotation = worldOrigin.rotation;
+
+                transform.rotation = playerOrigin.rotation; //perhaps temporary solution?
+
+                //sets only the x and y values of the player to match the player's origin
+                var pos = transform.position;
+                var ppos = transform.position;
+                pos.x = playerOrigin.position.x;
+                pos.z = playerOrigin.position.z;
+                ppos.y = -0.8f;
+                transform.position = pos;
+
+                if (Input.GetButtonDown("Jump") && isGrounded)
+                {
+                    isGrounded = false;
+                    //rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+                    rb.velocity = Vector3.up * jumpForce;
+                }
+                if (rb.velocity.y < 0)
+                {
+                    rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+                }
+                else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+                {
+                    rb.velocity += Vector3.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
+                }
+
+                if (rb.position.y < -1f) //Emily 9/16
+                {
+                    transform.position = ppos;
+                }
+                break;
         }
-
-        playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * offsetFromCentre);
-        playerOrigin.rotation = worldOrigin.rotation;
-
-        transform.rotation = playerOrigin.rotation; //perhaps temporary solution?
-
-        //sets only the x and y values of the player to match the player's origin
-        var pos = transform.position;
-        var ppos = transform.position;
-        pos.x = playerOrigin.position.x;
-        pos.z = playerOrigin.position.z;
-        ppos.y = -0.8f;
-        transform.position = pos;
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            isGrounded = false;
-            //rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-            rb.velocity = Vector3.up * jumpForce;
-        }
-        if(rb.velocity.y < 0)
-        {
-            rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-        } else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
-        {
-            rb.velocity += Vector3.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-        }
-
-        if (rb.position.y < -1f) //Emily 9/16
-        {
-           transform.position = ppos;
-        }
-        //Debug.Log(rb.position.y);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -87,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Meteor") && !attackingMeteor)
+        if (other.gameObject.CompareTag("Meteor") && playerState == 1)
         {
             if (!holdingSword)
             {
@@ -102,15 +120,11 @@ public class PlayerController : MonoBehaviour
                 {
                     promptText.gameObject.SetActive(false);
                     StartCoroutine(AttackOnMeteor(transform, other.gameObject, 3.0f));
-
-                    //attackMeteor(other.gameObject);
-                    
-                    
                 }
             }
             
         }
-        if (other.gameObject.CompareTag("Sword"))
+        if (other.gameObject.CompareTag("Sword") && playerState == 1)
         {
             promptText.text = "CTRL to Equip!";
             promptText.gameObject.SetActive(true);
@@ -133,34 +147,44 @@ public class PlayerController : MonoBehaviour
     private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
     {
         //Make sure there is only one instance of this function running
-        if (attackingMeteor)
+        if (playerState == 2)
         {
             yield break; ///exit if this is still running
         }
-        attackingMeteor = true;
-        MeteorManager.meteorsPaused = true;
+        playerState = 2;
 
+        MeteorManager.meteorsPaused = true;
+        
         float counter = 0;
 
         //Get the current position of the object to be moved
         Vector3 startPos = fromPosition.position;
-        Vector3 toPosition = Vector3.Lerp(meteor.transform.position, fromPosition.position, 0.5f); //halfway
-        CameraController.cameraState = 2;
+        Vector3 toPosition = Vector3.Lerp(meteor.transform.position, fromPosition.position, 0.5f); //halfway, temp solution
+        CameraController.SwitchToAttackCamera();
+
 
         while (counter < duration)
         {
+            if (counter > duration / 3)
+            {
+                timingWindow.SetActive(true);
+            }
+
             counter += Time.deltaTime;
             fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
             yield return null;
         }
+
+        timingWindow.SetActive(false);
         MeteorManager.meteorsPaused = false;
-        attackingMeteor = false;
+        playerState = 1;
 
         holdingSword = false;
         sword.SetActive(false);
 
+
         Destroy(meteor);
-        CameraController.cameraState = 1;
+        CameraController.SwitchToMainCamera();
     }
 
     private void pickUpSword(GameObject sword)
