@@ -4,27 +4,30 @@ using UnityEngine;
 
 public class MeteorManager : MonoBehaviour
 {
-    public Transform playerOrigin;
-    private float offsetFromCentre;
-
+    [Header("Linked GameObjects")]
     public GameObject meteor;
-    public float spawnDelay = 5.0f;
-    private float spawnTimer = 0.0f;
-    public float spawnHeight = 300.0f;
-
+    public Transform playerOrigin;
+    private float worldRadius;
     public Transform meteorOrigin;
     public Transform spawnPoint;
+
+    [Header("Meteor Settings")]
+    public float spawnHeight = 300.0f;
+    public float meteorSpeed = 10.0f; //for Inspector usage, may not be necessary
+    public static float fallSpeed = 10.0f;
+
+    [Header("Spawn Settings")]
+    public int maxMeteorsOnScreen = 5;
+    public float spawnDelay = 5.0f;
+    private float spawnTimer = 0.0f;
 
     public bool pauseMeteors = false; //for Inspector usage, may not be necessary
     public static bool meteorsPaused = false;
 
-    public float meteorSpeed = 10.0f; //for Inspector usage, may not be necessary
-    public static float fallSpeed = 10.0f;
-
     void Start()
     {
         //offsetFromCentre = Vector3.Distance(playerOrigin.transform.position, meteorOrigin.position);
-        offsetFromCentre = 500.0f;
+        worldRadius = 500.0f;
         //InvokeRepeating("SpawnMeteor", spawnRate, spawnRate);
     }
 
@@ -41,8 +44,11 @@ public class MeteorManager : MonoBehaviour
             spawnTimer += Time.deltaTime;
             if (spawnTimer > spawnDelay)
             {
-                spawnTimer = 0.0f;
-                SpawnMeteor();
+                
+                if (GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen)
+                {
+                    SpawnMeteor();
+                }
             }
         }
     }
@@ -50,16 +56,21 @@ public class MeteorManager : MonoBehaviour
     void SpawnMeteor()
     {
         meteorOrigin.Rotate(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
-        spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * offsetFromCentre) + (playerOrigin.transform.up * spawnHeight);
+        spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * worldRadius) + (playerOrigin.transform.up * spawnHeight);
+
+        var currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
+
+        for (int i = 0; i < currentMeteors.Length; i++)
+        {
+            if (currentMeteors[i].GetComponent<Collider>().bounds.Contains(spawnPoint.position))
+            {
+                Debug.Log("Spawned inside another meteor");
+                return;
+            }
+        }
+
         Instantiate(meteor, spawnPoint.position, spawnPoint.rotation);
-
-        // If the player has no health left...
-        //if (playerHealth.currentHealth <= 0f)
-        //{
-        // ... exit the function.
-        //  return;
-        //}
-
+        spawnTimer = 0.0f;
     }
 
 }

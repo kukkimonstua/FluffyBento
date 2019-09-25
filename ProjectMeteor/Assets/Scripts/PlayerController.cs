@@ -17,25 +17,35 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
     private bool holdingSword;
-    [SerializeField] private GameObject sword;
+    [SerializeField] private GameObject equippedSword;
+
+    public GameObject newSword;
 
     public Text promptText;
+    public Text healthText;
 
     public GameObject timingWindow;
+    
+    private static int playerState;
 
-    public Animator anim;
-    bool run_left, run_right, idle;
+    private GameObject targetedMeteor;
+    private GameObject targetedSword;
 
-    private int playerState;
+    public int playerMaxHealth = 3;
+    private int playerHealth;
+
+    public static float lowestMeteorPosition;
+    public float meteorDeathThreshold = 100.0f;
 
     void Awake()
     {
         playerState = 1;
 
-        holdingSword = false;
-        sword.SetActive(false);
+        playerHealth = playerMaxHealth;
+        healthText.text = "Health: " + playerHealth;
 
-        anim = GetComponent<Animator>();
+        holdingSword = false;
+        equippedSword.SetActive(false);
 
         isGrounded = false;
         rb = GetComponent<Rigidbody>();
@@ -52,13 +62,29 @@ public class PlayerController : MonoBehaviour
 
             case 2:
                 rb.velocity = Vector3.up * 0;
+
+                if (Input.GetButtonDown("Fire1") && !TimingWindow.gotPressed)
+                {
+                    TimingWindow.gotPressed = true;
+                    Debug.Log("GOTCHA!");
+                }
                 break;
 
             default:
+                //REMOVE THIS LATER
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    playerState = 3;
-                    CameraController.SwitchToEndingCamera();
+                    TakeDamage(1);
+                }
+                lowestMeteorPosition = 300.0f;
+                GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
+                foreach (GameObject meteor in meteors)
+                {
+                    if (meteor.transform.position.y < lowestMeteorPosition) lowestMeteorPosition = meteor.transform.position.y;
+                }
+                if (lowestMeteorPosition < meteorDeathThreshold)
+                {
+                    GameOver(); //From a meteor landing
                 }
 
                 worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
@@ -68,13 +94,17 @@ public class PlayerController : MonoBehaviour
 
                 transform.rotation = playerOrigin.rotation; //perhaps temporary solution?
 
+                var lowestPos = transform.position;
+                lowestPos.y = -0.8f;
+
                 //sets only the x and y values of the player to match the player's origin
                 var pos = transform.position;
-                var ppos = transform.position;
                 pos.x = playerOrigin.position.x;
                 pos.z = playerOrigin.position.z;
-                ppos.y = -0.8f;
+
                 transform.position = pos;
+
+                
 
                 if (Input.GetButtonDown("Jump") && isGrounded)
                 {
@@ -93,10 +123,30 @@ public class PlayerController : MonoBehaviour
 
                 if (rb.position.y < -1f) //Emily 9/16
                 {
-                    transform.position = ppos;
+                    transform.position = lowestPos;
                 }
-                UpdateAnimations();
-                Debug.Log(idle);
+
+                if (Input.GetButtonDown("Fire2"))
+                {
+                    if (holdingSword)
+                    {
+                        DropSword(newSword);
+                    }
+                    else
+                    {
+                        if (targetedSword != null) //if you're near a sword
+                        {
+                            PickUpSword(targetedSword);
+                            promptText.gameObject.SetActive(false);
+                        }
+                    }
+                }
+
+                if(Input.GetButtonDown("Fire1") && holdingSword && targetedMeteor != null)
+                {
+                    promptText.gameObject.SetActive(false);
+                    StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
+                }
                 break;
         }
     }
@@ -109,45 +159,46 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Meteor") && playerState == 1)
+        if (playerState == 1)
         {
-            if (!holdingSword)
+            if (other.gameObject.CompareTag("Meteor"))
             {
-                promptText.text = "You need a sword!";
-                promptText.gameObject.SetActive(true);
-            }
-            else
-            {
-                promptText.text = "CTRL to Attack!";
-                promptText.gameObject.SetActive(true);
-                if (Input.GetButtonDown("Fire1"))
+                targetedMeteor = other.gameObject;
+                targetedMeteor.GetComponent<MeteorController>().withinAttackRange = true;
+                if (!holdingSword)
                 {
-                    promptText.gameObject.SetActive(false);
-                    StartCoroutine(AttackOnMeteor(transform, other.gameObject, 3.0f));
+                    promptText.text = "You need a sword!";                    
+                }
+                else
+                {
+                    promptText.text = "CTRL to Attack!";
                 }
             }
-            
-        }
-        if (other.gameObject.CompareTag("Sword") && playerState == 1)
-        {
-            promptText.text = "CTRL to Equip!";
-            promptText.gameObject.SetActive(true);
-            if (Input.GetButtonDown("Fire1"))
+            if (other.gameObject.CompareTag("Sword"))
             {
-                holdingSword = true;
-                sword.SetActive(true);
-
-                pickUpSword(other.gameObject);
-                promptText.gameObject.SetActive(false);
+                targetedSword = other.gameObject;
+                promptText.text = "ALT to Equip!";
             }
-        }
+            promptText.gameObject.SetActive(true);
+        }            
     }
-
     private void OnTriggerExit(Collider other)
     {
-        promptText.gameObject.SetActive(false);
+        if (playerState == 1)
+        {
+            promptText.gameObject.SetActive(false);
+            if (other.gameObject.CompareTag("Meteor"))
+            {
+                other.GetComponent<MeteorController>().withinAttackRange = false;
+                targetedMeteor = null;
+            }
+            if (other.gameObject.CompareTag("Sword"))
+            {
+                targetedSword = null;
+            }
+        }        
     }
 
     private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
@@ -168,59 +219,54 @@ public class PlayerController : MonoBehaviour
         Vector3 toPosition = Vector3.Lerp(meteor.transform.position, fromPosition.position, 0.5f); //halfway, temp solution
         CameraController.SwitchToAttackCamera();
 
+        timingWindow.GetComponent<TimingWindow>().StartTimingWindow();
 
         while (counter < duration)
         {
-            if (counter > duration / 3)
-            {
-                timingWindow.SetActive(true);
-            }
-
             counter += Time.deltaTime;
             fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
             yield return null;
         }
 
-        timingWindow.SetActive(false);
         MeteorManager.meteorsPaused = false;
         playerState = 1;
 
         holdingSword = false;
-        sword.SetActive(false);
-
+        equippedSword.SetActive(false);
 
         Destroy(meteor);
         CameraController.SwitchToMainCamera();
     }
 
-    private void pickUpSword(GameObject sword)
+    private void PickUpSword(GameObject pickedUpSword)
     {
-        Destroy(sword);
+        holdingSword = true;
+        equippedSword.SetActive(true);
+        Destroy(pickedUpSword);
     }
 
-    private void UpdateAnimations()
+    private void DropSword(GameObject swordType)
     {
-        anim.SetBool("run_left", run_left);
-        anim.SetBool("run_right", run_right);
-        anim.SetBool("idle", idle);
+        holdingSword = false;
+        equippedSword.SetActive(false);
+        Instantiate(swordType, transform.position, transform.rotation);
+    }
 
-        if (Input.GetKey(KeyCode.A))
+    public void TakeDamage(int amount)
+    {
+        playerHealth -= amount;
+        healthText.text = "Health: " + playerHealth;
+
+        if (playerHealth <= 0)
         {
-            run_left = true;
-            run_right = false;
-            idle = false;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            run_left = false;
-            run_right = true;
-            idle = false;
-        }
-        else
-        {
-            run_left = false;
-            run_right = false;
-            idle = true;
+            GameOver(); //From health loss
         }
     }
+    private void GameOver()
+    {
+        MeteorManager.meteorsPaused = true;
+        playerState = 3;
+        CameraController.SwitchToEndingCamera();
+    }
+
 }
