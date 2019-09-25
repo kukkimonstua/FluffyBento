@@ -22,7 +22,9 @@ public class PlayerController : MonoBehaviour
     public Text promptText;
 
     public GameObject timingWindow;
-    
+
+    public Animator anim;
+    bool run_left, run_right, idle;
 
     private int playerState;
 
@@ -32,6 +34,8 @@ public class PlayerController : MonoBehaviour
 
         holdingSword = false;
         sword.SetActive(false);
+
+        anim = GetComponent<Animator>();
 
         isGrounded = false;
         rb = GetComponent<Rigidbody>();
@@ -91,6 +95,8 @@ public class PlayerController : MonoBehaviour
                 {
                     transform.position = ppos;
                 }
+                UpdateAnimations();
+                Debug.Log(idle);
                 break;
         }
     }
@@ -192,4 +198,29 @@ public class PlayerController : MonoBehaviour
         Destroy(sword);
     }
 
+    private void UpdateAnimations()
+    {
+        anim.SetBool("run_left", run_left);
+        anim.SetBool("run_right", run_right);
+        anim.SetBool("idle", idle);
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            run_left = true;
+            run_right = false;
+            idle = false;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            run_left = false;
+            run_right = true;
+            idle = false;
+        }
+        else
+        {
+            run_left = false;
+            run_right = false;
+            idle = true;
+        }
+    }
 }
