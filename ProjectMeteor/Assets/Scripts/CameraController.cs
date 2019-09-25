@@ -30,7 +30,6 @@ public class CameraController : MonoBehaviour
         switch (cameraState)
         {
             case 3: //Victory or defeat.
-                Debug.Log(endingZoom);
                 if (endingZoom < endingZoomTarget * 0.95f)
                 {
                     endingZoom += (endingZoomTarget - endingZoom) / 3 * Time.deltaTime;
@@ -50,13 +49,8 @@ public class CameraController : MonoBehaviour
                 break;
 
             default: //or 1
-                float lowestMeteorPosition = 300.0f;
-                GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
-                foreach (GameObject meteor in meteors)
-                {
-                    if (meteor.transform.position.y < lowestMeteorPosition) lowestMeteorPosition = meteor.transform.position.y;
-                }
-                zoom = zoomLevel + Mathf.Abs(lowestMeteorPosition - 300.0f) / 3;
+                
+                zoom = zoomLevel + Mathf.Abs(PlayerController.lowestMeteorPosition - 300.0f) / 3;
                 if (zoom > 50.0f) zoom = 50.0f;
 
                 //Player on high platforms

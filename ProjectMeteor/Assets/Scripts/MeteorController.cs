@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class MeteorController : MonoBehaviour
 {
-    public float fallSpeed = 5.0f;
     public Material testColour;
     private Material originalColour;
 
-    private bool withinAttackRange;
+    public bool withinAttackRange;
 
     void Start()
     {
@@ -25,23 +24,15 @@ public class MeteorController : MonoBehaviour
             transform.Translate(Vector3.up * -1 * MeteorManager.fallSpeed * Time.deltaTime);
         }
 
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!withinAttackRange)
+        //TEMP, REMOVE WHEN DONE
+        if(withinAttackRange)
         {
-            withinAttackRange = true;
             GetComponent<MeshRenderer>().material = testColour;
         }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (withinAttackRange)
+        else
         {
-            withinAttackRange = false;
             GetComponent<MeshRenderer>().material = originalColour;
         }
-    }
 
+    }
 }
