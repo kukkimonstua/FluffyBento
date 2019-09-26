@@ -55,16 +55,15 @@ public class MeteorManager : MonoBehaviour
 
     void SpawnMeteor()
     {
-        meteorOrigin.Rotate(0.0f, Random.Range(0.0f, 360.0f), 0.0f);
+        meteorOrigin.Rotate(0.0f, Random.Range(0, 12) * 30.0f, 0.0f);
         spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * worldRadius) + (playerOrigin.transform.up * spawnHeight);
 
         var currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
-
         for (int i = 0; i < currentMeteors.Length; i++)
         {
             if (currentMeteors[i].GetComponent<Collider>().bounds.Contains(spawnPoint.position))
             {
-                Debug.Log("Spawned inside another meteor");
+                //Debug.Log("Spawned inside another meteor");    Problem: it will pass even if the future meteor to be spawned would overlap...
                 return;
             }
         }

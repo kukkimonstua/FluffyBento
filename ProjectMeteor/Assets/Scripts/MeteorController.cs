@@ -8,11 +8,12 @@ public class MeteorController : MonoBehaviour
     private Material originalColour;
 
     public bool withinAttackRange;
+    public bool isLowest;
 
     void Start()
     {
-        originalColour = GetComponent<MeshRenderer>().material;
-
+        originalColour = transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material;
+        isLowest = false;
         withinAttackRange = false;
     }
 
@@ -23,15 +24,13 @@ public class MeteorController : MonoBehaviour
         {
             transform.Translate(Vector3.up * -1 * MeteorManager.fallSpeed * Time.deltaTime);
         }
-
-        //TEMP, REMOVE WHEN DONE
-        if(withinAttackRange)
+        if(isLowest)
         {
-            GetComponent<MeshRenderer>().material = testColour;
+            transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = testColour;
         }
         else
         {
-            GetComponent<MeshRenderer>().material = originalColour;
+            transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = originalColour;
         }
 
     }

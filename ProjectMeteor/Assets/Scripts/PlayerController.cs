@@ -17,15 +17,17 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
     private bool holdingSword;
-    [SerializeField] private GameObject equippedSword;
+    public GameObject equippedSword;
 
     public GameObject newSword;
 
     public Text promptText;
     public Text healthText;
+    public Text scoreText;
 
     public GameObject timingWindow;
-    
+    public int timingGrade;
+
     private static int playerState;
 
     private GameObject targetedMeteor;
@@ -33,6 +35,8 @@ public class PlayerController : MonoBehaviour
 
     public int playerMaxHealth = 3;
     private int playerHealth;
+
+    private int playerScore;
 
     public static float lowestMeteorPosition;
     public float meteorDeathThreshold = 100.0f;
@@ -43,6 +47,8 @@ public class PlayerController : MonoBehaviour
 
         playerHealth = playerMaxHealth;
         healthText.text = "Health: " + playerHealth;
+        playerScore = 0;
+        scoreText.text = "Score: " + playerScore;
 
         holdingSword = false;
         equippedSword.SetActive(false);
@@ -66,7 +72,6 @@ public class PlayerController : MonoBehaviour
                 if (Input.GetButtonDown("Fire1") && !TimingWindow.gotPressed)
                 {
                     TimingWindow.gotPressed = true;
-                    Debug.Log("GOTCHA!");
                 }
                 break;
 
@@ -79,8 +84,16 @@ public class PlayerController : MonoBehaviour
                 lowestMeteorPosition = 300.0f;
                 GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
                 foreach (GameObject meteor in meteors)
-                {
-                    if (meteor.transform.position.y < lowestMeteorPosition) lowestMeteorPosition = meteor.transform.position.y;
+                {                    
+                    if (meteor.transform.position.y < lowestMeteorPosition)
+                    {
+                        meteor.GetComponent<MeteorController>().isLowest = true;
+                        lowestMeteorPosition = meteor.transform.position.y;
+                    }
+                    else
+                    {
+                        meteor.GetComponent<MeteorController>().isLowest = false;
+                    }
                 }
                 if (lowestMeteorPosition < meteorDeathThreshold)
                 {
@@ -209,17 +222,16 @@ public class PlayerController : MonoBehaviour
             yield break; ///exit if this is still running
         }
         playerState = 2;
-
         MeteorManager.meteorsPaused = true;
         
-        float counter = 0;
-
         //Get the current position of the object to be moved
         Vector3 startPos = fromPosition.position;
-        Vector3 toPosition = Vector3.Lerp(meteor.transform.position, fromPosition.position, 0.5f); //halfway, temp solution
+        Vector3 toPosition = meteor.transform.position;
         CameraController.SwitchToAttackCamera();
 
-        timingWindow.GetComponent<TimingWindow>().StartTimingWindow();
+        float counter = 0;
+        timingGrade = 0;
+        timingWindow.GetComponent<TimingWindow>().StartTimingWindow(duration);
 
         while (counter < duration)
         {
@@ -234,8 +246,16 @@ public class PlayerController : MonoBehaviour
         holdingSword = false;
         equippedSword.SetActive(false);
 
-        Destroy(meteor);
         CameraController.SwitchToMainCamera();
+
+        if (timingGrade > 0)
+        {
+            Destroy(meteor);
+        }
+        else
+        {
+            TakeDamage(1);
+        }
     }
 
     private void PickUpSword(GameObject pickedUpSword)
@@ -262,6 +282,12 @@ public class PlayerController : MonoBehaviour
             GameOver(); //From health loss
         }
     }
+    public void AddScore(int amount)
+    {
+        playerScore += amount;
+        scoreText.text = "Score: " + playerScore;
+    }
+
     private void GameOver()
     {
         MeteorManager.meteorsPaused = true;

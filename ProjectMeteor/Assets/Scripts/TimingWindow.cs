@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class TimingWindow : MonoBehaviour
 {
     // Start is called before the first frame update
+    public PlayerController player;
+
     public RectTransform shrinker;
     private static float shrinkerDiameter;
     private static float minShrinkerDiameter;
@@ -23,6 +25,8 @@ public class TimingWindow : MonoBehaviour
         minShrinkerDiameter = 50.0f;
         maxShrinkerDiameter = 500.0f;
         feedbackText = "";
+        FadeTimingWindowUI(0.0f);
+        displayText.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
     }
 
     // Update is called once per frame
@@ -32,15 +36,18 @@ public class TimingWindow : MonoBehaviour
         shrinker.sizeDelta = new Vector2(shrinkerDiameter, shrinkerDiameter);
     }
 
-    private IEnumerator TimingWindowCoroutine()
+    private IEnumerator TimingWindowCoroutine(float duration)
     {
         gotPressed = false;
 
         float counter = 0.0f;
-        float counterOffset = Random.Range(0.0f, 1.5f);
-        float duration = 3.0f;
-
+        float counterOffset = Random.Range(1.0f, 2.2f);
+        shrinkerDiameter = 50.0f;
         feedbackText = "Ready...";
+
+        float alphaValue = 0.0f;
+        FadeTimingWindowUI(alphaValue);
+        StartCoroutine(ShowFeedbackText(true));
 
         while (counter < duration)
         {
@@ -48,33 +55,84 @@ public class TimingWindow : MonoBehaviour
             {
                 if (counter > counterOffset)
                 {
+                    Debug.Log(alphaValue);
+                    if (alphaValue < 1.0f) alphaValue += 0.05f;
+                    FadeTimingWindowUI(alphaValue);
                     feedbackText = "";
                     shrinkerDiameter = Mathf.Lerp(maxShrinkerDiameter, minShrinkerDiameter, (counter - counterOffset) / (duration - counterOffset));
+                    if (shrinkerDiameter < 125) gotPressed = true;
                 }
             }
             else
             {
-                feedbackText = "Good!"; //no matter what lol
+                if (alphaValue > 0.0f) alphaValue -= 0.05f;
+                FadeTimingWindowUI(alphaValue);
+                if (shrinkerDiameter < 150 && shrinkerDiameter > 125)
+                {
+                    player.timingGrade = 2;
+                    feedbackText = "Excellent!";
+                }
+                else if (shrinkerDiameter < 200 && shrinkerDiameter > 125)
+                {
+                    player.timingGrade = 1;
+                    feedbackText = "Good!";
+                }
+                else
+                {
+                    player.timingGrade = 0;
+                    feedbackText = "Miss...";
+                }
             }
             counter += Time.deltaTime;
             yield return null;
         }
-        ToggleTimingWindowUI(false);
+        Debug.Log(feedbackText + ": " + shrinkerDiameter);
+        player.AddScore(player.timingGrade * 100);
+
+        FadeTimingWindowUI(0.0f);
+        StartCoroutine(ShowFeedbackText(false));
+
     }
 
-    public void StartTimingWindow()
+
+
+    public void StartTimingWindow(float duration)
     {
-        ToggleTimingWindowUI(true);
-        StartCoroutine(TimingWindowCoroutine());
+        FadeTimingWindowUI(1.0f);
+        StartCoroutine(TimingWindowCoroutine(duration));
     }
 
-    private void ToggleTimingWindowUI(bool setActiveState)
+    private IEnumerator ShowFeedbackText(bool state)
+    {
+        if (state)
+        {
+            float alphaValue = 0.0f;
+            while (alphaValue < 1.0f)
+            {
+                alphaValue += 0.02f;
+                displayText.GetComponent<CanvasRenderer>().SetAlpha(alphaValue);
+                yield return null;
+            }
+        }
+        else
+        {
+            float alphaValue = 1.0f;
+            while (alphaValue > 0.0f)
+            {
+                alphaValue -= 0.02f;
+                displayText.GetComponent<CanvasRenderer>().SetAlpha(alphaValue);
+                yield return null;
+            }
+        }
+    }
+
+    private void FadeTimingWindowUI(float alphaValue)
     {
         for (int i = 0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i).gameObject;
             if (child != null)
-                child.SetActive(setActiveState);
+                child.GetComponent<CanvasRenderer>().SetAlpha(alphaValue);
         }
     }
 }
