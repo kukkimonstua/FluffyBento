@@ -188,17 +188,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 30
-  jumpForce: 7
+  jumpForce: 10
   fallMultiplier: 6
-  lowJumpMultiplier: 6
+  lowJumpMultiplier: 10
   worldOrigin: {fileID: 0}
   playerOrigin: {fileID: 0}
   equippedSword: {fileID: 8258192547470250096}
   newSword: {fileID: 998694544303584942, guid: 1cb087e0b53550a4f93102376f93f740, type: 3}
   promptText: {fileID: 0}
+  healthText: {fileID: 0}
+  scoreText: {fileID: 0}
   timingWindow: {fileID: 0}
-  targetedMeteor: {fileID: 0}
-  targetedSword: {fileID: 0}
+  timingGrade: 0
+  playerMaxHealth: 3
+  meteorDeathThreshold: 100
 --- !u!1 &3376312176979147856
 GameObject:
   m_ObjectHideFlags: 0
