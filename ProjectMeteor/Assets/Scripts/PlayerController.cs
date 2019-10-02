@@ -122,16 +122,9 @@ public class PlayerController : MonoBehaviour
 
 
 
-                var lowestPos = transform.position;
-                lowestPos.y = -0.8f;
+                
 
-                //sets only the x and y values of the player to match the player's origin
-                //var pos = transform.position;
-                //pos.x = playerOrigin.position.x;
-                //pos.z = playerOrigin.position.z;
-
-                //transform.position = pos;
-                horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 5;
+                horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 6;
                 horizonalVelocity = Vector3.ClampMagnitude(horizonalVelocity, moveSpeed * 2) * 0.9f;
 
                 if (Input.GetButtonDown("Jump"))
@@ -152,7 +145,6 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        isGrounded = false;
                         rb.velocity = Vector3.up * jumpForce;
                     }
                 }
@@ -163,9 +155,10 @@ public class PlayerController : MonoBehaviour
                     rb.velocity += Vector3.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
                 }
 
-
                 rb.velocity = new Vector3(horizonalVelocity.x, rb.velocity.y, horizonalVelocity.z);
-                //Debug.Log(rb.velocity.magnitude);
+
+                var lowestPos = transform.position;
+                lowestPos.y = -0.8f;
 
                 if (rb.position.y < -1f) //Emily 9/16
                 {
@@ -211,22 +204,14 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Wall"))
         {
             onWall = true;
-            
-            // Calculate Angle Between the collision point and the player
-            Vector3 dir = collision.GetContact(0).point - transform.position;
-            // We then get the opposite (-Vector3) and normalize it
-            dir = -dir.normalized;
-
-            // And finally we add force in the direction of dir and multiply it by force. 
-            // This will push back the player
-            //rb.AddForce(dir * 3.0f);
-
-
         }
     }
     private void OnCollisionExit(Collision collision)
     {
-        
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            isGrounded = false;
+        }
         if (collision.gameObject.CompareTag("Wall"))
         {
             onWall = false;
