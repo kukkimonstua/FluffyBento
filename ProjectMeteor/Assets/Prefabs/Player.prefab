@@ -187,10 +187,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520419b3360e5d644a2256ddd89e84d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 30
-  jumpForce: 10
-  fallMultiplier: 6
-  lowJumpMultiplier: 10
+  moveSpeed: 50
+  jumpForce: 30
+  fallMultiplier: 10
+  lowJumpMultiplier: 20
   worldOrigin: {fileID: 0}
   playerOrigin: {fileID: 0}
   equippedSword: {fileID: 8258192547470250096}

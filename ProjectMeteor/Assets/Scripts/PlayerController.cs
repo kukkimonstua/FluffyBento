@@ -13,9 +13,10 @@ public class PlayerController : MonoBehaviour
 
     public Transform worldOrigin;
     public Transform playerOrigin;
-    private float offsetFromCentre;
+    private float worldRadius;
 
     private bool isGrounded;
+    private bool canDoubleJump;
     private bool holdingSword;
     public GameObject equippedSword;
 
@@ -54,8 +55,9 @@ public class PlayerController : MonoBehaviour
         equippedSword.SetActive(false);
 
         isGrounded = false;
+        canDoubleJump = false;
         rb = GetComponent<Rigidbody>();
-        offsetFromCentre = Vector3.Distance(transform.position, worldOrigin.position);
+        worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
     }
 
     // Update is called once per frame
@@ -68,13 +70,11 @@ public class PlayerController : MonoBehaviour
 
             case 2:
                 rb.velocity = Vector3.up * 0;
-
                 if (Input.GetButtonDown("Fire1") && !TimingWindow.gotPressed)
                 {
                     TimingWindow.gotPressed = true;
                 }
                 break;
-
             default:
                 //REMOVE THIS LATER
                 if (Input.GetKeyDown(KeyCode.F))
@@ -100,36 +100,48 @@ public class PlayerController : MonoBehaviour
                     GameOver(); //From a meteor landing
                 }
 
-                worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
+                //worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
+                worldOrigin.LookAt(new Vector3(transform.position.x, worldOrigin.position.y, transform.position.z));
 
-                playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * offsetFromCentre);
-                playerOrigin.rotation = worldOrigin.rotation;
+                playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * worldRadius);
 
-                transform.rotation = playerOrigin.rotation; //perhaps temporary solution?
+                transform.rotation = playerOrigin.rotation = worldOrigin.rotation;
+                transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
+
+
+
+                var horizonalVelocity = transform.right * Input.GetAxis("Horizontal") * moveSpeed * -0.75f;
+                Debug.Log(horizonalVelocity);
+
+                var verticalVelocity = new Vector3(0.0f, rb.velocity.y, 0.0f);
+                Debug.Log(verticalVelocity);
+                rb.velocity = horizonalVelocity + verticalVelocity;
+
+
 
                 var lowestPos = transform.position;
                 lowestPos.y = -0.8f;
 
                 //sets only the x and y values of the player to match the player's origin
-                var pos = transform.position;
-                pos.x = playerOrigin.position.x;
-                pos.z = playerOrigin.position.z;
+                //var pos = transform.position;
+                //pos.x = playerOrigin.position.x;
+                //pos.z = playerOrigin.position.z;
 
-                transform.position = pos;
+                //transform.position = pos;
 
                 
-
+                if (Input.GetButtonDown("Jump") && !isGrounded && canDoubleJump)
+                {
+                    canDoubleJump = false;
+                    rb.velocity = Vector3.up * jumpForce;
+                }
                 if (Input.GetButtonDown("Jump") && isGrounded)
                 {
                     isGrounded = false;
-                    //rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
                     rb.velocity = Vector3.up * jumpForce;
-                }
-                if (rb.velocity.y < 0)
-                {
-                    rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-                }
-                else if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
+                }                
+                rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+                if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
                 {
                     rb.velocity += Vector3.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
                 }
@@ -169,6 +181,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Platform"))
         {
             isGrounded = true;
+            canDoubleJump = true;
         }
     }
 
