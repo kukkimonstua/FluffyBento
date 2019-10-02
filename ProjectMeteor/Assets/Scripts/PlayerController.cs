@@ -315,7 +315,7 @@ public class PlayerController : MonoBehaviour
     {
         holdingSword = false;
         equippedSword.SetActive(false);
-        Instantiate(swordType, transform.position, transform.rotation);
+        Instantiate(swordType, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
     }
 
     public void TakeDamage(int amount)
