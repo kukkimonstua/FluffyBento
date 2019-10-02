@@ -41,6 +41,8 @@ public class PlayerController : MonoBehaviour
 
     public static float lowestMeteorPosition;
     public float meteorDeathThreshold = 100.0f;
+    public Animator anim;
+    bool run_left, run_right, idle;
 
     void Awake()
     {
@@ -309,5 +311,29 @@ public class PlayerController : MonoBehaviour
         playerState = 3;
         CameraController.SwitchToEndingCamera();
     }
+    private void UpdateAnimations()
+    {
+        anim.SetBool("run_left", run_left);
+        anim.SetBool("run_right", run_right);
+        anim.SetBool("idle", idle);
 
+        if (Input.GetKey(KeyCode.A))
+        {
+            run_left = true;
+            run_right = false;
+            idle = false;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            run_left = false;
+            run_right = true;
+            idle = false;
+        }
+        else
+        {
+            run_left = false;
+            run_right = false;
+            idle = true;
+        }
+    }
 }
