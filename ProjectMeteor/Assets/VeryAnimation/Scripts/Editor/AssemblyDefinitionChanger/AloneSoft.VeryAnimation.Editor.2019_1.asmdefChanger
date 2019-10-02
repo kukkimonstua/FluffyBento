@@ -1,0 +1,24 @@
+{
+    "name": "AloneSoft.VeryAnimation.Editor",
+    "references": [
+        "AloneSoft.VeryAnimation",
+        "Unity.Timeline",
+        "Unity.Timeline.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.timeline",
+            "expression": "0.0.0-builtin",
+            "define": "VERYANIMATION_TIMELINE"
+        }
+    ]
+}
