@@ -203,7 +203,7 @@ MonoBehaviour:
   timingGrade: 0
   playerMaxHealth: 3
   meteorDeathThreshold: 100
-  anim: {fileID: 0}
+  anim: {fileID: 867773886117812824}
 --- !u!1 &3376312176979147856
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,6 +555,12 @@ PrefabInstance:
 --- !u!4 &898469024567071119 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2455775819622752115, guid: 3e033a65f49fab34f94e145a39423d1c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3345237505348243196}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &867773886117812824 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2478765444768535716, guid: 3e033a65f49fab34f94e145a39423d1c,
     type: 3}
   m_PrefabInstance: {fileID: 3345237505348243196}
   m_PrefabAsset: {fileID: 0}
