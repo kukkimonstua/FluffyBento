@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4310390676547166701}
   m_Layer: 0
-  m_Name: nippon_castle_a (1)
+  m_Name: nippon_castle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 6034624167154660053}
   - component: {fileID: 6485053991284205062}
   - component: {fileID: 2368094023541066486}
+  - component: {fileID: 2285093879519608560}
   m_Layer: 0
   m_Name: default
   m_TagString: Untagged
@@ -109,3 +110,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &2285093879519608560
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6739221281877653091}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 34.9143, y: 24.00317, z: 20.990318}
+  m_Center: {x: -3.9242496, y: 6.7901154, z: -1.50384}

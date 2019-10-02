@@ -15,8 +15,11 @@ public class PlayerController : MonoBehaviour
     public Transform playerOrigin;
     private float worldRadius;
 
-    private bool isGrounded;
-    private bool canDoubleJump;
+    public bool isGrounded;
+    public bool canDoubleJump;
+    public bool onWall;
+    private Vector3 horizonalVelocity;
+
     private bool holdingSword;
     public GameObject equippedSword;
 
@@ -58,8 +61,11 @@ public class PlayerController : MonoBehaviour
 
         isGrounded = false;
         canDoubleJump = false;
+        onWall = false;
         rb = GetComponent<Rigidbody>();
         worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
+
+        
     }
 
     // Update is called once per frame
@@ -104,49 +110,55 @@ public class PlayerController : MonoBehaviour
 
                 //worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
                 worldOrigin.LookAt(new Vector3(transform.position.x, worldOrigin.position.y, transform.position.z));
+                transform.rotation = playerOrigin.rotation = worldOrigin.rotation;
 
                 playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * worldRadius);
 
-                transform.rotation = playerOrigin.rotation = worldOrigin.rotation;
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
 
 
-                var horizonalVelocity = transform.right * Input.GetAxis("Horizontal") * moveSpeed * -0.75f;
-                var verticalVelocity = new Vector3(0.0f, rb.velocity.y, 0.0f);
-
-                //Debug.Log(horizonalVelocity);
-                //Debug.Log(verticalVelocity);
-                rb.velocity = horizonalVelocity + verticalVelocity;
+                
 
 
-
-                var lowestPos = transform.position;
-                lowestPos.y = -0.8f;
-
-                //sets only the x and y values of the player to match the player's origin
-                //var pos = transform.position;
-                //pos.x = playerOrigin.position.x;
-                //pos.z = playerOrigin.position.z;
-
-                //transform.position = pos;
 
                 
-                if (Input.GetButtonDown("Jump") && !isGrounded && canDoubleJump)
+
+                horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 6;
+                horizonalVelocity = Vector3.ClampMagnitude(horizonalVelocity, moveSpeed * 2) * 0.9f;
+
+                if (Input.GetButtonDown("Jump"))
                 {
-                    canDoubleJump = false;
-                    rb.velocity = Vector3.up * jumpForce;
+                    if (!isGrounded)
+                    {
+                        if (onWall)
+                        {
+                            Debug.Log("WALL JUMP");
+                            rb.velocity = Vector3.up * jumpForce;
+                            horizonalVelocity *= -1.5f;
+                        }
+                        else if (canDoubleJump)
+                        {
+                            canDoubleJump = false;
+                            rb.velocity = Vector3.up * jumpForce;
+                        }
+                    }
+                    else
+                    {
+                        rb.velocity = Vector3.up * jumpForce;
+                    }
                 }
-                if (Input.GetButtonDown("Jump") && isGrounded)
-                {
-                    isGrounded = false;
-                    rb.velocity = Vector3.up * jumpForce;
-                }                
+                           
                 rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
                 if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
                 {
                     rb.velocity += Vector3.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
                 }
+
+                rb.velocity = new Vector3(horizonalVelocity.x, rb.velocity.y, horizonalVelocity.z);
+
+                var lowestPos = transform.position;
+                lowestPos.y = -0.8f;
 
                 if (rb.position.y < -1f) //Emily 9/16
                 {
@@ -174,19 +186,35 @@ public class PlayerController : MonoBehaviour
                     promptText.gameObject.SetActive(false);
                     StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
                 }
+
+                UpdateAnimations();
                 break;
         }
-        UpdateAnimations();
+        
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Hit something!" + collision.gameObject.tag);
+        //Debug.Log("Hit something!" + collision.relativeVelocity);
         if (collision.gameObject.CompareTag("Platform"))
         {
-            Debug.Log("Landed!");
             isGrounded = true;
             canDoubleJump = true;
+        }
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            onWall = true;
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            isGrounded = false;
+        }
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            onWall = false;
         }
     }
 
@@ -314,17 +342,13 @@ public class PlayerController : MonoBehaviour
     }
     private void UpdateAnimations()
     {
-        anim.SetBool("run_left", run_left);
-        anim.SetBool("run_right", run_right);
-        anim.SetBool("idle", idle);
-
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetAxis("Horizontal") < 0)
         {
             run_left = true;
             run_right = false;
             idle = false;
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetAxis("Horizontal") > 0)
         {
             run_left = false;
             run_right = true;
@@ -336,5 +360,9 @@ public class PlayerController : MonoBehaviour
             run_right = false;
             idle = true;
         }
+
+        anim.SetBool("run_left", run_left);
+        anim.SetBool("run_right", run_right);
+        anim.SetBool("idle", idle);
     }
 }
