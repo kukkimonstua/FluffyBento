@@ -111,10 +111,10 @@ public class PlayerController : MonoBehaviour
 
 
                 var horizonalVelocity = transform.right * Input.GetAxis("Horizontal") * moveSpeed * -0.75f;
-                Debug.Log(horizonalVelocity);
-
                 var verticalVelocity = new Vector3(0.0f, rb.velocity.y, 0.0f);
-                Debug.Log(verticalVelocity);
+
+                //Debug.Log(horizonalVelocity);
+                //Debug.Log(verticalVelocity);
                 rb.velocity = horizonalVelocity + verticalVelocity;
 
 
@@ -178,8 +178,10 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Hit something!" + collision.gameObject.tag);
         if (collision.gameObject.CompareTag("Platform"))
         {
+            Debug.Log("Landed!");
             isGrounded = true;
             canDoubleJump = true;
         }
