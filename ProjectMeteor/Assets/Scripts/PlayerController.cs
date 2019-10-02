@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
 
                 
 
-                if (Input.GetButtonDown("Jump") && isGrounded)
+                if (Input.GetButtonDown("Jump") || Input.GetKeyDown("Space") && isGrounded)
                 {
                     isGrounded = false;
                     //rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
