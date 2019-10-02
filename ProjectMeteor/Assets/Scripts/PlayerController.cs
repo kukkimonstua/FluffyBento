@@ -176,6 +176,7 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
         }
+        UpdateAnimations();
     }
 
     private void OnCollisionEnter(Collision collision)
