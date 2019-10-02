@@ -23,7 +23,7 @@ public class SwordManager : MonoBehaviour
 
     void Start()
     {
-        worldRadius = 500.0f;
+        worldRadius = PlayerController.worldRadius;
     }
 
     void Update()

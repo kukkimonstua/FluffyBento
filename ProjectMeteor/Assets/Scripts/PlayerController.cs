@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     public Transform worldOrigin;
     public Transform playerOrigin;
-    private float worldRadius;
+    public static float worldRadius;
 
     public bool isGrounded;
     public bool canDoubleJump;
@@ -26,8 +27,13 @@ public class PlayerController : MonoBehaviour
     public GameObject newSword;
 
     public Text promptText;
+    public TextMesh actionText;
     public Text healthText;
     public Text scoreText;
+    public Slider meteorLandingSlider;
+    public Text meteorLandingDanger;
+
+    public Text tempEquipText;
 
     public GameObject timingWindow;
     public int timingGrade;
@@ -49,12 +55,16 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
+        rb = GetComponent<Rigidbody>();
         playerState = 1;
 
         playerHealth = playerMaxHealth;
         healthText.text = "Health: " + playerHealth;
         playerScore = 0;
         scoreText.text = "Score: " + playerScore;
+        meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        tempEquipText.text = "Equipped: None";
 
         holdingSword = false;
         equippedSword.SetActive(false);
@@ -62,8 +72,6 @@ public class PlayerController : MonoBehaviour
         isGrounded = false;
         canDoubleJump = false;
         onWall = false;
-        rb = GetComponent<Rigidbody>();
-        worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
 
         
     }
@@ -73,7 +81,8 @@ public class PlayerController : MonoBehaviour
     {
         switch (playerState)
         {
-            case 3:                
+            case 3:
+                rb.velocity = new Vector3(0.0f, rb.velocity.y, 0.0f);
                 break; //No fall multiplier for a floaty death is totally intentional
 
             case 2:
@@ -84,29 +93,12 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
             default:
-                //REMOVE THIS LATER
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    TakeDamage(1);
+                    TakeDamage(1); //USE THIS TO TEST DAMAGE TAKING
                 }
-                lowestMeteorPosition = 300.0f;
-                GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
-                foreach (GameObject meteor in meteors)
-                {                    
-                    if (meteor.transform.position.y < lowestMeteorPosition)
-                    {
-                        meteor.GetComponent<MeteorController>().isLowest = true;
-                        lowestMeteorPosition = meteor.transform.position.y;
-                    }
-                    else
-                    {
-                        meteor.GetComponent<MeteorController>().isLowest = false;
-                    }
-                }
-                if (lowestMeteorPosition < meteorDeathThreshold)
-                {
-                    GameOver(); //From a meteor landing
-                }
+
+                TrackLowestMeteor();
 
                 //worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
                 worldOrigin.LookAt(new Vector3(transform.position.x, worldOrigin.position.y, transform.position.z));
@@ -115,14 +107,6 @@ public class PlayerController : MonoBehaviour
                 playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * worldRadius);
 
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
-
-
-
-                
-
-
-
-                
 
                 horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 6;
                 horizonalVelocity = Vector3.ClampMagnitude(horizonalVelocity, moveSpeed * 2) * 0.9f;
@@ -135,7 +119,7 @@ public class PlayerController : MonoBehaviour
                         {
                             Debug.Log("WALL JUMP");
                             rb.velocity = Vector3.up * jumpForce;
-                            horizonalVelocity *= -1.5f;
+                            horizonalVelocity *= -1.0f;
                         }
                         else if (canDoubleJump)
                         {
@@ -164,7 +148,7 @@ public class PlayerController : MonoBehaviour
                 {
                     transform.position = lowestPos;
                 }
-
+                
                 if (Input.GetButtonDown("Fire2"))
                 {
                     if (holdingSword)
@@ -191,6 +175,37 @@ public class PlayerController : MonoBehaviour
                 break;
         }
         
+    }
+
+    private void TrackLowestMeteor()
+    {
+        lowestMeteorPosition = 300.0f; //the current height at which meteors spawn
+        float sliderRange = lowestMeteorPosition - meteorDeathThreshold;
+
+        GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
+        foreach (GameObject meteor in meteors)
+        {
+            if (meteor.transform.position.y < lowestMeteorPosition)
+            {
+                meteor.GetComponent<MeteorController>().isLowest = true;
+                lowestMeteorPosition = meteor.transform.position.y;
+            }
+            else
+            {
+                meteor.GetComponent<MeteorController>().isLowest = false;
+            }
+        }
+
+        //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
+        meteorLandingSlider.value = (lowestMeteorPosition - meteorDeathThreshold) / sliderRange;
+        if (lowestMeteorPosition / 2 < meteorDeathThreshold)
+        {
+            meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 5.0f) * 0.5f + 0.5f);
+        }
+        if (lowestMeteorPosition < meteorDeathThreshold)
+        {
+            GameOver(); //From a meteor landing
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -234,28 +249,32 @@ public class PlayerController : MonoBehaviour
                 {
                     promptText.text = "CTRL to Attack!";
                 }
+                promptText.gameObject.SetActive(true);
             }
+
             if (other.gameObject.CompareTag("Sword"))
             {
                 targetedSword = other.gameObject;
-                promptText.text = "ALT to Equip!";
+                actionText.gameObject.SetActive(true);
             }
-            promptText.gameObject.SetActive(true);
+            
         }            
     }
     private void OnTriggerExit(Collider other)
     {
         if (playerState == 1)
         {
-            promptText.gameObject.SetActive(false);
+
             if (other.gameObject.CompareTag("Meteor"))
             {
                 other.GetComponent<MeteorController>().withinAttackRange = false;
                 targetedMeteor = null;
+                promptText.gameObject.SetActive(false);
             }
             if (other.gameObject.CompareTag("Sword"))
             {
                 targetedSword = null;
+                actionText.gameObject.SetActive(false);
             }
         }        
     }
@@ -291,6 +310,7 @@ public class PlayerController : MonoBehaviour
 
         holdingSword = false;
         equippedSword.SetActive(false);
+        tempEquipText.text = "Equipped: None";
 
         CameraController.SwitchToMainCamera();
 
@@ -306,8 +326,10 @@ public class PlayerController : MonoBehaviour
 
     private void PickUpSword(GameObject pickedUpSword)
     {
+        actionText.gameObject.SetActive(false);
         holdingSword = true;
         equippedSword.SetActive(true);
+        tempEquipText.text = "Equipped: Sword";
         Destroy(pickedUpSword);
     }
 
@@ -315,6 +337,7 @@ public class PlayerController : MonoBehaviour
     {
         holdingSword = false;
         equippedSword.SetActive(false);
+        tempEquipText.text = "Equipped: None";
         Instantiate(swordType, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
     }
 
