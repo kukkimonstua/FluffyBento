@@ -17,11 +17,13 @@ public class TimingWindow : MonoBehaviour
     private static string feedbackText;
 
     public static bool gotPressed;
+    private bool pressable;
 
     void Start()
     {
         shrinkerDiameter = 50.0f;
         gotPressed = false;
+        pressable = false;
         minShrinkerDiameter = 50.0f;
         maxShrinkerDiameter = 500.0f;
         feedbackText = "";
@@ -38,8 +40,6 @@ public class TimingWindow : MonoBehaviour
 
     private IEnumerator TimingWindowCoroutine(float duration)
     {
-        gotPressed = false;
-
         float counter = 0.0f;
         float counterOffset = Random.Range(1.0f, 2.2f);
         shrinkerDiameter = 50.0f;
@@ -49,38 +49,43 @@ public class TimingWindow : MonoBehaviour
         FadeTimingWindowUI(alphaValue);
         StartCoroutine(ShowFeedbackText(true));
 
+        pressable = false;
         while (counter < duration)
         {
-            if (!gotPressed)
+            if (counter > counterOffset && !pressable)
             {
-                if (counter > counterOffset)
+                gotPressed = false;
+                pressable = true;
+            }
+            if (pressable)
+            {
+                if (!gotPressed)
                 {
-                    Debug.Log(alphaValue);
                     if (alphaValue < 1.0f) alphaValue += 0.05f;
                     FadeTimingWindowUI(alphaValue);
                     feedbackText = "";
                     shrinkerDiameter = Mathf.Lerp(maxShrinkerDiameter, minShrinkerDiameter, (counter - counterOffset) / (duration - counterOffset));
                     if (shrinkerDiameter < 125) gotPressed = true;
                 }
-            }
-            else
-            {
-                if (alphaValue > 0.0f) alphaValue -= 0.05f;
-                FadeTimingWindowUI(alphaValue);
-                if (shrinkerDiameter < 150 && shrinkerDiameter > 125)
-                {
-                    player.timingGrade = 2;
-                    feedbackText = "Excellent!";
-                }
-                else if (shrinkerDiameter < 200 && shrinkerDiameter > 125)
-                {
-                    player.timingGrade = 1;
-                    feedbackText = "Good!";
-                }
                 else
                 {
-                    player.timingGrade = 0;
-                    feedbackText = "Miss...";
+                    if (alphaValue > 0.0f) alphaValue -= 0.05f;
+                    FadeTimingWindowUI(alphaValue);
+                    if (shrinkerDiameter < 150 && shrinkerDiameter > 125)
+                    {
+                        player.timingGrade = 2;
+                        feedbackText = "Excellent!";
+                    }
+                    else if (shrinkerDiameter < 200 && shrinkerDiameter > 125)
+                    {
+                        player.timingGrade = 1;
+                        feedbackText = "Good!";
+                    }
+                    else
+                    {
+                        player.timingGrade = 0;
+                        feedbackText = "Miss...";
+                    }
                 }
             }
             counter += Time.deltaTime;

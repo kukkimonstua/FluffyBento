@@ -26,9 +26,7 @@ public class MeteorManager : MonoBehaviour
 
     void Start()
     {
-        //offsetFromCentre = Vector3.Distance(playerOrigin.transform.position, meteorOrigin.position);
-        worldRadius = 500.0f;
-        //InvokeRepeating("SpawnMeteor", spawnRate, spawnRate);
+        worldRadius = PlayerController.worldRadius;
     }
 
     void Update()
