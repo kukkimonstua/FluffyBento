@@ -96,10 +96,7 @@ public class TimingWindow : MonoBehaviour
 
         FadeTimingWindowUI(0.0f);
         StartCoroutine(ShowFeedbackText(false));
-
     }
-
-
 
     public void StartTimingWindow(float duration)
     {

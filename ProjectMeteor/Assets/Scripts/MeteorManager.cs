@@ -19,28 +19,22 @@ public class MeteorManager : MonoBehaviour
     [Header("Spawn Settings")]
     public int maxMeteorsOnScreen = 5;
     public float spawnDelay = 5.0f;
-    private float spawnTimer = 0.0f;
-
-    public bool pauseMeteors = false; //for Inspector usage, may not be necessary
-    public static bool meteorsPaused = false;
+    private static float meteorSpawnTimer;
 
     void Start()
     {
+        meteorSpawnTimer = 0.0f;
         worldRadius = PlayerController.worldRadius;
     }
 
     void Update()
     {
-        //Use this if you need to test behaviour related to meteors in the main game
-        //if (pauseMeteors && !meteorsPaused) meteorsPaused = true; //Pauses the meteors        
-        //if (!pauseMeteors && meteorsPaused) meteorsPaused = false; //Unpauses the meteors
-
         fallSpeed = meteorSpeed;
 
-        if (!meteorsPaused)
+        if (PlayerController.playerState == 1)
         {
-            spawnTimer += Time.deltaTime;
-            if (spawnTimer > spawnDelay)
+            meteorSpawnTimer += Time.deltaTime;
+            if (meteorSpawnTimer > spawnDelay)
             {
                 
                 if (GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen)
@@ -53,7 +47,7 @@ public class MeteorManager : MonoBehaviour
 
     void SpawnMeteor()
     {
-        meteorOrigin.Rotate(0.0f, Random.Range(0, 12) * 30.0f, 0.0f);
+        meteorOrigin.Rotate(0.0f, Random.Range(0, 6) * 60.0f, 0.0f);
         spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * worldRadius) + (playerOrigin.transform.up * spawnHeight);
 
         var currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
@@ -67,7 +61,17 @@ public class MeteorManager : MonoBehaviour
         }
 
         Instantiate(meteor, spawnPoint.position, spawnPoint.rotation);
-        spawnTimer = 0.0f;
+        meteorSpawnTimer = 0.0f;
     }
 
+    public static void ResetMeteors()
+    {
+        meteorSpawnTimer = 0.0f;
+        var currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
+        foreach (var meteor in currentMeteors)
+        {
+            Destroy(meteor);
+        }
+        Debug.Log("Meteors Cleared!");
+    }
 }

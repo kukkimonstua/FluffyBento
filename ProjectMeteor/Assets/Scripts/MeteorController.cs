@@ -10,21 +10,40 @@ public class MeteorController : MonoBehaviour
     public bool withinAttackRange;
     public bool isLowest;
 
+    [SerializeField] private GameObject fallMarkerPrefab = null;
+    [SerializeField] private Vector3 fallDirection = Vector3.down;
+    private GameObject fallMarkerInstance = null;
+
     void Start()
     {
         originalColour = transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material;
         isLowest = false;
         withinAttackRange = false;
+
+        if (fallMarkerPrefab != null)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(new Ray(transform.position, fallDirection), out hit))
+            {
+                Vector3 fallPosition = hit.point;
+                fallMarkerInstance = Instantiate(fallMarkerPrefab, fallPosition - 0.05f * fallDirection, Quaternion.identity); // small displacement to avoid z-fighting with the ground
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!MeteorManager.meteorsPaused)
+        if (fallMarkerInstance != null)
+        {
+            fallMarkerInstance.GetComponentInChildren<Light>().intensity = 5.0f + (Mathf.Sin(Time.time * 5.0f) * 2.5f + 2.5f);
+        }
+        if (PlayerController.playerState == 1)
         {
             transform.Translate(Vector3.up * -1 * MeteorManager.fallSpeed * Time.deltaTime);
         }
-        if(isLowest)
+
+        if (isLowest)
         {
             transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = testColour;
         }
@@ -33,5 +52,12 @@ public class MeteorController : MonoBehaviour
             transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = originalColour;
         }
 
+    }
+
+    private void OnDestroy()
+    {
+        if (fallMarkerInstance != null) {
+            Destroy(fallMarkerInstance);
+        }
     }
 }
