@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("PLAYER MOVEMENT SETTINGS")]
     private Rigidbody rb;
     public float moveSpeed = 5.0f;
     public float jumpForce = 10.0f;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2.0f;
 
+    [Header("GLOBAL SETTINGS")]
     public Transform worldOrigin;
     public Transform playerOrigin;
     public static float worldRadius;
@@ -22,23 +24,12 @@ public class PlayerController : MonoBehaviour
     private Vector3 horizonalVelocity;
 
     private bool holdingSword;
-    public GameObject equippedSword;
 
+    [Header("GAME SETTINGS")]
+    public static int playerState; //1 = running, 2 = attacking, 3 = game over
+
+    private Vector3 startingPosition;
     public GameObject newSword;
-
-    public Text promptText;
-    public TextMesh actionText;
-    public Text healthText;
-    public Text scoreText;
-    public Slider meteorLandingSlider;
-    public Text meteorLandingDanger;
-
-    public Text tempEquipText;
-
-    public GameObject timingWindow;
-    public int timingGrade;
-
-    private static int playerState;
 
     private GameObject targetedMeteor;
     private GameObject targetedSword;
@@ -48,32 +39,30 @@ public class PlayerController : MonoBehaviour
 
     private int playerScore;
 
+    private int meteorsDestroyed;
     public static float lowestMeteorPosition;
     public float meteorDeathThreshold = 100.0f;
+
+    [Header("LINKS TO MODEL AND ANIMATIONS")]
+    public GameObject avatarModel;
+    private float avatarModelRotation;
+    public GameObject equippedSword;
     public Animator anim;
-    bool run_left, run_right, idle;
+    private bool run_left, run_right, idle;
+
+    [Header("LINKS TO GUI")]
+    public GameObject timingWindow;
+    public int timingGrade;
+    public GUIController gui;
+    public TextMesh actionText;
 
     void Awake()
     {
         worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
         rb = GetComponent<Rigidbody>();
-        playerState = 1;
+        startingPosition = transform.position;
+        ResetLevel();
 
-        playerHealth = playerMaxHealth;
-        healthText.text = "Health: " + playerHealth;
-        playerScore = 0;
-        scoreText.text = "Score: " + playerScore;
-        meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
-        tempEquipText.text = "Equipped: None";
-
-        holdingSword = false;
-        equippedSword.SetActive(false);
-
-        isGrounded = false;
-        canDoubleJump = false;
-        onWall = false;
-
-        
     }
 
     // Update is called once per frame
@@ -82,7 +71,17 @@ public class PlayerController : MonoBehaviour
         switch (playerState)
         {
             case 3:
+                
                 rb.velocity = new Vector3(0.0f, rb.velocity.y, 0.0f);
+
+                if (Input.GetKeyDown(KeyCode.E) && GUIController.menuUnlocked)
+                {
+                    Debug.Log("Resetting");
+                    MeteorManager.ResetMeteors();
+                    SwordManager.ResetSwords();
+                    ResetLevel();
+                }
+
                 break; //No fall multiplier for a floaty death is totally intentional
 
             case 2:
@@ -92,11 +91,14 @@ public class PlayerController : MonoBehaviour
                     TimingWindow.gotPressed = true;
                 }
                 break;
+
             default:
                 if (Input.GetKeyDown(KeyCode.F))
                 {
+                    //ResetLevel();
                     TakeDamage(1); //USE THIS TO TEST DAMAGE TAKING
                 }
+                AddScore(1);
 
                 TrackLowestMeteor();
 
@@ -108,8 +110,9 @@ public class PlayerController : MonoBehaviour
 
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
-                horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 6;
-                horizonalVelocity = Vector3.ClampMagnitude(horizonalVelocity, moveSpeed * 2) * 0.9f;
+                if (onWall) horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 24;
+                else horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 8;
+                horizonalVelocity = Vector3.ClampMagnitude(horizonalVelocity, moveSpeed * 2) * 0.8f;
 
                 if (Input.GetButtonDown("Jump"))
                 {
@@ -118,8 +121,8 @@ public class PlayerController : MonoBehaviour
                         if (onWall)
                         {
                             Debug.Log("WALL JUMP");
-                            rb.velocity = Vector3.up * jumpForce;
-                            horizonalVelocity *= -1.0f;
+                            rb.velocity = Vector3.up * jumpForce * 1.0f;
+                            horizonalVelocity *= -2.0f;
                         }
                         else if (canDoubleJump)
                         {
@@ -160,14 +163,14 @@ public class PlayerController : MonoBehaviour
                         if (targetedSword != null) //if you're near a sword
                         {
                             PickUpSword(targetedSword);
-                            promptText.gameObject.SetActive(false);
+                            actionText.gameObject.SetActive(false);
                         }
                     }
                 }
 
                 if(Input.GetButtonDown("Fire1") && holdingSword && targetedMeteor != null)
                 {
-                    promptText.gameObject.SetActive(false);
+                    gui.TogglePrompt(false, "");
                     StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
                 }
 
@@ -177,11 +180,31 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    private void ResetLevel()
+    {
+        playerState = 1;
+        holdingSword = false;
+        equippedSword.SetActive(false);
+        isGrounded = false;
+        canDoubleJump = false;
+        onWall = false;
+
+        playerHealth = playerMaxHealth;
+        playerScore = 0;
+        meteorsDestroyed = 0;
+        gui.ResetGUI();
+        gui.UpdateHealthUI(playerHealth);
+        gui.UpdateScoreUI(playerScore);
+        gui.UpdateMeteorsDestroyed(meteorsDestroyed);
+
+        transform.position = startingPosition;
+        avatarModelRotation = 0.0f;
+        CameraController.SwitchToMainCamera();
+    }
+
     private void TrackLowestMeteor()
     {
         lowestMeteorPosition = 300.0f; //the current height at which meteors spawn
-        float sliderRange = lowestMeteorPosition - meteorDeathThreshold;
-
         GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
         foreach (GameObject meteor in meteors)
         {
@@ -196,12 +219,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
-        meteorLandingSlider.value = (lowestMeteorPosition - meteorDeathThreshold) / sliderRange;
-        if (lowestMeteorPosition / 2 < meteorDeathThreshold)
-        {
-            meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 5.0f) * 0.5f + 0.5f);
-        }
+        gui.UpdateMeteorLandingUI(lowestMeteorPosition, meteorDeathThreshold, 300.0f - meteorDeathThreshold);
         if (lowestMeteorPosition < meteorDeathThreshold)
         {
             GameOver(); //From a meteor landing
@@ -242,14 +260,13 @@ public class PlayerController : MonoBehaviour
                 targetedMeteor = other.gameObject;
                 targetedMeteor.GetComponent<MeteorController>().withinAttackRange = true;
                 if (!holdingSword)
-                {
-                    promptText.text = "You need a sword!";                    
+                {                    
+                    gui.TogglePrompt(true, "You need a sword!");
                 }
                 else
                 {
-                    promptText.text = "CTRL to Attack!";
+                    gui.TogglePrompt(true, "CTRL to Attack!");
                 }
-                promptText.gameObject.SetActive(true);
             }
 
             if (other.gameObject.CompareTag("Sword"))
@@ -269,7 +286,7 @@ public class PlayerController : MonoBehaviour
             {
                 other.GetComponent<MeteorController>().withinAttackRange = false;
                 targetedMeteor = null;
-                promptText.gameObject.SetActive(false);
+                gui.TogglePrompt(false, "");
             }
             if (other.gameObject.CompareTag("Sword"))
             {
@@ -287,7 +304,7 @@ public class PlayerController : MonoBehaviour
             yield break; ///exit if this is still running
         }
         playerState = 2;
-        MeteorManager.meteorsPaused = true;
+        gui.ScaleBlackBars(50.0f, 0.5f);
         
         //Get the current position of the object to be moved
         Vector3 startPos = fromPosition.position;
@@ -305,17 +322,20 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
-        MeteorManager.meteorsPaused = false;
         playerState = 1;
 
         holdingSword = false;
         equippedSword.SetActive(false);
-        tempEquipText.text = "Equipped: None";
+        gui.UpdateEquipmentUI("Equipped: None");
+
+        gui.ScaleBlackBars(0.0f, 0.5f);
 
         CameraController.SwitchToMainCamera();
 
         if (timingGrade > 0)
         {
+            meteorsDestroyed++;
+            gui.UpdateMeteorsDestroyed(meteorsDestroyed);
             Destroy(meteor);
         }
         else
@@ -329,7 +349,7 @@ public class PlayerController : MonoBehaviour
         actionText.gameObject.SetActive(false);
         holdingSword = true;
         equippedSword.SetActive(true);
-        tempEquipText.text = "Equipped: Sword";
+        gui.UpdateEquipmentUI("Equipped: Sword");
         Destroy(pickedUpSword);
     }
 
@@ -337,14 +357,14 @@ public class PlayerController : MonoBehaviour
     {
         holdingSword = false;
         equippedSword.SetActive(false);
-        tempEquipText.text = "Equipped: None";
+        gui.UpdateEquipmentUI("Equipped: None");
         Instantiate(swordType, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
     }
 
     public void TakeDamage(int amount)
     {
         playerHealth -= amount;
-        healthText.text = "Health: " + playerHealth;
+        gui.UpdateHealthUI(playerHealth);
 
         if (playerHealth <= 0)
         {
@@ -354,25 +374,29 @@ public class PlayerController : MonoBehaviour
     public void AddScore(int amount)
     {
         playerScore += amount;
-        scoreText.text = "Score: " + playerScore;
+        gui.UpdateScoreUI(playerScore);
     }
 
     private void GameOver()
     {
-        MeteorManager.meteorsPaused = true;
         playerState = 3;
         CameraController.SwitchToEndingCamera();
+        gui.ShowGameOverUI(3.0f, 2.0f); //This ends with unlocking the menu        
     }
     private void UpdateAnimations()
     {
+        avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
+
         if (Input.GetAxis("Horizontal") < 0)
         {
+            if (avatarModelRotation < 90.0f) avatarModelRotation += 15.0f;
             run_left = true;
             run_right = false;
             idle = false;
         }
         else if (Input.GetAxis("Horizontal") > 0)
         {
+            if (avatarModelRotation > -90.0f) avatarModelRotation -= 15.0f;
             run_left = false;
             run_right = true;
             idle = false;
@@ -387,5 +411,5 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("run_left", run_left);
         anim.SetBool("run_right", run_right);
         anim.SetBool("idle", idle);
-    }
+    }    
 }

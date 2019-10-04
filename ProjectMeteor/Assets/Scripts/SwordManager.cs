@@ -11,8 +11,8 @@ public class SwordManager : MonoBehaviour
 
     [Header("Spawn Settings")]
     public int maxSwordsOnScreen = 5;
-    public float spawnRate = 5.0f;
-    private float spawnDelay = 1.0f;
+    public float spawnDelay = 5.0f;
+    private static float swordSpawnTimer;
 
     public Transform swordOrigin;
     public Transform spawnPoint;
@@ -23,18 +23,23 @@ public class SwordManager : MonoBehaviour
 
     void Start()
     {
+        swordSpawnTimer = 0.0f;
         worldRadius = PlayerController.worldRadius;
     }
 
     void Update()
     {
-        spawnDelay += Time.deltaTime;
-        if (spawnDelay > spawnRate)
+        if (PlayerController.playerState == 1)
         {
-            spawnDelay = 0.0f;
-            SpawnSword();
-        }
-        
+            swordSpawnTimer += Time.deltaTime;
+            if (swordSpawnTimer > spawnDelay)
+            {
+                if (GameObject.FindGameObjectsWithTag("Sword").Length < maxSwordsOnScreen)
+                {
+                    SpawnSword();
+                }
+            }
+        }            
     }
 
     void SpawnSword()
@@ -44,6 +49,7 @@ public class SwordManager : MonoBehaviour
 
 
         Instantiate(sword, spawnPoint.position, spawnPoint.rotation);
+        swordSpawnTimer = 0.0f;
 
         // If the player has no health left...
         //if (playerHealth.currentHealth <= 0f)
@@ -51,7 +57,16 @@ public class SwordManager : MonoBehaviour
         // ... exit the function.
         //  return;
         //}
-
+    }
+    public static void ResetSwords()
+    {
+        swordSpawnTimer = 0.0f;
+        var currentSwords = GameObject.FindGameObjectsWithTag("Sword");
+        foreach (var sword in currentSwords)
+        {
+            Destroy(sword);
+        }
+        Debug.Log("Swords Cleared!");
     }
 
 }
