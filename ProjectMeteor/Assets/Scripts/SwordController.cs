@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class SwordController : MonoBehaviour
 {
+    private BoxCollider bc;
+    private Rigidbody rb;
 
-    private float fallSpeed;
     // Start is called before the first frame update
     void Start()
     {
-        fallSpeed = 1.0f;
+        bc = GetComponent<BoxCollider>();
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -17,6 +19,15 @@ public class SwordController : MonoBehaviour
     {
         //transform.position += Vector3.up * Physics2D.gravity.y * Time.deltaTime * fallSpeed;
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            Destroy(bc);
+            Destroy(rb);
+        }
     }
 
 }

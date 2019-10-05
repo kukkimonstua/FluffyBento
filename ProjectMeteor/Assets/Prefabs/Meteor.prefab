@@ -57,6 +57,9 @@ MonoBehaviour:
   testColour: {fileID: 2100000, guid: 80eed75c1af89694493ce9eb8ca4fe46, type: 2}
   withinAttackRange: 0
   isLowest: 0
+  fallMarkerPrefab: {fileID: 7612320035461933807, guid: 6089a1583f129894dbb3952e127b6329,
+    type: 3}
+  fallDirection: {x: 0, y: -1, z: 0}
 --- !u!65 &3292464420586295039
 BoxCollider:
   m_ObjectHideFlags: 0
