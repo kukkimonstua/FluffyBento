@@ -56,13 +56,17 @@ public class PlayerController : MonoBehaviour
     public GUIController gui;
     public TextMesh actionText;
 
+    private bool isDashing;
+    private CapsuleCollider myCollider;
+    public float horizontalDrag = 0.8f;
+
     void Awake()
     {
         worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
         rb = GetComponent<Rigidbody>();
+        myCollider = GetComponent<CapsuleCollider>();
         startingPosition = transform.position;
         ResetLevel();
-
     }
 
     // Update is called once per frame
@@ -76,7 +80,6 @@ public class PlayerController : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.E) && GUIController.menuUnlocked)
                 {
-                    Debug.Log("Resetting");
                     MeteorManager.ResetMeteors();
                     SwordManager.ResetSwords();
                     ResetLevel();
@@ -110,9 +113,9 @@ public class PlayerController : MonoBehaviour
 
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
-                if (onWall) horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 24;
+                if (onWall || isDashing) horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 40;
                 else horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 8;
-                horizonalVelocity = Vector3.ClampMagnitude(horizonalVelocity, moveSpeed * 2) * 0.8f;
+                horizonalVelocity = Vector3.ClampMagnitude(horizonalVelocity, moveSpeed * 2) * horizontalDrag;
 
                 if (Input.GetButtonDown("Jump"))
                 {
@@ -135,7 +138,11 @@ public class PlayerController : MonoBehaviour
                         rb.velocity = Vector3.up * jumpForce;
                     }
                 }
-                           
+                if (Input.GetKeyDown(KeyCode.Z) && isGrounded && !isDashing && Input.GetAxis("Horizontal") != 0)
+                {
+                    StartCoroutine(StartDashing(0.5f, Input.GetAxis("Horizontal")));
+                }
+
                 rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
                 if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
                 {
@@ -295,7 +302,37 @@ public class PlayerController : MonoBehaviour
             }
         }        
     }
+    private IEnumerator StartDashing(float duration, float direction)
+    {
+        isDashing = true;
+        myCollider.height /= 2;
+        myCollider.center = new Vector3(myCollider.center.x, myCollider.center.y - (myCollider.height / 2), myCollider.center.z);
 
+        if (direction > 0) horizonalVelocity += new Vector3(-moveSpeed / 2, 0.0f, 0.0f);
+        if (direction < 0) horizonalVelocity += new Vector3(moveSpeed / 2, 0.0f, 0.0f);
+
+        //horizonalVelocity *= 4;
+        float currentDrag = horizontalDrag;
+        horizontalDrag = 0.9f;
+        anim.SetBool("dashing", true);
+
+        float counter = 0;
+        while (counter < duration)
+        {
+            counter += Time.deltaTime;
+            if (counter > duration / 2 && horizontalDrag >= 0.9f)
+            {
+                horizontalDrag = currentDrag / 2;
+            }
+            yield return null;
+        }
+        anim.SetBool("dashing", false);
+        horizontalDrag = currentDrag;
+
+        myCollider.center = new Vector3(myCollider.center.x, myCollider.center.y + (myCollider.height / 2), myCollider.center.z);
+        myCollider.height *= 2;
+        isDashing = false;
+    }
     private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
     {
         //Make sure there is only one instance of this function running

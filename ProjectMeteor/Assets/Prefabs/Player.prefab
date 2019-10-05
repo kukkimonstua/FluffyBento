@@ -154,7 +154,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3376312176963667626}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 24215936bfd4a6f499e1b1c162edddfb, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -189,26 +189,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520419b3360e5d644a2256ddd89e84d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 50
-  jumpForce: 30
-  fallMultiplier: 10
-  lowJumpMultiplier: 20
+  moveSpeed: 80
+  jumpForce: 20
+  fallMultiplier: 6
+  lowJumpMultiplier: 12
   worldOrigin: {fileID: 0}
   playerOrigin: {fileID: 0}
   isGrounded: 0
   canDoubleJump: 0
   onWall: 0
-  equippedSword: {fileID: 8258192547470250096}
   newSword: {fileID: 998694544303584942, guid: 1cb087e0b53550a4f93102376f93f740, type: 3}
-  promptText: {fileID: 0}
-  healthText: {fileID: 0}
-  scoreText: {fileID: 0}
-  meteorLandingSlider: {fileID: 0}
-  timingWindow: {fileID: 0}
-  timingGrade: 0
   playerMaxHealth: 3
   meteorDeathThreshold: 100
+  avatarModel: {fileID: 6814633930886798427}
+  equippedSword: {fileID: 8258192547470250096}
   anim: {fileID: 867773886117812824}
+  timingWindow: {fileID: 0}
+  timingGrade: 0
+  gui: {fileID: 0}
+  actionText: {fileID: 6432972993810515294}
 --- !u!1 &3376312176979147856
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,7 +395,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5887822233044564847
 Transform:
   m_ObjectHideFlags: 0
@@ -617,21 +616,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2455775819622752115, guid: 3e033a65f49fab34f94e145a39423d1c,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.4725
-      objectReference: {fileID: 0}
-    - target: {fileID: 2455775819622752115, guid: 3e033a65f49fab34f94e145a39423d1c,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.4725
-      objectReference: {fileID: 0}
-    - target: {fileID: 2455775819622752115, guid: 3e033a65f49fab34f94e145a39423d1c,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.4725
-      objectReference: {fileID: 0}
     - target: {fileID: 6041344901163035891, guid: 3e033a65f49fab34f94e145a39423d1c,
         type: 3}
       propertyPath: m_LocalScale.y
@@ -641,14 +625,15 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 6041344901163468733, guid: 3e033a65f49fab34f94e145a39423d1c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e033a65f49fab34f94e145a39423d1c, type: 3}
+--- !u!1 &6814633930886798427 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8142185685630866087, guid: 3e033a65f49fab34f94e145a39423d1c,
+    type: 3}
+  m_PrefabInstance: {fileID: 3345237505348243196}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &898469024567071119 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2455775819622752115, guid: 3e033a65f49fab34f94e145a39423d1c,
