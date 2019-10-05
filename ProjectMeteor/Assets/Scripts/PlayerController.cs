@@ -70,10 +70,19 @@ public class PlayerController : MonoBehaviour
         startingPosition = transform.position;
         ResetLevel();
     }
-
     // Update is called once per frame
+    void OnGUI()
+    {
+        Event e = Event.current;
+        if (e.isKey)
+        {
+            Debug.Log("Detected key code: " + e.keyCode);
+        }
+    }
     void Update()
     {
+        
+
         switch (playerState)
         {
             case 3:
@@ -91,7 +100,7 @@ public class PlayerController : MonoBehaviour
 
             case 2:
                 rb.velocity = Vector3.up * 0;
-                if (Input.GetButtonDown("Fire1") && !TimingWindow.gotPressed)
+                if (Input.GetButtonDown("buttonX") && !TimingWindow.gotPressed)
                 {
                     TimingWindow.gotPressed = true;
                 }
@@ -134,7 +143,7 @@ public class PlayerController : MonoBehaviour
                         rb.velocity = Vector3.up * jumpForce;
                     }
                 }
-                if(Input.GetKeyDown(KeyCode.Z))
+                if(Input.GetButtonDown("buttonB"))
                 {
                     if(isGrounded)
                     {
@@ -167,7 +176,7 @@ public class PlayerController : MonoBehaviour
                     transform.position = lowestPos;
                 }
                 
-                if (Input.GetButtonDown("Fire2"))
+                if (Input.GetButtonDown("buttonY"))
                 {
                     if (holdingSword)
                     {
@@ -193,7 +202,7 @@ public class PlayerController : MonoBehaviour
                         gui.TogglePrompt(true, "CTRL to Attack!");
                     }
                 }
-                if(Input.GetButtonDown("Fire1") && holdingSword && targetedMeteor != null)
+                if(Input.GetButtonDown("buttonX") && holdingSword && targetedMeteor != null)
                 {
                     gui.TogglePrompt(false, "");
                     StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
