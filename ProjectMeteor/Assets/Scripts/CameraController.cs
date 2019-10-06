@@ -59,8 +59,10 @@ public class CameraController : MonoBehaviour
                 transform.position = playerOrigin.position + (playerOrigin.transform.forward * zoom) + (playerOrigin.transform.up * zoom / 2.5f);
                 transform.rotation = playerOrigin.rotation;
 
-                tiltCameraValue = Input.GetAxis("Vertical") * -30.0f;
-                if (Input.GetAxis("Vertical") < 0) transform.Translate(0.0f, Input.GetAxis("Vertical") * -10.0f, 0.0f);
+                tiltCameraValue += Input.GetAxis("Vertical") * -3.0f;
+                tiltCameraValue = Mathf.Clamp(tiltCameraValue, -30.0f, 30.0f);
+                tiltCameraValue *= 0.9f;
+                if (tiltCameraValue > 0) transform.Translate(0.0f, tiltCameraValue / 3.0f, 0.0f);
 
                 transform.Rotate(5.0f - zoom / 5 + tiltCameraValue, 180.0f, 0, Space.Self);
                 break;
