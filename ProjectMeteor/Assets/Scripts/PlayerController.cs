@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
 
     public bool isGrounded;
     public bool canDoubleJump;
-    public bool onWall;
+    public float touchedWallDirection;
     private Vector3 horizonalVelocity;
 
     private bool holdingSword;
@@ -59,6 +59,8 @@ public class PlayerController : MonoBehaviour
     private bool isDashing;
     private CapsuleCollider myCollider;
     public float horizontalDrag = 0.8f;
+
+    private int previousWallJumpDirection;
 
     void Awake()
     {
@@ -113,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
-                if (onWall || isDashing) horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 40;
+                if (touchedWallDirection != 0 || isDashing) horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 40;
                 else horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 8;
                 horizonalVelocity = Vector3.ClampMagnitude(horizonalVelocity, moveSpeed * 2) * horizontalDrag;
 
@@ -121,13 +123,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (!isGrounded)
                     {
-                        if (onWall)
-                        {
-                            Debug.Log("WALL JUMP");
-                            rb.velocity = Vector3.up * jumpForce * 1.0f;
-                            horizonalVelocity *= -2.0f;
-                        }
-                        else if (canDoubleJump)
+                        if (canDoubleJump)
                         {
                             canDoubleJump = false;
                             rb.velocity = Vector3.up * jumpForce;
@@ -138,9 +134,21 @@ public class PlayerController : MonoBehaviour
                         rb.velocity = Vector3.up * jumpForce;
                     }
                 }
-                if (Input.GetKeyDown(KeyCode.Z) && isGrounded && !isDashing && Input.GetAxis("Horizontal") != 0)
+                if(Input.GetKeyDown(KeyCode.Z))
                 {
-                    StartCoroutine(StartDashing(0.5f, Input.GetAxis("Horizontal")));
+                    if(isGrounded)
+                    {
+                        if (!isDashing && Input.GetAxis("Horizontal") != 0)
+                        {
+                            Debug.Log("DASH");
+                            StartCoroutine(StartDashing(0.5f, Input.GetAxis("Horizontal")));
+                        }
+                    }
+                    else if (touchedWallDirection != 0)
+                    {
+                        Debug.Log("WALL JUMP");
+                        WallJump(touchedWallDirection);
+                    }
                 }
 
                 rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
@@ -174,7 +182,17 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-
+                if (targetedMeteor != null)
+                {
+                    if (!holdingSword)
+                    {
+                        gui.TogglePrompt(true, "You need a sword!");
+                    }
+                    else
+                    {
+                        gui.TogglePrompt(true, "CTRL to Attack!");
+                    }
+                }
                 if(Input.GetButtonDown("Fire1") && holdingSword && targetedMeteor != null)
                 {
                     gui.TogglePrompt(false, "");
@@ -194,7 +212,7 @@ public class PlayerController : MonoBehaviour
         equippedSword.SetActive(false);
         isGrounded = false;
         canDoubleJump = false;
-        onWall = false;
+        touchedWallDirection = 0;
 
         playerHealth = playerMaxHealth;
         playerScore = 0;
@@ -240,10 +258,12 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;
             canDoubleJump = true;
+            previousWallJumpDirection = 0;
         }
         if (collision.gameObject.CompareTag("Wall"))
         {
-            onWall = true;
+            //Debug.Log(collision.GetContact(0).normal.x + collision.GetContact(0).normal.z);
+            touchedWallDirection = collision.GetContact(0).normal.x + collision.GetContact(0).normal.z;
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -254,7 +274,7 @@ public class PlayerController : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Wall"))
         {
-            onWall = false;
+            touchedWallDirection = 0;
         }
     }
 
@@ -265,15 +285,7 @@ public class PlayerController : MonoBehaviour
             if (other.gameObject.CompareTag("Meteor"))
             {
                 targetedMeteor = other.gameObject;
-                targetedMeteor.GetComponent<MeteorController>().withinAttackRange = true;
-                if (!holdingSword)
-                {                    
-                    gui.TogglePrompt(true, "You need a sword!");
-                }
-                else
-                {
-                    gui.TogglePrompt(true, "CTRL to Attack!");
-                }
+                targetedMeteor.GetComponent<MeteorController>().withinAttackRange = true;                
             }
 
             if (other.gameObject.CompareTag("Sword"))
@@ -288,7 +300,6 @@ public class PlayerController : MonoBehaviour
     {
         if (playerState == 1)
         {
-
             if (other.gameObject.CompareTag("Meteor"))
             {
                 other.GetComponent<MeteorController>().withinAttackRange = false;
@@ -333,6 +344,37 @@ public class PlayerController : MonoBehaviour
         myCollider.height *= 2;
         isDashing = false;
     }
+    private void WallJump(float wallDirection)
+    {
+        float jumpMultiplier = 2.0f;
+        if (wallDirection > 0)
+        {
+            if (previousWallJumpDirection > 0)
+            {
+                jumpMultiplier = 0.5f;
+                Debug.Log("Punish");
+            }
+            else
+            {
+                previousWallJumpDirection = 1;
+            }
+        }
+        if (wallDirection < 0)
+        {
+            if (previousWallJumpDirection < 0)
+            {
+                Debug.Log("Punish");
+                jumpMultiplier = 0.5f;
+            }
+            else
+            {
+                previousWallJumpDirection = -1;
+            }
+        }
+        rb.velocity = Vector3.up * jumpForce * jumpMultiplier;
+        horizonalVelocity *= -2.0f;
+    }
+
     private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
     {
         //Make sure there is only one instance of this function running
