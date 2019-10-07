@@ -313,7 +313,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'GAME OVER
 
-    Press E to try again!'
+    Press (X) to try again!'
 --- !u!1 &7975215422240278061
 GameObject:
   m_ObjectHideFlags: 0

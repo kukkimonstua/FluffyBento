@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     public bool canDoubleJump;
     public float touchedWallDirection;
-    private Vector3 horizonalVelocity;
+    private Vector3 circularVelocity;
 
     private bool holdingSword;
 
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     private float avatarModelRotation;
     public GameObject equippedSword;
     public Animator anim;
-    private bool run_left, run_right, idle;
+    private bool running, dashing;
 
     [Header("LINKS TO GUI")]
     public GameObject timingWindow;
@@ -70,26 +70,15 @@ public class PlayerController : MonoBehaviour
         startingPosition = transform.position;
         ResetLevel();
     }
-    // Update is called once per frame
-    void OnGUI()
-    {
-        Event e = Event.current;
-        if (e.isKey)
-        {
-            Debug.Log("Detected key code: " + e.keyCode);
-        }
-    }
     void Update()
     {
-        
-
         switch (playerState)
         {
             case 3:
                 
                 rb.velocity = new Vector3(0.0f, rb.velocity.y, 0.0f);
 
-                if (Input.GetKeyDown(KeyCode.E) && GUIController.menuUnlocked)
+                if (Input.GetButtonDown("buttonX") && GUIController.menuUnlocked)
                 {
                     MeteorManager.ResetMeteors();
                     SwordManager.ResetSwords();
@@ -112,7 +101,6 @@ public class PlayerController : MonoBehaviour
                     //ResetLevel();
                     TakeDamage(1); //USE THIS TO TEST DAMAGE TAKING
                 }
-                AddScore(1);
 
                 TrackLowestMeteor();
 
@@ -124,9 +112,9 @@ public class PlayerController : MonoBehaviour
 
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
-                if (touchedWallDirection != 0 || isDashing) horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 40;
-                else horizonalVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 8;
-                horizonalVelocity = Vector3.ClampMagnitude(horizonalVelocity, moveSpeed * 2) * horizontalDrag;
+                if (touchedWallDirection != 0 || isDashing) circularVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 40;
+                else circularVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 8;
+                circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed * 2) * horizontalDrag;
 
                 if (Input.GetButtonDown("Jump"))
                 {
@@ -149,13 +137,11 @@ public class PlayerController : MonoBehaviour
                     {
                         if (!isDashing && Input.GetAxis("Horizontal") != 0)
                         {
-                            Debug.Log("DASH");
-                            StartCoroutine(StartDashing(0.5f, Input.GetAxis("Horizontal")));
+                            StartCoroutine(StartDashing(0.3f));
                         }
                     }
                     else if (touchedWallDirection != 0)
                     {
-                        Debug.Log("WALL JUMP");
                         WallJump(touchedWallDirection);
                     }
                 }
@@ -166,7 +152,7 @@ public class PlayerController : MonoBehaviour
                     rb.velocity += Vector3.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
                 }
 
-                rb.velocity = new Vector3(horizonalVelocity.x, rb.velocity.y, horizonalVelocity.z);
+                rb.velocity = new Vector3(circularVelocity.x, rb.velocity.y, circularVelocity.z);
 
                 var lowestPos = transform.position;
                 lowestPos.y = -0.8f;
@@ -199,7 +185,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        gui.TogglePrompt(true, "CTRL to Attack!");
+                        gui.TogglePrompt(true, "(X)\nAttack Meteor");
                     }
                 }
                 if(Input.GetButtonDown("buttonX") && holdingSword && targetedMeteor != null)
@@ -226,6 +212,7 @@ public class PlayerController : MonoBehaviour
         playerHealth = playerMaxHealth;
         playerScore = 0;
         meteorsDestroyed = 0;
+        actionText.gameObject.SetActive(false);
         gui.ResetGUI();
         gui.UpdateHealthUI(playerHealth);
         gui.UpdateScoreUI(playerScore);
@@ -322,31 +309,30 @@ public class PlayerController : MonoBehaviour
             }
         }        
     }
-    private IEnumerator StartDashing(float duration, float direction)
+    private IEnumerator StartDashing(float duration)
     {
         isDashing = true;
         myCollider.height /= 2;
         myCollider.center = new Vector3(myCollider.center.x, myCollider.center.y - (myCollider.height / 2), myCollider.center.z);
 
-        if (direction > 0) horizonalVelocity += new Vector3(-moveSpeed / 2, 0.0f, 0.0f);
-        if (direction < 0) horizonalVelocity += new Vector3(moveSpeed / 2, 0.0f, 0.0f);
+        circularVelocity = Vector3.ClampMagnitude(circularVelocity * 5.0f, moveSpeed);
 
         //horizonalVelocity *= 4;
         float currentDrag = horizontalDrag;
         horizontalDrag = 0.9f;
-        anim.SetBool("dashing", true);
-
+        dashing = true;
+        
         float counter = 0;
         while (counter < duration)
         {
             counter += Time.deltaTime;
-            if (counter > duration / 2 && horizontalDrag >= 0.9f)
+            if (counter * 1.5f > duration && horizontalDrag >= 0.9f)
             {
                 horizontalDrag = currentDrag / 2;
             }
             yield return null;
         }
-        anim.SetBool("dashing", false);
+        dashing = false;
         horizontalDrag = currentDrag;
 
         myCollider.center = new Vector3(myCollider.center.x, myCollider.center.y + (myCollider.height / 2), myCollider.center.z);
@@ -355,13 +341,12 @@ public class PlayerController : MonoBehaviour
     }
     private void WallJump(float wallDirection)
     {
-        float jumpMultiplier = 2.0f;
+        float jumpMultiplier = 1.8f;
         if (wallDirection > 0)
         {
             if (previousWallJumpDirection > 0)
             {
                 jumpMultiplier = 0.5f;
-                Debug.Log("Punish");
             }
             else
             {
@@ -372,7 +357,6 @@ public class PlayerController : MonoBehaviour
         {
             if (previousWallJumpDirection < 0)
             {
-                Debug.Log("Punish");
                 jumpMultiplier = 0.5f;
             }
             else
@@ -381,7 +365,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         rb.velocity = Vector3.up * jumpForce * jumpMultiplier;
-        horizonalVelocity *= -2.0f;
+        circularVelocity *= -2.0f;
     }
 
     private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
@@ -414,7 +398,7 @@ public class PlayerController : MonoBehaviour
 
         holdingSword = false;
         equippedSword.SetActive(false);
-        gui.UpdateEquipmentUI("Equipped: None");
+        gui.UpdateEquipmentUI("EQUIP: -");
 
         gui.ScaleBlackBars(0.0f, 0.5f);
 
@@ -437,7 +421,7 @@ public class PlayerController : MonoBehaviour
         actionText.gameObject.SetActive(false);
         holdingSword = true;
         equippedSword.SetActive(true);
-        gui.UpdateEquipmentUI("Equipped: Sword");
+        gui.UpdateEquipmentUI("EQUIP: Sword");
         Destroy(pickedUpSword);
     }
 
@@ -445,7 +429,7 @@ public class PlayerController : MonoBehaviour
     {
         holdingSword = false;
         equippedSword.SetActive(false);
-        gui.UpdateEquipmentUI("Equipped: None");
+        gui.UpdateEquipmentUI("EQUIP: -");
         Instantiate(swordType, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
     }
 
@@ -469,6 +453,8 @@ public class PlayerController : MonoBehaviour
     {
         playerState = 3;
         CameraController.SwitchToEndingCamera();
+        actionText.gameObject.SetActive(false);
+        gui.TogglePrompt(false, "");
         gui.ShowGameOverUI(3.0f, 2.0f); //This ends with unlocking the menu        
     }
     private void UpdateAnimations()
@@ -478,26 +464,18 @@ public class PlayerController : MonoBehaviour
         if (Input.GetAxis("Horizontal") < 0)
         {
             if (avatarModelRotation < 90.0f) avatarModelRotation += 15.0f;
-            run_left = true;
-            run_right = false;
-            idle = false;
+            running = true;
         }
         else if (Input.GetAxis("Horizontal") > 0)
         {
             if (avatarModelRotation > -90.0f) avatarModelRotation -= 15.0f;
-            run_left = false;
-            run_right = true;
-            idle = false;
+            running = true;
         }
         else
         {
-            run_left = false;
-            run_right = false;
-            idle = true;
+            running = false;
         }
-
-        anim.SetBool("run_left", run_left);
-        anim.SetBool("run_right", run_right);
-        anim.SetBool("idle", idle);
-    }    
+        anim.SetBool("running", running);
+        anim.SetBool("dashing", dashing);
+    }
 }

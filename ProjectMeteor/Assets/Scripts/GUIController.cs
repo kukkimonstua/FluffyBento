@@ -24,9 +24,21 @@ public class GUIController : MonoBehaviour
 
     public Text tempEquipText; //Replace with icon eventually
 
-    float minutes = 0;
-    float seconds = 0;
-    float milliseconds = 0;    
+    float minutes;
+    float seconds;
+    float milliseconds;    
+
+    void ResetTimer()
+    {
+        minutes = 0;
+        seconds = 0;
+        milliseconds = 0;
+    }
+
+    void Start()
+    {
+        ResetTimer();
+    }
 
     void Update()
     {
@@ -56,7 +68,7 @@ public class GUIController : MonoBehaviour
     public void ResetGUI()
     {
         menuUnlocked = false;
-        
+        TogglePrompt(false, "");
         meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
 
         gameOverMenu.SetActive(true); //May be redundant in the future
@@ -65,7 +77,8 @@ public class GUIController : MonoBehaviour
         fullScreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
         StartCoroutine(FadeUI(fullScreenBlack, 0.0f, 3.0f));
 
-        tempEquipText.text = "Equipped: None";
+        tempEquipText.text = "EQUIP: -";
+        ResetTimer();
 
     }
 
