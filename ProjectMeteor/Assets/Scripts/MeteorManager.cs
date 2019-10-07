@@ -31,16 +31,12 @@ public class MeteorManager : MonoBehaviour
     {
         fallSpeed = meteorSpeed;
 
-        if (PlayerController.playerState == 1)
+        if (PlayerController.playerState == 1 && GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen)
         {
             meteorSpawnTimer += Time.deltaTime;
             if (meteorSpawnTimer > spawnDelay)
             {
-                
-                if (GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen)
-                {
-                    SpawnMeteor();
-                }
+                SpawnMeteor();
             }
         }
     }
