@@ -8,6 +8,8 @@ public class CameraController : MonoBehaviour
     public Transform playerOrigin;
     public float zoomLevel = 10.0f;
     private float zoom;
+    private float maxZoomLevel;
+    private Vector3 cameraHeight;
 
     public static int cameraState;
     public Transform attackCameraPosition;
@@ -49,18 +51,24 @@ public class CameraController : MonoBehaviour
                 break;
 
             default: //or 1
-                
-                zoom = zoomLevel + Mathf.Abs(PlayerController.lowestMeteorPosition - 300.0f) / 3;
-                if (zoom > 50.0f) zoom = 50.0f;
+                maxZoomLevel = zoomLevel * 1.5f;
+                zoom = zoomLevel + Mathf.Abs(PlayerController.lowestMeteorPosition - 300.0f) / 30;
+                if (zoom > maxZoomLevel) zoom = maxZoomLevel;
+                cameraHeight = playerOrigin.transform.up * zoom / 2.5f;
 
                 //Player on high platforms
-                if (player.position.y > 5) zoom += (player.position.y - 5.0f) * 3 / 2; //This is adjustable
+                if (player.position.y > 5)
+                {
+                    zoom += (player.position.y - 5.0f) / 2; //This is adjustable
+                    cameraHeight += new Vector3(0.0f, player.position.y - 5.0f, 0.0f);
+                }
 
-                transform.position = playerOrigin.position + (playerOrigin.transform.forward * zoom) + (playerOrigin.transform.up * zoom / 2.5f);
+
+                transform.position = playerOrigin.position + (playerOrigin.transform.forward * zoom) + cameraHeight;
                 transform.rotation = playerOrigin.rotation;
 
-                tiltCameraValue += Input.GetAxis("Vertical") * -5.0f;
-                tiltCameraValue = Mathf.Clamp(tiltCameraValue, -50.0f, 50.0f);
+                tiltCameraValue += Input.GetAxis("Vertical") * -4.0f;
+                tiltCameraValue = Mathf.Clamp(tiltCameraValue, -40.0f, 40.0f);
                 tiltCameraValue *= 0.9f;
                 if (tiltCameraValue > 0) transform.Translate(0.0f, tiltCameraValue / 3.0f, 0.0f);
 

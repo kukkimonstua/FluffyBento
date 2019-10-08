@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour
 
                 TrackLowestMeteor();
 
-                //worldOrigin.Rotate(0.0f, Input.GetAxis("Horizontal") * -moveSpeed / 100, 0.0f);
+                //worldOrigin.Rotate(0.0f, Input.GetAxisRaw("Horizontal") * -moveSpeed / 100, 0.0f);
                 worldOrigin.LookAt(new Vector3(transform.position.x, worldOrigin.position.y, transform.position.z));
                 transform.rotation = playerOrigin.rotation = worldOrigin.rotation;
 
@@ -112,15 +112,25 @@ public class PlayerController : MonoBehaviour
 
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
-                if (touchedWallDirection != 0 || isDashing) circularVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 40;
-                else circularVelocity -= transform.right * Input.GetAxis("Horizontal") * moveSpeed / 8;
-                circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed * 2) * horizontalDrag;
+                var moveDrag = horizontalDrag;
+                if(isGrounded && Input.GetAxisRaw("Horizontal") == 0 && !dashing)
+                {
+                    moveDrag /= 4;
+                }
+
+                if (touchedWallDirection != 0 || isDashing) circularVelocity -= transform.right * Input.GetAxisRaw("Horizontal") * moveSpeed / 40;
+                else circularVelocity -= transform.right * Input.GetAxisRaw("Horizontal") * moveSpeed / 8;
+                circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed * 2) * moveDrag;
 
                 if (Input.GetButtonDown("Jump"))
                 {
                     if (!isGrounded)
                     {
-                        if (canDoubleJump)
+                        if (touchedWallDirection != 0)
+                        {
+                            WallJump(touchedWallDirection);
+                        }
+                        else if (canDoubleJump)
                         {
                             canDoubleJump = false;
                             rb.velocity = Vector3.up * jumpForce;
@@ -130,23 +140,22 @@ public class PlayerController : MonoBehaviour
                     {
                         rb.velocity = Vector3.up * jumpForce;
                     }
+                    
                 }
                 if(Input.GetButtonDown("buttonB"))
                 {
-                    if(isGrounded)
+                    if(0 == 0)
                     {
-                        if (!isDashing && Input.GetAxis("Horizontal") != 0)
+                        if (!isDashing && Input.GetAxisRaw("Horizontal") != 0)
                         {
-                            StartCoroutine(StartDashing(0.3f));
+                            StartCoroutine(StartDashing(0.4f));
                         }
                     }
-                    else if (touchedWallDirection != 0)
-                    {
-                        WallJump(touchedWallDirection);
-                    }
                 }
+                var fallM = fallMultiplier;
+                if (touchedWallDirection != 0) fallM /= 2;
 
-                rb.velocity += Vector3.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
+                rb.velocity += Vector3.up * Physics2D.gravity.y * (fallM - 1) * Time.deltaTime;
                 if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
                 {
                     rb.velocity += Vector3.up * Physics2D.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
@@ -260,6 +269,9 @@ public class PlayerController : MonoBehaviour
         {
             //Debug.Log(collision.GetContact(0).normal.x + collision.GetContact(0).normal.z);
             touchedWallDirection = collision.GetContact(0).normal.x + collision.GetContact(0).normal.z;
+            if (rb.velocity.y < 0) {
+                rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
+            }
         }
     }
     private void OnCollisionExit(Collision collision)
@@ -315,17 +327,17 @@ public class PlayerController : MonoBehaviour
         myCollider.height /= 2;
         myCollider.center = new Vector3(myCollider.center.x, myCollider.center.y - (myCollider.height / 2), myCollider.center.z);
 
-        circularVelocity = Vector3.ClampMagnitude(circularVelocity * 5.0f, moveSpeed);
+        circularVelocity = Vector3.ClampMagnitude(circularVelocity * 5.0f, moveSpeed * 1.5f);
 
         //horizonalVelocity *= 4;
         float currentDrag = horizontalDrag;
-        horizontalDrag = 0.9f;
-        dashing = true;
-        
+        dashing = true;        
         float counter = 0;
         while (counter < duration)
         {
+            horizontalDrag = 0.9f;
             counter += Time.deltaTime;
+
             if (counter * 1.5f > duration && horizontalDrag >= 0.9f)
             {
                 horizontalDrag = currentDrag / 2;
@@ -341,12 +353,12 @@ public class PlayerController : MonoBehaviour
     }
     private void WallJump(float wallDirection)
     {
-        float jumpMultiplier = 1.8f;
+        float jumpMultiplier = 0.8f;
         if (wallDirection > 0)
         {
             if (previousWallJumpDirection > 0)
             {
-                jumpMultiplier = 0.5f;
+                jumpMultiplier = 0.3f;
             }
             else
             {
@@ -357,7 +369,7 @@ public class PlayerController : MonoBehaviour
         {
             if (previousWallJumpDirection < 0)
             {
-                jumpMultiplier = 0.5f;
+                jumpMultiplier = 0.3f;
             }
             else
             {
@@ -461,12 +473,12 @@ public class PlayerController : MonoBehaviour
     {
         avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
 
-        if (Input.GetAxis("Horizontal") < 0)
+        if (Input.GetAxisRaw("Horizontal") < 0)
         {
             if (avatarModelRotation < 90.0f) avatarModelRotation += 15.0f;
             running = true;
         }
-        else if (Input.GetAxis("Horizontal") > 0)
+        else if (Input.GetAxisRaw("Horizontal") > 0)
         {
             if (avatarModelRotation > -90.0f) avatarModelRotation -= 15.0f;
             running = true;
