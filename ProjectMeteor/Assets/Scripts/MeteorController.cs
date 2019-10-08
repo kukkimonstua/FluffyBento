@@ -36,7 +36,14 @@ public class MeteorController : MonoBehaviour
     {
         if (fallMarkerInstance != null)
         {
-            fallMarkerInstance.GetComponentInChildren<Light>().intensity = 5.0f + (Mathf.Sin(Time.time * 5.0f) * 2.5f + 2.5f);
+            if (isLowest)
+            {
+                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 20.0f + (Mathf.Sin(Time.time * 10.0f) * 2.5f + 2.5f);
+            }
+            else
+            {
+                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 5.0f + (Mathf.Sin(Time.time * 5.0f) * 2.5f + 2.5f);
+            }
         }
         if (PlayerController.playerState == 1)
         {

@@ -45,7 +45,7 @@ public class TimingWindow : MonoBehaviour
         shrinkerDiameter = 50.0f;
         feedbackText = "Ready...";
 
-        float alphaValue = 0.0f;
+        float alphaValue = 0.2f;
         FadeTimingWindowUI(alphaValue);
         StartCoroutine(ShowFeedbackText(true));
 
