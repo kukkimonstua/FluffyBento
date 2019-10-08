@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6403109185131575668}
   - component: {fileID: 1375880612533971371}
   m_Layer: 0
-  m_Name: Sword
+  m_Name: Sword 2
   m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf54cf55f8ab7894b99e643b64d99a9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swordID: 1
+  swordID: 3
   ps1: {fileID: 1257628507535659388}
   ps2: {fileID: 7110148375507617734}
   ps3: {fileID: 2945295146045110211}

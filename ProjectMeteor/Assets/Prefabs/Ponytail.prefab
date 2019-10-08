@@ -2148,6 +2148,8 @@ Transform:
   - {fileID: 6020402889219793425}
   - {fileID: 1368084934516758437}
   - {fileID: 6041344901163035891}
+  - {fileID: 236155631628597044}
+  - {fileID: 7324118021051086377}
   m_Father: {fileID: 1519109845880655754}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5961,6 +5963,81 @@ Transform:
   m_Father: {fileID: 2208320218918359897}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &236155631628208354
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1805346329574911733}
+    m_Modifications:
+    - target: {fileID: 149494, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_Name
+      value: Sword_Scabbard2
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.086
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.203
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.127
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.8542867
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.03044753
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.07895805
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.51286733
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 60.629
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -160.20001
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -164.264
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.010000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+--- !u!4 &236155631628597044 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8,
+    type: 3}
+  m_PrefabInstance: {fileID: 236155631628208354}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6041344901163438885
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5968,10 +6045,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1805346329574911733}
     m_Modifications:
-    - target: {fileID: 149494, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
-      propertyPath: m_Name
-      value: Sword_Scabbard
-      objectReference: {fileID: 0}
     - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.086
@@ -6028,6 +6101,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.01
       objectReference: {fileID: 0}
+    - target: {fileID: 149494, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_Name
+      value: Sword_Scabbard
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
 --- !u!4 &6041344901163035891 stripped
@@ -6035,6 +6112,81 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88,
     type: 3}
   m_PrefabInstance: {fileID: 6041344901163438885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7324118021051451903
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1805346329574911733}
+    m_Modifications:
+    - target: {fileID: 149494, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_Name
+      value: Sword_Scabbard3
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.086
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.203
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.127
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.8542867
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.03044753
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.07895805
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.51286733
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 60.629
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -160.20001
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -164.264
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.010000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.01
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+--- !u!4 &7324118021051086377 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271,
+    type: 3}
+  m_PrefabInstance: {fileID: 7324118021051451903}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &-6207901521382352751
 MonoBehaviour:
@@ -8405,6 +8557,7 @@ Avatar:
     m_RootMotionSkeletonIndexArray: 
   m_TOS:
     1796106265: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/J_Adj_L_FaceEyeSet
+    221311757: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Sec_R_FoodString1/J_Sec_R_FoodString2
     2557469430: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Bip_L_LowerArm/J_Bip_L_Hand
     1734988206: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_R_Shoulder/J_Bip_R_UpperArm/J_Sec_R_TopsUpperArmInside
     2539625: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Sec_C_Food
@@ -8416,7 +8569,6 @@ Avatar:
     3107582202: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Bip_L_LowerArm
     400787587: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_R_Shoulder/J_Bip_R_UpperArm/J_Sec_R_TopsUpperArmInside/J_Sec_R_TopsUpperArmInside_end
     421640519: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_R_Shoulder/J_Bip_R_UpperArm/J_Bip_R_LowerArm
-    1836055885: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/HairJoint-afaa31fd-7753-479f-90ca-613120baa81e
     366957139: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/HairJoint-220c9be7-44c9-4b73-96cf-5797b94dca25/HairJoint-ce7ffa7f-bfb7-448e-9381-02da6a00db13/HairJoint-8e334f51-84b7-45e8-b74a-02f92e50d0a5
     2412648420: Root/J_Bip_C_Hips/J_Bip_L_UpperLeg/J_Bip_L_LowerLeg/J_Bip_L_Foot
     3930221015: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder
@@ -8465,8 +8617,8 @@ Avatar:
     2180915214: Root/J_Bip_C_Hips/J_Bip_R_UpperLeg/J_Bip_R_LowerLeg/J_Bip_R_Foot
     3513901249: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/HairJoint-36018f64-526d-4e13-b27a-9e70096cebec
     43560268: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Bip_L_LowerArm/J_Bip_L_Hand/J_Bip_L_Index1/J_Bip_L_Index2/J_Bip_L_Index3
-    194173371: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Sec_L_TopsUpperArmInside/J_Sec_L_TopsUpperArmInside_end
     1851616533: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_R_Shoulder/J_Bip_R_UpperArm/J_Bip_R_LowerArm/J_Bip_R_Hand/J_Bip_R_Little1
+    194173371: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Sec_L_TopsUpperArmInside/J_Sec_L_TopsUpperArmInside_end
     1856331957: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_R_Shoulder/J_Bip_R_UpperArm/J_Bip_R_LowerArm/J_Bip_R_Hand/J_Bip_R_Ring1/J_Bip_R_Ring2/J_Bip_R_Ring3/J_Bip_R_Ring3_end
     3230906145: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/HairJoint-eac327e9-ca53-4bde-916e-0296e4035041/HairJoint-2fb35e2a-58f0-43a5-bce2-f0a0cd6dfa62
     3070891873: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/HairJoint-a6f9f1af-ac4e-4d78-921f-e81d4daa1e83/HairJoint-6e2a4b7c-1848-4e04-a969-0efc2a18c9ee
@@ -8540,11 +8692,11 @@ Avatar:
     3473683925: Root/J_Bip_C_Hips/J_Bip_L_UpperLeg/J_Sec_L_TopsUpperLegSide
     2349041180: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Bip_L_LowerArm/J_Bip_L_Hand/J_Bip_L_Ring1/J_Bip_L_Ring2/J_Bip_L_Ring3/J_Bip_L_Ring3_end
     2244111302: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Sec_L_FoodString1
-    3214659867: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Bip_L_LowerArm/J_Bip_L_Hand/J_Bip_L_Little1/J_Bip_L_Little2
-    4192783605: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Bip_L_LowerArm/J_Bip_L_Hand/J_Bip_L_Middle1
-    2851896400: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/HairJoint-5806da88-2c3c-4025-9683-392e3113379d/HairJoint-38a1cd8b-b8f4-42db-b9a5-d39df4beedf4/HairJoint-1de8d0f7-e107-444a-a55e-3c20e698e69e
     3979400054: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/HairJoint-36018f64-526d-4e13-b27a-9e70096cebec/HairJoint-44ee48ec-a132-4c6b-a14f-b0b1a0526502/HairJoint-3f2840e0-ff46-45a2-83ad-8fa808411224
-    221311757: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Sec_R_FoodString1/J_Sec_R_FoodString2
+    3214659867: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Bip_L_LowerArm/J_Bip_L_Hand/J_Bip_L_Little1/J_Bip_L_Little2
+    1836055885: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/HairJoint-afaa31fd-7753-479f-90ca-613120baa81e
+    2851896400: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_C_Neck/J_Bip_C_Head/HairJoint-5806da88-2c3c-4025-9683-392e3113379d/HairJoint-38a1cd8b-b8f4-42db-b9a5-d39df4beedf4/HairJoint-1de8d0f7-e107-444a-a55e-3c20e698e69e
+    4192783605: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Bip_L_LowerArm/J_Bip_L_Hand/J_Bip_L_Middle1
     1136130350: Root/J_Bip_C_Hips/J_Bip_C_Spine/J_Bip_C_Chest/J_Bip_C_UpperChest/J_Bip_L_Shoulder/J_Bip_L_UpperArm/J_Bip_L_LowerArm/J_Bip_L_Hand/J_Bip_L_Thumb1/J_Bip_L_Thumb2/J_Bip_L_Thumb3/J_Bip_L_Thumb3_end
   m_HumanDescription:
     serializedVersion: 3

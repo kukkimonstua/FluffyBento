@@ -7,7 +7,9 @@ public class SwordManager : MonoBehaviour
     public Transform playerOrigin;
     private float worldRadius;
 
-    public GameObject sword;
+    public GameObject sword1;
+    public GameObject sword2;
+    public GameObject sword3;
 
     [Header("Spawn Settings")]
     public int maxSwordsOnScreen = 5;
@@ -44,10 +46,25 @@ public class SwordManager : MonoBehaviour
 
     void SpawnSword()
     {
+        GameObject swordToSpawn = new GameObject();
+        int swordID = Random.Range(0, 3) + 1;
+        switch (swordID)
+        {
+            default:
+                swordToSpawn = sword1;
+                break;
+            case 2:
+                swordToSpawn = sword2;
+                break;
+            case 3:
+                swordToSpawn = sword3;
+                break;
+        }
+
         swordOrigin.Rotate(0.0f, Random.Range(0, 24) * 15.0f, 0.0f);
         spawnPoint.position = swordOrigin.position + (swordOrigin.transform.forward * worldRadius) + (playerOrigin.transform.up * spawnHeight);
 
-        Instantiate(sword, spawnPoint.position, spawnPoint.rotation);
+        Instantiate(swordToSpawn, spawnPoint.position, spawnPoint.rotation);
         swordSpawnTimer = 0.0f;
     }
     public static void ResetSwords()
