@@ -310,6 +310,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3376312176963667622}
     m_Modifications:
+    - target: {fileID: 8142185685630866087, guid: 3e033a65f49fab34f94e145a39423d1c,
+        type: 3}
+      propertyPath: m_Name
+      value: Ponytail
+      objectReference: {fileID: 0}
     - target: {fileID: 2455775819622752115, guid: 3e033a65f49fab34f94e145a39423d1c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -364,11 +369,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8142185685630866087, guid: 3e033a65f49fab34f94e145a39423d1c,
-        type: 3}
-      propertyPath: m_Name
-      value: Ponytail
       objectReference: {fileID: 0}
     - target: {fileID: 7845436561451231308, guid: 3e033a65f49fab34f94e145a39423d1c,
         type: 3}

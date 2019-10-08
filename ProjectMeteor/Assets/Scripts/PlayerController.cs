@@ -70,6 +70,8 @@ public class PlayerController : MonoBehaviour
 
     private int previousWallJumpDirection;
 
+    public ContactPoint LastContactPoint;
+
     void Awake()
     {
         worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
@@ -130,6 +132,8 @@ public class PlayerController : MonoBehaviour
                 else circularVelocity -= transform.right * Input.GetAxisRaw("Horizontal") * moveSpeed / 8;
                 circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed * 2) * moveDrag;
 
+                
+
                 if (Input.GetButtonDown("Jump"))
                 {
                     if (!isGrounded)
@@ -146,6 +150,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
+                        isGrounded = false;
                         rb.velocity = Vector3.up * jumpForce;
                     }
                     
@@ -170,6 +175,11 @@ public class PlayerController : MonoBehaviour
                 }
 
                 rb.velocity = new Vector3(circularVelocity.x, rb.velocity.y, circularVelocity.z);
+
+                if (rb.velocity.y < fallMultiplier * -2.5f)
+                {
+                    isGrounded = false;
+                }
 
                 var lowestPos = transform.position;
                 lowestPos.y = -0.8f;
@@ -295,31 +305,45 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log("Hit something!" + collision.relativeVelocity);
-        if (collision.gameObject.CompareTag("Platform"))
+        //Debug.Log(collision.GetContact(0).normal);
+        if(collision.GetContact(0).normal.y > 0.5f)
         {
             isGrounded = true;
             canDoubleJump = true;
             previousWallJumpDirection = 0;
         }
-        if (collision.gameObject.CompareTag("Wall"))
+        else if(collision.GetContact(0).normal.x + collision.GetContact(0).normal.z != 0)
         {
-            //Debug.Log(collision.GetContact(0).normal.x + collision.GetContact(0).normal.z);
+
             touchedWallDirection = collision.GetContact(0).normal.x + collision.GetContact(0).normal.z;
-            if (rb.velocity.y < 0) {
+            if (rb.velocity.y < 0)
+            {
                 rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
             }
         }
+
+        
+
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+
+        foreach (ContactPoint Contact in collision.contacts) { LastContactPoint = Contact; }
     }
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Platform"))
+//        isGrounded = false;
+        touchedWallDirection = 0;
+
+        if (LastContactPoint.normal.y > 0.5f)
         {
-            isGrounded = false;
+            
+  //          Debug.Log("Left ground");
         }
-        if (collision.gameObject.CompareTag("Wall"))
+        else if (LastContactPoint.normal.x + LastContactPoint.normal.z != 0)
         {
-            touchedWallDirection = 0;
+//            Debug.Log("NO TOUCH WALL");
+
         }
     }
 
