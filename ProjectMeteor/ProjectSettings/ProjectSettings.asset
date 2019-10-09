@@ -621,6 +621,7 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
+    Build: 1
     Collab: 0
     UNet: 1
   luminIcon:
@@ -642,10 +643,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: a5894e8a-6e32-4120-bf76-e0a0c18e888c
+  cloudProjectId: 884f5082-7903-4d7a-85c5-a0af1de034c8
   framebufferDepthMemorylessMode: 0
   projectName: ProjectMeteor
-  organizationId: sjandybae
+  organizationId: magicoin
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
