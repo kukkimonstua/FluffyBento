@@ -8,6 +8,7 @@ TagManager:
   - Meteor
   - Sword
   - Wall
+  - Breakable
   layers:
   - Default
   - TransparentFX
