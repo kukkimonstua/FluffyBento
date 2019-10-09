@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
     public int timingGrade;
     public GUIController gui;
 
+    private bool isAttacking;
 
     private bool isDashing;
     private CapsuleCollider myCollider;
@@ -157,12 +158,9 @@ public class PlayerController : MonoBehaviour
                 }
                 if(Input.GetButtonDown("buttonB"))
                 {
-                    if(0 == 0)
+                    if (!isDashing && Input.GetAxisRaw("Horizontal") != 0)
                     {
-                        if (!isDashing && Input.GetAxisRaw("Horizontal") != 0)
-                        {
-                            StartCoroutine(StartDashing(0.4f));
-                        }
+                        StartCoroutine(StartDashing(0.4f));
                     }
                 }
                 var fallM = fallMultiplier;
@@ -236,9 +234,9 @@ public class PlayerController : MonoBehaviour
                         gui.TogglePrompt(false, "");
                         StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
                     }
-                    else
+                    else if (!isAttacking)
                     {
-                        StartCoroutine(Attack(0.2f));
+                        StartCoroutine(Attack(0.5f));
                     }
                 }
 
@@ -453,23 +451,32 @@ public class PlayerController : MonoBehaviour
     }
     private IEnumerator Attack(float duration)
     {
+        isAttacking = true;
         float counter = 0;
+        bool brokeSomething = false;
         while (counter < duration)
         {
-            RaycastHit hit;
-
-            if (Physics.Raycast(avatarModel.transform.position, avatarModel.transform.forward, out hit, 3.0f))
+            if (!brokeSomething)
             {
-                if (hit.transform.gameObject.CompareTag("Breakable"))
+                RaycastHit hit;
+                if (Physics.Raycast(avatarModel.transform.position + new Vector3(0.0f, myCollider.height / 2, 0.0f), avatarModel.transform.forward, out hit, 2.0f))
                 {
-                    Debug.Log("BREAK");
-                    hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
+                    if (hit.transform.gameObject.CompareTag("Breakable"))
+                    {
+                        Debug.Log("BREAK");
+                        hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
+                        brokeSomething = true;
+                    }
+                }
+                else
+                {
+                    Debug.DrawRay(avatarModel.transform.position + new Vector3(0.0f, myCollider.height/2, 0.0f), avatarModel.transform.forward * 2.0f, Color.white);
                 }
             }
-
             counter += Time.deltaTime;
             yield return null;
         }
+        isAttacking = false;
     }
 
     private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
