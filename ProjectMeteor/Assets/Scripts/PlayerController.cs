@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
     public GameObject timingWindow;
     public int timingGrade;
     public GUIController gui;
-    public TextMesh actionText;
+
 
     private bool isDashing;
     private CapsuleCollider myCollider;
@@ -194,6 +194,14 @@ public class PlayerController : MonoBehaviour
                 
                 if (Input.GetButtonDown("buttonY"))
                 {
+                    
+                    //GameObject[] bs = GameObject.FindGameObjectsWithTag("Breakable");
+                    //foreach (GameObject b in bs)
+                    //{
+                    //    b.GetComponent<BreakableController>().GetRestored();
+                    //}
+
+
                     if (targetedSword != null) //if you're near a sword
                     {
                         if (holdingSword == 0)
@@ -221,10 +229,17 @@ public class PlayerController : MonoBehaviour
                         gui.TogglePrompt(true, "(X)\nAttack Meteor");
                     }
                 }
-                if(Input.GetButtonDown("buttonX") && holdingSword != 0 && targetedMeteor != null)
+                if(Input.GetButtonDown("buttonX"))
                 {
-                    gui.TogglePrompt(false, "");
-                    StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
+                    if(holdingSword != 0 && targetedMeteor != null)
+                    {
+                        gui.TogglePrompt(false, "");
+                        StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
+                    }
+                    else
+                    {
+                        StartCoroutine(Attack(0.2f));
+                    }
                 }
 
                 UpdateAnimations();
@@ -271,7 +286,7 @@ public class PlayerController : MonoBehaviour
         playerHealth = playerMaxHealth;
         playerScore = 0;
         meteorsDestroyed = 0;
-        actionText.gameObject.SetActive(false);
+        gui.TogglePlayerActionText(false, "");
         gui.ResetGUI();
         gui.UpdateHealthUI(playerHealth);
         gui.UpdateScoreUI(playerScore);
@@ -352,15 +367,13 @@ public class PlayerController : MonoBehaviour
                 targetedSword = other.gameObject;
                 if(holdingSword == 0)
                 {
-                    actionText.text = "(Y) Equip";
+                    gui.TogglePlayerActionText(true, "(Y) Equip");
                 }
                 else
                 {
-                    actionText.text = "(Y) Swap";
+                    gui.TogglePlayerActionText(true, "(Y) Swap");
                 }
-                actionText.gameObject.SetActive(true);
-            }
-            
+            }            
         }            
     }
     private void OnTriggerExit(Collider other)
@@ -376,7 +389,7 @@ public class PlayerController : MonoBehaviour
             if (other.gameObject.CompareTag("Sword"))
             {
                 targetedSword = null;
-                actionText.gameObject.SetActive(false);
+                gui.TogglePlayerActionText(false, "");
             }
         }        
     }
@@ -438,6 +451,26 @@ public class PlayerController : MonoBehaviour
         rb.velocity = Vector3.up * jumpForce * jumpMultiplier;
         circularVelocity *= -2.0f;
     }
+    private IEnumerator Attack(float duration)
+    {
+        float counter = 0;
+        while (counter < duration)
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(avatarModel.transform.position, avatarModel.transform.forward, out hit, 3.0f))
+            {
+                if (hit.transform.gameObject.CompareTag("Breakable"))
+                {
+                    Debug.Log("BREAK");
+                    hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
+                }
+            }
+
+            counter += Time.deltaTime;
+            yield return null;
+        }
+    }
 
     private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
     {
@@ -489,7 +522,7 @@ public class PlayerController : MonoBehaviour
 
     private void PickUpSword(GameObject pickedUpSword)
     {
-        actionText.gameObject.SetActive(false);
+        gui.TogglePlayerActionText(false, "");
         holdingSword = pickedUpSword.GetComponent<SwordController>().swordID;
         EquipSword(holdingSword);
         gui.UpdateEquipmentUI("EQUIP: Sword " + holdingSword);
@@ -518,7 +551,7 @@ public class PlayerController : MonoBehaviour
         Destroy(pickedUpSword);
 
         Instantiate(swordToSpawn, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
-        actionText.gameObject.SetActive(false);
+        gui.TogglePlayerActionText(false, "");
     }
 
     private void DropSword()
@@ -563,7 +596,7 @@ public class PlayerController : MonoBehaviour
     {
         playerState = 3;
         CameraController.SwitchToEndingCamera();
-        actionText.gameObject.SetActive(false);
+        gui.TogglePlayerActionText(false, "");
         gui.TogglePrompt(false, "");
         gui.ShowGameOverUI(3.0f, 2.0f); //This ends with unlocking the menu        
     }
@@ -573,12 +606,12 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetAxisRaw("Horizontal") < 0)
         {
-            if (avatarModelRotation < 90.0f) avatarModelRotation += 15.0f;
+            if (avatarModelRotation < 90.0f) avatarModelRotation += 30.0f;
             running = true;
         }
         else if (Input.GetAxisRaw("Horizontal") > 0)
         {
-            if (avatarModelRotation > -90.0f) avatarModelRotation -= 15.0f;
+            if (avatarModelRotation > -90.0f) avatarModelRotation -= 30.0f;
             running = true;
         }
         else

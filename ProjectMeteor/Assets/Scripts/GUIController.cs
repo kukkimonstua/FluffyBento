@@ -7,6 +7,7 @@ public class GUIController : MonoBehaviour
 {
     // Start is called before the first frame update
     public Text promptText;
+    public Text playerActionText;
 
     public Text healthText;
     public Text scoreText;
@@ -63,6 +64,12 @@ public class GUIController : MonoBehaviour
     {
         promptText.gameObject.SetActive(toggle);
         promptText.text = text;
+    }
+
+    public void TogglePlayerActionText(bool toggle, string text)
+    {
+        playerActionText.gameObject.SetActive(toggle);
+        playerActionText.text = text;
     }
 
     public void ResetGUI()
