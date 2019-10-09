@@ -166,7 +166,10 @@ public class PlayerController : MonoBehaviour
                     }
                 }
                 var fallM = fallMultiplier;
-                if (touchedWallDirection != 0) fallM /= 2;
+                if (touchedWallDirection != 0 && rb.velocity.y < 0)
+                {
+                    fallM /= 2;
+                }
 
                 rb.velocity += Vector3.up * Physics2D.gravity.y * (fallM - 1) * Time.deltaTime;
                 if (rb.velocity.y > 0 && !Input.GetButton("Jump"))
