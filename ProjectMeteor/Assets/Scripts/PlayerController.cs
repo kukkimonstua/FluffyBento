@@ -23,13 +23,16 @@ public class PlayerController : MonoBehaviour
     public float touchedWallDirection;
     private Vector3 circularVelocity;
 
-    private bool holdingSword;
+    private int holdingSword;
 
     [Header("GAME SETTINGS")]
     public static int playerState; //1 = running, 2 = attacking, 3 = game over
 
     private Vector3 startingPosition;
-    public GameObject newSword;
+
+    public GameObject sword1;
+    public GameObject sword2;
+    public GameObject sword3;
 
     private GameObject targetedMeteor;
     private GameObject targetedSword;
@@ -46,7 +49,12 @@ public class PlayerController : MonoBehaviour
     [Header("LINKS TO MODEL AND ANIMATIONS")]
     public GameObject avatarModel;
     private float avatarModelRotation;
+
     public GameObject equippedSword;
+    public GameObject equippedSword2;
+    public GameObject equippedSword3;
+
+
     public Animator anim;
     private bool running, dashing;
 
@@ -61,6 +69,8 @@ public class PlayerController : MonoBehaviour
     public float horizontalDrag = 0.8f;
 
     private int previousWallJumpDirection;
+
+    public ContactPoint LastContactPoint;
 
     void Awake()
     {
@@ -122,6 +132,8 @@ public class PlayerController : MonoBehaviour
                 else circularVelocity -= transform.right * Input.GetAxisRaw("Horizontal") * moveSpeed / 8;
                 circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed * 2) * moveDrag;
 
+                
+
                 if (Input.GetButtonDown("Jump"))
                 {
                     if (!isGrounded)
@@ -138,6 +150,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
+                        isGrounded = false;
                         rb.velocity = Vector3.up * jumpForce;
                     }
                     
@@ -163,6 +176,11 @@ public class PlayerController : MonoBehaviour
 
                 rb.velocity = new Vector3(circularVelocity.x, rb.velocity.y, circularVelocity.z);
 
+                if (rb.velocity.y < fallMultiplier * -2.5f)
+                {
+                    isGrounded = false;
+                }
+
                 var lowestPos = transform.position;
                 lowestPos.y = -0.8f;
 
@@ -173,22 +191,25 @@ public class PlayerController : MonoBehaviour
                 
                 if (Input.GetButtonDown("buttonY"))
                 {
-                    if (holdingSword)
+                    if (targetedSword != null) //if you're near a sword
                     {
-                        DropSword(newSword);
-                    }
-                    else
-                    {
-                        if (targetedSword != null) //if you're near a sword
+                        if (holdingSword == 0)
                         {
                             PickUpSword(targetedSword);
-                            actionText.gameObject.SetActive(false);
                         }
+                        else
+                        {
+                            SwitchSwords(targetedSword);
+                        }
+                    }
+                    else if (holdingSword != 0)
+                    {
+                        DropSword();
                     }
                 }
                 if (targetedMeteor != null)
                 {
-                    if (!holdingSword)
+                    if (holdingSword == 0)
                     {
                         gui.TogglePrompt(true, "You need a sword!");
                     }
@@ -197,7 +218,7 @@ public class PlayerController : MonoBehaviour
                         gui.TogglePrompt(true, "(X)\nAttack Meteor");
                     }
                 }
-                if(Input.GetButtonDown("buttonX") && holdingSword && targetedMeteor != null)
+                if(Input.GetButtonDown("buttonX") && holdingSword != 0 && targetedMeteor != null)
                 {
                     gui.TogglePrompt(false, "");
                     StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
@@ -208,12 +229,38 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+    private void EquipSword(int swordID)
+    {
+        switch (swordID)
+        {
+            case 0: //NO SWORD
+                equippedSword.SetActive(false);
+                equippedSword2.SetActive(false);
+                equippedSword3.SetActive(false);
+                break;
+            case 1:
+                equippedSword.SetActive(true);
+                equippedSword2.SetActive(false);
+                equippedSword3.SetActive(false);
+                break;
+            case 2:
+                equippedSword.SetActive(false);
+                equippedSword2.SetActive(true);
+                equippedSword3.SetActive(false);
+                break;
+            case 3:
+                equippedSword.SetActive(false);
+                equippedSword2.SetActive(false);
+                equippedSword3.SetActive(true);
+                break;
+        }
+    }
 
     private void ResetLevel()
     {
         playerState = 1;
-        holdingSword = false;
-        equippedSword.SetActive(false);
+        holdingSword = 0;
+        EquipSword(0);
         isGrounded = false;
         canDoubleJump = false;
         touchedWallDirection = 0;
@@ -258,31 +305,45 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log("Hit something!" + collision.relativeVelocity);
-        if (collision.gameObject.CompareTag("Platform"))
+        //Debug.Log(collision.GetContact(0).normal);
+        if(collision.GetContact(0).normal.y > 0.5f)
         {
             isGrounded = true;
             canDoubleJump = true;
             previousWallJumpDirection = 0;
         }
-        if (collision.gameObject.CompareTag("Wall"))
+        else if(collision.GetContact(0).normal.x + collision.GetContact(0).normal.z != 0)
         {
-            //Debug.Log(collision.GetContact(0).normal.x + collision.GetContact(0).normal.z);
+
             touchedWallDirection = collision.GetContact(0).normal.x + collision.GetContact(0).normal.z;
-            if (rb.velocity.y < 0) {
+            if (rb.velocity.y < 0)
+            {
                 rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
             }
         }
+
+        
+
+    }
+    private void OnCollisionStay(Collision collision)
+    {
+
+        foreach (ContactPoint Contact in collision.contacts) { LastContactPoint = Contact; }
     }
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Platform"))
+//        isGrounded = false;
+        touchedWallDirection = 0;
+
+        if (LastContactPoint.normal.y > 0.5f)
         {
-            isGrounded = false;
+            
+  //          Debug.Log("Left ground");
         }
-        if (collision.gameObject.CompareTag("Wall"))
+        else if (LastContactPoint.normal.x + LastContactPoint.normal.z != 0)
         {
-            touchedWallDirection = 0;
+//            Debug.Log("NO TOUCH WALL");
+
         }
     }
 
@@ -299,6 +360,14 @@ public class PlayerController : MonoBehaviour
             if (other.gameObject.CompareTag("Sword"))
             {
                 targetedSword = other.gameObject;
+                if(holdingSword == 0)
+                {
+                    actionText.text = "(Y) Equip";
+                }
+                else
+                {
+                    actionText.text = "(Y) Swap";
+                }
                 actionText.gameObject.SetActive(true);
             }
             
@@ -408,8 +477,8 @@ public class PlayerController : MonoBehaviour
 
         playerState = 1;
 
-        holdingSword = false;
-        equippedSword.SetActive(false);
+        holdingSword = 0;
+        EquipSword(0);
         gui.UpdateEquipmentUI("EQUIP: -");
 
         gui.ScaleBlackBars(0.0f, 0.5f);
@@ -431,18 +500,57 @@ public class PlayerController : MonoBehaviour
     private void PickUpSword(GameObject pickedUpSword)
     {
         actionText.gameObject.SetActive(false);
-        holdingSword = true;
-        equippedSword.SetActive(true);
-        gui.UpdateEquipmentUI("EQUIP: Sword");
+        holdingSword = pickedUpSword.GetComponent<SwordController>().swordID;
+        EquipSword(holdingSword);
+        gui.UpdateEquipmentUI("EQUIP: Sword " + holdingSword);
         Destroy(pickedUpSword);
+
+    }
+    private void SwitchSwords(GameObject pickedUpSword)
+    {
+        GameObject swordToSpawn = new GameObject();
+        switch (holdingSword)
+        {
+            default:
+                swordToSpawn = sword1;
+                break;
+            case 2:
+                swordToSpawn = sword2;
+                break;
+            case 3:
+                swordToSpawn = sword3;
+                break;
+        }
+        holdingSword = pickedUpSword.GetComponent<SwordController>().swordID;
+        EquipSword(holdingSword);
+        gui.UpdateEquipmentUI("EQUIP: Sword " + holdingSword);
+
+        Destroy(pickedUpSword);
+
+        Instantiate(swordToSpawn, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
+        actionText.gameObject.SetActive(false);
     }
 
-    private void DropSword(GameObject swordType)
+    private void DropSword()
     {
-        holdingSword = false;
-        equippedSword.SetActive(false);
+        GameObject swordToSpawn = new GameObject();
+        switch (holdingSword)
+        {
+            default:
+                swordToSpawn = sword1;
+                break;
+            case 2:
+                swordToSpawn = sword2;
+                break;
+            case 3:
+                swordToSpawn = sword3;
+                break;
+        }
+
+        holdingSword = 0;
+        EquipSword(0);
         gui.UpdateEquipmentUI("EQUIP: -");
-        Instantiate(swordType, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
+        Instantiate(swordToSpawn, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
     }
 
     public void TakeDamage(int amount)

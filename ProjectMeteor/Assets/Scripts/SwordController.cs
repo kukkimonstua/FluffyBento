@@ -7,11 +7,32 @@ public class SwordController : MonoBehaviour
     private BoxCollider bc;
     private Rigidbody rb;
 
+    public int swordID;
+    public GameObject ps1;
+    public GameObject ps2;
+    public GameObject ps3;
     // Start is called before the first frame update
     void Start()
     {
         bc = GetComponent<BoxCollider>();
         rb = GetComponent<Rigidbody>();
+        ps1.SetActive(false);
+        ps2.SetActive(false);
+        ps3.SetActive(false);
+
+        switch (swordID)
+        {
+            default:
+                ps1.SetActive(true);
+                break;
+            case 2:
+                ps2.SetActive(true);
+                break;
+            case 3:
+                ps3.SetActive(true);
+                break;
+        }
+
     }
 
     // Update is called once per frame
