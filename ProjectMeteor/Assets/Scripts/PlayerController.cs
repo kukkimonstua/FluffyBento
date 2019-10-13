@@ -8,40 +8,45 @@ public class PlayerController : MonoBehaviour
 {
     [Header("PLAYER MOVEMENT SETTINGS")]
     private Rigidbody rb;
+    private CapsuleCollider myCollider;
+
     public float moveSpeed = 5.0f;
+    public float horizontalDrag = 0.8f;
     public float jumpForce = 10.0f;
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2.0f;
 
+    private bool isAttacking;
+    private bool isDashing;
+
     [Header("GLOBAL SETTINGS")]
     public Transform worldOrigin;
+    public Transform meteorWorldOrigin;
     public Transform playerOrigin;
-    public static float worldRadius;
+    public static float worldRadius; //Accessed by a LOT of different scripts
 
-    public bool isGrounded;
-    public bool canDoubleJump;
-    public float touchedWallDirection;
+    [Header("PLAYER MOVEMENT")]
     private Vector3 circularVelocity;
-
-    private int holdingSword;
+    public bool isGrounded; //Make these
+    public bool canDoubleJump; //public when
+    public float touchedWallDirection; //you're debugging.
+    private int previousWallJumpDirection;
+    private int holdingSword; //0 is nothing, 1 - 3 are the different types
 
     [Header("GAME SETTINGS")]
     public static int playerState; //1 = running, 2 = attacking, 3 = game over
-
-    private Vector3 startingPosition;
-
-    public GameObject sword1;
-    public GameObject sword2;
-    public GameObject sword3;
+    
+    public GameObject zanbato;
+    public GameObject broadsword;
+    public GameObject katana;
 
     private GameObject targetedMeteor;
     private GameObject targetedSword;
 
+    private Vector3 startingPosition;
     public int playerMaxHealth = 3;
     private int playerHealth;
-
     private int playerScore;
-
     private int meteorsDestroyed;
     public static float lowestMeteorPosition;
     public float meteorDeathThreshold = 100.0f;
@@ -49,29 +54,17 @@ public class PlayerController : MonoBehaviour
     [Header("LINKS TO MODEL AND ANIMATIONS")]
     public GameObject avatarModel;
     private float avatarModelRotation;
-
-    public GameObject equippedSword;
-    public GameObject equippedSword2;
-    public GameObject equippedSword3;
-
-
     public Animator anim;
     private bool running, dashing;
+
+    public GameObject equippedZanbato;
+    public GameObject equippedBroadsword;
+    public GameObject equippedKatana;
 
     [Header("LINKS TO GUI")]
     public GameObject timingWindow;
     public int timingGrade;
     public GUIController gui;
-
-    private bool isAttacking;
-
-    private bool isDashing;
-    private CapsuleCollider myCollider;
-    public float horizontalDrag = 0.8f;
-
-    private int previousWallJumpDirection;
-
-    public ContactPoint LastContactPoint;
 
     void Awake()
     {
@@ -100,6 +93,8 @@ public class PlayerController : MonoBehaviour
 
             case 2:
                 rb.velocity = Vector3.up * 0;
+                touchedWallDirection = 0;
+                isGrounded = false;
                 if (Input.GetButtonDown("buttonX") && !TimingWindow.gotPressed)
                 {
                     TimingWindow.gotPressed = true;
@@ -192,14 +187,6 @@ public class PlayerController : MonoBehaviour
                 
                 if (Input.GetButtonDown("buttonY"))
                 {
-                    
-                    //GameObject[] bs = GameObject.FindGameObjectsWithTag("Breakable");
-                    //foreach (GameObject b in bs)
-                    //{
-                    //    b.GetComponent<BreakableController>().GetRestored();
-                    //}
-
-
                     if (targetedSword != null) //if you're near a sword
                     {
                         if (holdingSword == 0)
@@ -229,14 +216,21 @@ public class PlayerController : MonoBehaviour
                 }
                 if(Input.GetButtonDown("buttonX"))
                 {
-                    if(holdingSword != 0 && targetedMeteor != null)
+                    if (holdingSword != 0)
                     {
-                        gui.TogglePrompt(false, "");
-                        StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
+                        if (targetedMeteor != null)
+                        {
+                            gui.TogglePrompt(false, "");
+                            StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
+                        }
+                        else if (!isAttacking)
+                        {
+                            StartCoroutine(Attack(0.5f));
+                        }
                     }
-                    else if (!isAttacking)
+                    else
                     {
-                        StartCoroutine(Attack(0.5f));
+                        Debug.Log("You have no sword!");
                     }
                 }
 
@@ -250,24 +244,24 @@ public class PlayerController : MonoBehaviour
         switch (swordID)
         {
             case 0: //NO SWORD
-                equippedSword.SetActive(false);
-                equippedSword2.SetActive(false);
-                equippedSword3.SetActive(false);
+                equippedZanbato.SetActive(false);
+                equippedBroadsword.SetActive(false);
+                equippedKatana.SetActive(false);
                 break;
             case 1:
-                equippedSword.SetActive(true);
-                equippedSword2.SetActive(false);
-                equippedSword3.SetActive(false);
+                equippedZanbato.SetActive(true);
+                equippedBroadsword.SetActive(false);
+                equippedKatana.SetActive(false);
                 break;
             case 2:
-                equippedSword.SetActive(false);
-                equippedSword2.SetActive(true);
-                equippedSword3.SetActive(false);
+                equippedZanbato.SetActive(false);
+                equippedBroadsword.SetActive(true);
+                equippedKatana.SetActive(false);
                 break;
             case 3:
-                equippedSword.SetActive(false);
-                equippedSword2.SetActive(false);
-                equippedSword3.SetActive(true);
+                equippedZanbato.SetActive(false);
+                equippedBroadsword.SetActive(false);
+                equippedKatana.SetActive(true);
                 break;
         }
     }
@@ -289,26 +283,50 @@ public class PlayerController : MonoBehaviour
         gui.UpdateHealthUI(playerHealth);
         gui.UpdateScoreUI(playerScore);
         gui.UpdateMeteorsDestroyed(meteorsDestroyed);
+        ResetBreakables();
 
         transform.position = startingPosition;
         avatarModelRotation = 0.0f;
         CameraController.SwitchToMainCamera();
     }
-
+    private void ResetBreakables()
+    {
+        GameObject[] breakables = GameObject.FindGameObjectsWithTag("Breakable");
+        foreach (GameObject b in breakables)
+        {
+            b.GetComponent<BreakableController>().GetRestored();
+        }
+    }
     private void TrackLowestMeteor()
     {
-        lowestMeteorPosition = 300.0f; //the current height at which meteors spawn
+        lowestMeteorPosition = 400.0f; //the current height at which meteors spawn
         GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
+        if (meteors.Length <= 0) gui.UpdateMeteorDirectionUI(0, 0);
+
         foreach (GameObject meteor in meteors)
         {
             if (meteor.transform.position.y < lowestMeteorPosition)
             {
                 meteor.GetComponent<MeteorController>().isLowest = true;
                 lowestMeteorPosition = meteor.transform.position.y;
+                meteorWorldOrigin.LookAt(new Vector3(meteor.transform.position.x, meteorWorldOrigin.transform.position.y, meteor.transform.position.z));
+                
+                float leftAngleDifference = 360 - (worldOrigin.eulerAngles.y - meteorWorldOrigin.eulerAngles.y);
+                if (meteorWorldOrigin.eulerAngles.y > worldOrigin.eulerAngles.y) leftAngleDifference = meteorWorldOrigin.eulerAngles.y - worldOrigin.eulerAngles.y;
+                float rightAngleDifference = 360 - leftAngleDifference;
+
+                if (leftAngleDifference < rightAngleDifference)
+                {
+                    gui.UpdateMeteorDirectionUI(-1, leftAngleDifference);
+                }
+                else
+                {
+                    gui.UpdateMeteorDirectionUI(1, rightAngleDifference);
+                }
             }
             else
             {
-                meteor.GetComponent<MeteorController>().isLowest = false;
+                meteor.GetComponent<MeteorController>().isLowest = false; //All other meteors is made false
             }
         }
 
@@ -321,35 +339,27 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log(collision.GetContact(0).normal);
         if(collision.GetContact(0).normal.y > 0.5f)
         {
             isGrounded = true;
             canDoubleJump = true;
+            touchedWallDirection = 0;
             previousWallJumpDirection = 0;
         }
         else if(collision.GetContact(0).normal.x + collision.GetContact(0).normal.z != 0)
         {
-
             touchedWallDirection = collision.GetContact(0).normal.x + collision.GetContact(0).normal.z;
             if (rb.velocity.y < 0)
             {
                 rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
             }
         }
-
-    }
-    private void OnCollisionStay(Collision collision)
-    {
-
-        foreach (ContactPoint Contact in collision.contacts) { LastContactPoint = Contact; }
     }
     private void OnCollisionExit(Collision collision)
     {
 //        isGrounded = false; CAN'T DO THIS BECAUSE IMPOSSIBLE TO TELL WHERE THE EXIT EVENT HAPPENED
         touchedWallDirection = 0;
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (playerState == 1)
@@ -398,8 +408,6 @@ public class PlayerController : MonoBehaviour
         myCollider.center = new Vector3(myCollider.center.x, myCollider.center.y - (myCollider.height / 2), myCollider.center.z);
 
         circularVelocity = Vector3.ClampMagnitude(circularVelocity * 5.0f, moveSpeed * 1.5f);
-
-        //horizonalVelocity *= 4;
         float currentDrag = horizontalDrag;
         dashing = true;        
         float counter = 0;
@@ -458,14 +466,17 @@ public class PlayerController : MonoBehaviour
         {
             if (!brokeSomething)
             {
-                RaycastHit hit;
-                if (Physics.Raycast(avatarModel.transform.position + new Vector3(0.0f, myCollider.height / 2, 0.0f), avatarModel.transform.forward, out hit, 2.0f))
+                if (Physics.Raycast(avatarModel.transform.position + new Vector3(0.0f, myCollider.height / 2, 0.0f), avatarModel.transform.forward, out RaycastHit hit, 2.0f))
                 {
-                    if (hit.transform.gameObject.CompareTag("Breakable"))
+                    if (hit.transform.gameObject.GetComponent<BreakableController>() != null)
                     {
-                        Debug.Log("BREAK");
-                        hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
-                        brokeSomething = true;
+                        if(!hit.transform.gameObject.GetComponent<BreakableController>().isBroken)
+                        {
+                            AddScore(50);
+                            hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
+                            brokeSomething = true;
+                        }
+                        
                     }
                 }
                 else
@@ -505,26 +516,28 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
-        playerState = 1;
-
         holdingSword = 0;
         EquipSword(0);
         gui.UpdateEquipmentUI("EQUIP: -");
-
-        gui.ScaleBlackBars(0.0f, 0.5f);
-
-        CameraController.SwitchToMainCamera();
+        
 
         if (timingGrade > 0)
         {
             meteorsDestroyed++;
             gui.UpdateMeteorsDestroyed(meteorsDestroyed);
             Destroy(meteor);
+            if (timingGrade >= 2)
+            {
+                ResetBreakables(); //Reset only if timing grade was EXCELLENT
+            }
         }
         else
         {
             TakeDamage(1);
         }
+        playerState = 1;
+        CameraController.SwitchToMainCamera();
+        gui.ScaleBlackBars(0.0f, 0.5f);
     }
 
     private void PickUpSword(GameObject pickedUpSword)
@@ -542,13 +555,13 @@ public class PlayerController : MonoBehaviour
         switch (holdingSword)
         {
             default:
-                swordToSpawn = sword1;
+                swordToSpawn = zanbato;
                 break;
             case 2:
-                swordToSpawn = sword2;
+                swordToSpawn = broadsword;
                 break;
             case 3:
-                swordToSpawn = sword3;
+                swordToSpawn = katana;
                 break;
         }
         holdingSword = pickedUpSword.GetComponent<SwordController>().swordID;
@@ -567,13 +580,13 @@ public class PlayerController : MonoBehaviour
         switch (holdingSword)
         {
             default:
-                swordToSpawn = sword1;
+                swordToSpawn = zanbato;
                 break;
             case 2:
-                swordToSpawn = sword2;
+                swordToSpawn = broadsword;
                 break;
             case 3:
-                swordToSpawn = sword3;
+                swordToSpawn = katana;
                 break;
         }
 
@@ -596,6 +609,7 @@ public class PlayerController : MonoBehaviour
     public void AddScore(int amount)
     {
         playerScore += amount;
+        gui.AnimateScore(amount);
         gui.UpdateScoreUI(playerScore);
     }
 
