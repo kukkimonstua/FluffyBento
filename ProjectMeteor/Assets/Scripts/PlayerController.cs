@@ -326,8 +326,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        
-
     }
     private void OnCollisionStay(Collision collision)
     {
@@ -336,19 +334,8 @@ public class PlayerController : MonoBehaviour
     }
     private void OnCollisionExit(Collision collision)
     {
-//        isGrounded = false;
+//        isGrounded = false; CAN'T DO THIS BECAUSE IMPOSSIBLE TO TELL WHERE THE EXIT EVENT HAPPENED
         touchedWallDirection = 0;
-
-        if (LastContactPoint.normal.y > 0.5f)
-        {
-            
-  //          Debug.Log("Left ground");
-        }
-        else if (LastContactPoint.normal.x + LastContactPoint.normal.z != 0)
-        {
-//            Debug.Log("NO TOUCH WALL");
-
-        }
     }
 
     private void OnTriggerEnter(Collider other)
