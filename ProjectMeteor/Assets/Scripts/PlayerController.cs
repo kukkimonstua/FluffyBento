@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("LINKS TO GUI")]
     public GameObject timingWindow;
+    public PauseMenu pauseMenu;
     public int timingGrade;
     public GUIController gui;
 
@@ -623,7 +624,11 @@ public class PlayerController : MonoBehaviour
     }
     private void UpdateAnimations()
     {
-        avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
+        if (pauseMenu.Paused() == false)
+        {
+            avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
+        }
+        
 
         if (Input.GetAxisRaw("Horizontal") < 0)
         {
