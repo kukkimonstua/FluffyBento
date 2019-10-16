@@ -7,6 +7,9 @@ public class GUIController : MonoBehaviour
 {
     // Start is called before the first frame update
     public Text promptText;
+    public Text playerActionText;
+    public Text scoreAdditionText;
+    private IEnumerator animatedScore;
 
     public Text healthText;
     public Text scoreText;
@@ -14,6 +17,7 @@ public class GUIController : MonoBehaviour
     public Text timerText;
     public Slider meteorLandingSlider;
     public Text meteorLandingDanger;
+    public Text meteorLandingTimer;
 
     public GameObject fullScreenBlack;
     public GameObject gameOverMenu;
@@ -21,6 +25,8 @@ public class GUIController : MonoBehaviour
 
     public GameObject topBlackBar;
     public GameObject bottomBlackBar;
+
+    public Text meteorDirectionMarker; //Text for now
 
     public Text tempEquipText; //Replace with icon eventually
 
@@ -34,9 +40,9 @@ public class GUIController : MonoBehaviour
         seconds = 0;
         milliseconds = 0;
     }
-
     void Start()
     {
+        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 0.0f);
         ResetTimer();
     }
 
@@ -58,11 +64,29 @@ public class GUIController : MonoBehaviour
             timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, (int)milliseconds);
         }        
     }
+    public void AnimateScore(int scoreToAdd)
+    {
+        scoreAdditionText.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+        scoreAdditionText.text = "+" + scoreToAdd;
+
+        //Vector2 originalPosition = scoreAdditionText.GetComponent<RectTransform>().position;
+        //scoreAdditionText.GetComponent<RectTransform>().position -= new Vector3(0.0f, 1.0f, 0.0f);
+
+        StopCoroutine(animatedScore);
+        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 1.0f); // create an IEnumerator object
+        StartCoroutine(animatedScore);
+    }
 
     public void TogglePrompt(bool toggle, string text)
     {
         promptText.gameObject.SetActive(toggle);
         promptText.text = text;
+    }
+
+    public void TogglePlayerActionText(bool toggle, string text)
+    {
+        playerActionText.gameObject.SetActive(toggle);
+        playerActionText.text = text;
     }
 
     public void ResetGUI()
@@ -79,7 +103,6 @@ public class GUIController : MonoBehaviour
 
         tempEquipText.text = "EQUIP: -";
         ResetTimer();
-
     }
 
     public void UpdateHealthUI(int newValue)
@@ -99,7 +122,23 @@ public class GUIController : MonoBehaviour
     {
         meteorCounterText.text = "Destroyed: " + newValue;
     }
-
+    public void UpdateMeteorDirectionUI(int direction, float distance)
+    {
+        if (direction == 0)
+        {
+            meteorDirectionMarker.text = "";
+        }
+        else if (direction < 0)
+        {
+            meteorDirectionMarker.text = ((int)distance / 2) + "\n<<<";
+        }
+        else
+        {
+            meteorDirectionMarker.text = ((int)distance / 2) + "\n>>>";
+        }
+        Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 0.3f, 0.0f);
+        meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition += drift;
+    }
     public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold, float sliderRange)
     {
         //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
@@ -107,10 +146,13 @@ public class GUIController : MonoBehaviour
         if(lowestMeteorPosition < meteorDeathThreshold + (sliderRange / 3) && PlayerController.playerState == 1)
         {
             meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
+            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+            meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "s";
         }
         else
         {
             meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         }
     }
 

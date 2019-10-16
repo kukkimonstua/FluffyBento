@@ -38,11 +38,13 @@ public class MeteorController : MonoBehaviour
         {
             if (isLowest)
             {
-                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 20.0f + (Mathf.Sin(Time.time * 10.0f) * 2.5f + 2.5f);
+                fallMarkerInstance.GetComponentInChildren<Light>().color = Color.yellow;
+                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 8.0f + (Mathf.Sin(Time.time * 9.0f) * 2.5f + 2.5f);
             }
             else
             {
-                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 5.0f + (Mathf.Sin(Time.time * 5.0f) * 2.5f + 2.5f);
+                fallMarkerInstance.GetComponentInChildren<Light>().color = Color.red;
+                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 4.0f + (Mathf.Sin(Time.time * 3.0f) * 2.5f + 2.5f);
             }
         }
         if (PlayerController.playerState == 1)
