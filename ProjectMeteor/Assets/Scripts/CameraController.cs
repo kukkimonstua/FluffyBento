@@ -34,13 +34,13 @@ public class CameraController : MonoBehaviour
     
     void LateUpdate()
     {
-        if (Input.GetButtonDown("buttonL"))
+        if (Input.GetButton("buttonL"))
         {
-            ChangeZoomLevel(zoomLevel, -1);
+            ChangeZoomLevel(zoomLevel, -0.5f);
         }
-        if (Input.GetButtonDown("buttonR"))
+        if (Input.GetButton("buttonR"))
         {
-            ChangeZoomLevel(zoomLevel, 1);
+            ChangeZoomLevel(zoomLevel, 0.5f);
         }
         switch (cameraState)
         {
@@ -106,9 +106,18 @@ public class CameraController : MonoBehaviour
         cameraState = 3;
     }
 
-    private void ChangeZoomLevel(float currentLevel, int direction)
+    private void ChangeZoomLevel(float currentLevel, float direction)
     {
-        if (!zooming)
+        if (direction < 0 && currentLevel > defaultZoomLevel * 0.5)
+        {
+            zoomLevel += direction;
+        }
+        if (direction > 0 && currentLevel < defaultZoomLevel * 2.0)
+        {
+            zoomLevel += direction;
+        }
+
+        if (!zooming && 0 == 1)
         {
             if (direction < 0 && currentLevel > defaultZoomLevel * 0.5)
             {
