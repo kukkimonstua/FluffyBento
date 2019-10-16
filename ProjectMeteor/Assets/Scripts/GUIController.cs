@@ -17,6 +17,7 @@ public class GUIController : MonoBehaviour
     public Text timerText;
     public Slider meteorLandingSlider;
     public Text meteorLandingDanger;
+    public Text meteorLandingTimer;
 
     public GameObject fullScreenBlack;
     public GameObject gameOverMenu;
@@ -145,10 +146,13 @@ public class GUIController : MonoBehaviour
         if(lowestMeteorPosition < meteorDeathThreshold + (sliderRange / 3) && PlayerController.playerState == 1)
         {
             meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
+            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+            meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "s";
         }
         else
         {
             meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         }
     }
 

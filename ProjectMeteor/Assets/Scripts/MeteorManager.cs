@@ -21,24 +21,14 @@ public class MeteorManager : MonoBehaviour
     public float spawnDelay = 5.0f;
     private static float meteorSpawnTimer;
 
-    
-
     void Start()
     {
         meteorSpawnTimer = 0.0f;
         worldRadius = PlayerController.worldRadius;
     }
 
-    public static void testLookMeteor(Transform lowMet)
-    {
-        //meteorWorldOrigin.
-    }
-
     void Update()
     {
-        
-
-
         fallSpeed = meteorSpeed;
 
         if (PlayerController.playerState == 1 && GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen)

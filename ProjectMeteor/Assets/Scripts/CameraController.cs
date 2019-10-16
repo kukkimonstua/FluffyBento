@@ -7,6 +7,9 @@ public class CameraController : MonoBehaviour
     public Transform player;
     public Transform playerOrigin;
     public float zoomLevel = 10.0f;
+    private float defaultZoomLevel;
+    private bool zooming;
+
     private float zoom;
     private float maxZoomLevel;
     private Vector3 cameraHeight;
@@ -23,12 +26,22 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        defaultZoomLevel = zoomLevel;
         tiltCameraValue = 0.0f;
         cameraState = 1;
+        zooming = false;
     }
-
+    
     void LateUpdate()
     {
+        if (Input.GetButtonDown("buttonL"))
+        {
+            ChangeZoomLevel(zoomLevel, -1);
+        }
+        if (Input.GetButtonDown("buttonR"))
+        {
+            ChangeZoomLevel(zoomLevel, 1);
+        }
         switch (cameraState)
         {
             case 3: //Victory or defeat.
@@ -91,6 +104,37 @@ public class CameraController : MonoBehaviour
         endingZoom = 0.0f;
         endingZoomTarget = 5.0f;
         cameraState = 3;
+    }
+
+    private void ChangeZoomLevel(float currentLevel, int direction)
+    {
+        if (!zooming)
+        {
+            if (direction < 0 && currentLevel > defaultZoomLevel * 0.5)
+            {
+                zooming = true;
+                StartCoroutine(ZoomToNewLevel(defaultZoomLevel / -2, 0.3f));
+            }
+            if (direction > 0 && currentLevel < defaultZoomLevel * 1.5)
+            {
+                zooming = true;
+                StartCoroutine(ZoomToNewLevel(defaultZoomLevel / 2, 0.3f));
+            }
+        }
+    }
+    private IEnumerator ZoomToNewLevel(float amount, float duration)
+    {
+        float counter = 0;
+        float startingZoomLevel = zoomLevel;
+        float targetZoomLevel = zoomLevel + amount;
+
+        while (counter < duration)
+        {
+            counter += Time.deltaTime;
+            zoomLevel = Mathf.Lerp(startingZoomLevel, targetZoomLevel, counter / duration);
+            yield return null;
+        }
+        zooming = false;
     }
 
     //THIS ISN'T WORKING YET
