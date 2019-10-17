@@ -63,6 +63,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("LINKS TO GUI")]
     public GameObject timingWindow;
+    public PauseMenu pauseMenu;
     public int timingGrade;
     public GUIController gui;
 
@@ -416,7 +417,7 @@ public class PlayerController : MonoBehaviour
             horizontalDrag = 0.9f;
             counter += Time.deltaTime;
 
-            if (counter * 1.5f > duration && horizontalDrag >= 0.9f)
+            if (counter * 2.0f > duration && horizontalDrag >= 0.9f)
             {
                 horizontalDrag = currentDrag / 2;
             }
@@ -460,6 +461,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator Attack(float duration)
     {
         isAttacking = true;
+        touchedWallDirection = 0;
         float counter = 0;
         bool brokeSomething = false;
         while (counter < duration)
@@ -515,14 +517,16 @@ public class PlayerController : MonoBehaviour
             fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
             yield return null;
         }
-
-        holdingSword = 0;
-        EquipSword(0);
-        gui.UpdateEquipmentUI("EQUIP: -");
-        
+        playerState = 1;
+        CameraController.SwitchToMainCamera();
+        gui.ScaleBlackBars(0.0f, 0.5f);
 
         if (timingGrade > 0)
         {
+            holdingSword = 0;
+            EquipSword(0);
+            gui.UpdateEquipmentUI("EQUIP: -");
+
             meteorsDestroyed++;
             gui.UpdateMeteorsDestroyed(meteorsDestroyed);
             Destroy(meteor);
@@ -535,9 +539,7 @@ public class PlayerController : MonoBehaviour
         {
             TakeDamage(1);
         }
-        playerState = 1;
-        CameraController.SwitchToMainCamera();
-        gui.ScaleBlackBars(0.0f, 0.5f);
+        
     }
 
     private void PickUpSword(GameObject pickedUpSword)
@@ -623,7 +625,11 @@ public class PlayerController : MonoBehaviour
     }
     private void UpdateAnimations()
     {
-        avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
+        if (pauseMenu.Paused() == false)
+        {
+            avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
+        }
+        
 
         if (Input.GetAxisRaw("Horizontal") < 0)
         {
