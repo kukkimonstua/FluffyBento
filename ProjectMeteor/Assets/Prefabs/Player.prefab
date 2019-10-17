@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520419b3360e5d644a2256ddd89e84d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 30
+  moveSpeed: 40
   horizontalDrag: 0.8
   jumpForce: 16
   fallMultiplier: 4
@@ -211,6 +211,7 @@ MonoBehaviour:
   equippedBroadsword: {fileID: 3254507698593628648}
   equippedKatana: {fileID: 5460849021228007669}
   timingWindow: {fileID: 0}
+  pauseMenu: {fileID: 0}
   timingGrade: 0
   gui: {fileID: 0}
 --- !u!1 &7665018962492833799
