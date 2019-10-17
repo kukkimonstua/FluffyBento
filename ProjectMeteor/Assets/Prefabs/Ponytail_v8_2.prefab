@@ -476,7 +476,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1512421578690332444}
-  m_LocalRotation: {x: 0.00006538719, y: 0.13917306, z: -0.00078458665, w: 0.99026775}
+  m_LocalRotation: {x: 0.00006538722, y: 0.13917306, z: -0.0007845869, w: 0.99026775}
   m_LocalPosition: {x: -0.027988328, y: -0.0016688497, z: 0.004365708}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1234,6 +1234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 450341564747484028}
   - component: {fileID: 7545196810131383814}
+  - component: {fileID: 4052522513062315601}
   m_Layer: 0
   m_Name: Ponytail_v8_2
   m_TagString: Untagged
@@ -1277,7 +1278,7 @@ Animator:
   m_GameObject: {fileID: 3487112795001518447}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4faf99937856e74419f95b840b15aae5, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 12f336b92b621b34487319520a4ec323, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1286,6 +1287,193 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4052522513062315601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3487112795001518447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 246455474a0d74a4291b3cedc896ebdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bonePaths:
+  - 
+  - Belt
+  - Body
+  - Cuff
+  - Face
+  - Hair
+  - P_Reference
+  - P_Reference/P_Hips
+  - P_Reference/P_Hips/P_LeftUpLeg
+  - P_Reference/P_Hips/P_LeftUpLeg/P_LeftLeg
+  - P_Reference/P_Hips/P_LeftUpLeg/P_LeftLeg/P_LeftFoot
+  - P_Reference/P_Hips/P_LeftUpLeg/P_LeftLeg/P_LeftFoot/P_LeftToeBase
+  - P_Reference/P_Hips/P_RightUpLeg
+  - P_Reference/P_Hips/P_RightUpLeg/P_RightLeg
+  - P_Reference/P_Hips/P_RightUpLeg/P_RightLeg/P_RightFoot
+  - P_Reference/P_Hips/P_RightUpLeg/P_RightLeg/P_RightFoot/P_RightToeBase
+  - P_Reference/P_Hips/P_Spine
+  - P_Reference/P_Hips/P_Spine/P_Spine1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandIndex1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandIndex1/P_LeftHandIndex2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandIndex1/P_LeftHandIndex2/P_LeftHandIndex3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandIndex1/P_LeftHandIndex2/P_LeftHandIndex3/P_LeftHandIndex4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandMiddle1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandMiddle1/P_LeftHandMiddle2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandMiddle1/P_LeftHandMiddle2/P_LeftHandMiddle3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandMiddle1/P_LeftHandMiddle2/P_LeftHandMiddle3/P_LeftHandMiddle4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandPinky1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandPinky1/P_LeftHandPinky2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandPinky1/P_LeftHandPinky2/P_LeftHandPinky3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandPinky1/P_LeftHandPinky2/P_LeftHandPinky3/P_LeftHandPinky4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandRing1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandRing1/P_LeftHandRing2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandRing1/P_LeftHandRing2/P_LeftHandRing3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandRing1/P_LeftHandRing2/P_LeftHandRing3/P_LeftHandRing4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandThumb1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandThumb1/P_LeftHandThumb2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandThumb1/P_LeftHandThumb2/P_LeftHandThumb3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_LeftShoulder/P_LeftArm/P_LeftForeArm/P_LeftHand/P_LeftHandThumb1/P_LeftHandThumb2/P_LeftHandThumb3/P_LeftHandThumb4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_Neck
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_Neck/P_Head
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandIndex1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandIndex1/P_RightHandIndex2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandIndex1/P_RightHandIndex2/P_RightHandIndex3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandIndex1/P_RightHandIndex2/P_RightHandIndex3/P_RightHandIndex4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandMiddle1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandMiddle1/P_RightHandMiddle2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandMiddle1/P_RightHandMiddle2/P_RightHandMiddle3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandMiddle1/P_RightHandMiddle2/P_RightHandMiddle3/P_RightHandMiddle4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandPinky1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandPinky1/P_RightHandPinky2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandPinky1/P_RightHandPinky2/P_RightHandPinky3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandPinky1/P_RightHandPinky2/P_RightHandPinky3/P_RightHandPinky4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandRing1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandRing1/P_RightHandRing2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandRing1/P_RightHandRing2/P_RightHandRing3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandRing1/P_RightHandRing2/P_RightHandRing3/P_RightHandRing4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandThumb1
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandThumb1/P_RightHandThumb2
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandThumb1/P_RightHandThumb2/P_RightHandThumb3
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/P_RightHandThumb1/P_RightHandThumb2/P_RightHandThumb3/P_RightHandThumb4
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerZanbato
+    (1)
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerZanbato
+    (1)/Sword_Mesh
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerZanbato
+    (1)/Scabbard_Mesh
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerZanbato
+    (1)/TestParticle System
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerBroadsword
+    (1)
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerBroadsword
+    (1)/Sword_Mesh
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerBroadsword
+    (1)/Scabbard_Mesh
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerBroadsword
+    (1)/TestParticle System (1)
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerKatana
+    (1)
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerKatana
+    (1)/Sword_Mesh
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerKatana
+    (1)/Scabbard_Mesh
+  - P_Reference/P_Hips/P_Spine/P_Spine1/P_Spine2/P_RightShoulder/P_RightArm/P_RightForeArm/P_RightHand/PlayerKatana
+    (1)/TestParticle System (1)
+  - Pants
+  - Robe
+  - Robe_2
+  - Robe_3
+  - Sandal_L
+  - Sandal_R
+  showBones: 0000000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000002b0000002c0000002d0000002e0000002f00000030000000
+  foldoutBones: 1b00000013000000390000003e0000004100000016000000190000004300000012000000170000000e000000360000002900000025000000150000000d000000350000001d0000000a0000002d000000370000002e00000027000000000000000700000010000000140000002b0000002f0000003b0000001100000009000000180000001f0000003a000000420000001c0000003f0000003d000000200000000c00000033000000300000002400000021000000080000003100000028000000230000000600000032000000
+  mirrorBones: ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0c0000000d0000000e0000000f00000008000000090000000a0000000b000000ffffffffffffffffffffffff2d0000002e0000002f000000300000003100000032000000330000003400000035000000360000003700000038000000390000003a0000003b0000003c0000003d0000003e0000003f0000004000000041000000420000004300000044000000ffffffffffffffff130000001400000015000000160000001700000018000000190000001a0000001b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff5600000055000000
+  mirrorBlendShape: []
+  animatorIkData:
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    target: {fileID: 0}
+    offset: {x: 0, y: 0, z: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    target: {fileID: 0}
+    offset: {x: 0, y: 0, z: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    target: {fileID: 0}
+    offset: {x: 0, y: 0, z: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    target: {fileID: 0}
+    offset: {x: 0, y: 0, z: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+  - enable: 0
+    _fixed: 0
+    autoRotation: 0
+    spaceType: 0
+    parent: {fileID: 0}
+    position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
+    target: {fileID: 0}
+    offset: {x: 0, y: 0, z: 0}
+    headWeight: 1
+    eyesWeight: 0
+    swivelRotation: 0
+    swivelPosition: {x: 0, y: 0, z: 0}
+  originalIkData: []
+  selectionData: []
+  lastSelectAnimationClip: {fileID: 7400000, guid: 1eb7e59ea09587a49a0132a1eab15cb3,
+    type: 2}
+  blendShapeList: []
 --- !u!1 &3748116682297036031
 GameObject:
   m_ObjectHideFlags: 0
@@ -2615,6 +2803,9 @@ Transform:
   - {fileID: 8734599239545872527}
   - {fileID: 5374306709305201123}
   - {fileID: 9068745170128025167}
+  - {fileID: 5943810515388135929}
+  - {fileID: 3739546733085724468}
+  - {fileID: 7025791165957457376}
   m_Father: {fileID: 8742765361085101576}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2887,8 +3078,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8543853937698674200}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1557125143419697220}
@@ -3070,3 +3261,243 @@ Transform:
   m_Father: {fileID: 4846886392252568550}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &3739546733085618402
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6842744987112617382}
+    m_Modifications:
+    - target: {fileID: 149494, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_Name
+      value: PlayerBroadsword (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.034
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.265
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.99864155
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.017420383
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.022563387
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.04361816
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 5.043
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -182.50499
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -178.11201
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.009999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.009999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.010000001
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 10dc4477f0ef9a24387fdbc810e2eee8, type: 3}
+--- !u!4 &3739546733085724468 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 425942, guid: 10dc4477f0ef9a24387fdbc810e2eee8,
+    type: 3}
+  m_PrefabInstance: {fileID: 3739546733085618402}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5943810515388499503
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6842744987112617382}
+    m_Modifications:
+    - target: {fileID: 149494, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_Name
+      value: PlayerZanbato (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.034
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.265
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.99864155
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.017420383
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.022563387
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.04361816
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 5.043
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -182.50499
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -178.11201
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.009999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.009999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.010000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1233770635757882934, guid: 79aa677bbe2b9a74b91bad978448ce88,
+        type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1233770635757882934, guid: 79aa677bbe2b9a74b91bad978448ce88,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1233770635757882934, guid: 79aa677bbe2b9a74b91bad978448ce88,
+        type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 0.0001
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 79aa677bbe2b9a74b91bad978448ce88, type: 3}
+--- !u!4 &5943810515388135929 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 425942, guid: 79aa677bbe2b9a74b91bad978448ce88,
+    type: 3}
+  m_PrefabInstance: {fileID: 5943810515388499503}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7025791165957847606
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6842744987112617382}
+    m_Modifications:
+    - target: {fileID: 149494, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_Name
+      value: PlayerKatana (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.034
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.265
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.99864155
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.017420383
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.022563387
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.04361816
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 5.043
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -182.50499
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -178.11201
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.009999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.009999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.010000001
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cf35ff7dd83adc944befd55e18e83271, type: 3}
+--- !u!4 &7025791165957457376 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 425942, guid: cf35ff7dd83adc944befd55e18e83271,
+    type: 3}
+  m_PrefabInstance: {fileID: 7025791165957847606}
+  m_PrefabAsset: {fileID: 0}
