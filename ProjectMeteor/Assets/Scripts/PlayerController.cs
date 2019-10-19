@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private CapsuleCollider myCollider;
 
-    public float moveSpeed = 5.0f;
+    public float moveSpeed = 40.0f;
+    private float defaultMoveSpeed;
     public float horizontalDrag = 0.8f;
     public float jumpForce = 10.0f;
     public float fallMultiplier = 2.5f;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public float touchedWallDirection; //you're debugging.
     private int previousWallJumpDirection;
     private int holdingSword; //0 is nothing, 1 - 3 are the different types
+    private bool prone;
 
     [Header("GAME SETTINGS")]
     public static int playerState; //1 = running, 2 = attacking, 3 = game over
@@ -73,6 +75,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         myCollider = GetComponent<CapsuleCollider>();
         startingPosition = transform.position;
+        defaultMoveSpeed = moveSpeed;
         ResetLevel();
     }
     void Update()
@@ -96,10 +99,14 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = Vector3.up * 0;
                 touchedWallDirection = 0;
                 isGrounded = false;
+                canDoubleJump = false;
                 if (Input.GetButtonDown("buttonX") && !TimingWindow.gotPressed)
                 {
                     TimingWindow.gotPressed = true;
                 }
+
+                gui.TogglePrompt(false, "");
+                gui.TogglePlayerActionText(false, "");
                 break;
 
             default:
@@ -111,12 +118,9 @@ public class PlayerController : MonoBehaviour
 
                 TrackLowestMeteor();
 
-                //worldOrigin.Rotate(0.0f, Input.GetAxisRaw("Horizontal") * -moveSpeed / 100, 0.0f);
                 worldOrigin.LookAt(new Vector3(transform.position.x, worldOrigin.position.y, transform.position.z));
                 transform.rotation = playerOrigin.rotation = worldOrigin.rotation;
-
                 playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * worldRadius);
-
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
                 var moveDrag = horizontalDrag;
@@ -124,41 +128,21 @@ public class PlayerController : MonoBehaviour
                 {
                     moveDrag /= 4;
                 }
+                if (holdingSword == 0)
+                {
+                    moveSpeed = defaultMoveSpeed * 1.5f;
+                }
+                else
+                {
+                    moveSpeed = defaultMoveSpeed;
+                }
 
                 if (touchedWallDirection != 0 || isDashing) circularVelocity -= transform.right * Input.GetAxisRaw("Horizontal") * moveSpeed / 40;
                 else circularVelocity -= transform.right * Input.GetAxisRaw("Horizontal") * moveSpeed / 8;
                 circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed * 2) * moveDrag;
 
-                
+                if (prone) circularVelocity = new Vector3(0.0f, circularVelocity.y, 0.0f);
 
-                if (Input.GetButtonDown("Jump"))
-                {
-                    if (!isGrounded)
-                    {
-                        if (touchedWallDirection != 0)
-                        {
-                            WallJump(touchedWallDirection);
-                        }
-                        else if (canDoubleJump)
-                        {
-                            canDoubleJump = false;
-                            rb.velocity = Vector3.up * jumpForce;
-                        }
-                    }
-                    else
-                    {
-                        isGrounded = false;
-                        rb.velocity = Vector3.up * jumpForce;
-                    }
-                    
-                }
-                if(Input.GetButtonDown("buttonB"))
-                {
-                    if (!isDashing && Input.GetAxisRaw("Horizontal") != 0)
-                    {
-                        StartCoroutine(StartDashing(0.4f));
-                    }
-                }
                 var fallM = fallMultiplier;
                 if (touchedWallDirection != 0 && rb.velocity.y < 0)
                 {
@@ -185,26 +169,75 @@ public class PlayerController : MonoBehaviour
                 {
                     transform.position = lowestPos;
                 }
-                
-                if (Input.GetButtonDown("buttonY"))
-                {
-                    if (targetedSword != null) //if you're near a sword
+                //Button controls work when NOT prone.
+                if(!prone) { 
+                    if (Input.GetButtonDown("Jump"))
                     {
-                        if (holdingSword == 0)
+                        if (!isGrounded)
                         {
-                            PickUpSword(targetedSword);
+                            if (touchedWallDirection != 0)
+                            {
+                                WallJump(touchedWallDirection);
+                            }
+                            else if (canDoubleJump)
+                            {
+                                canDoubleJump = false;
+                                rb.velocity = Vector3.up * jumpForce;
+                            }
                         }
                         else
                         {
-                            SwitchSwords(targetedSword);
+                            isGrounded = false;
+                            rb.velocity = Vector3.up * jumpForce;
+                        }
+                    
+                    }
+                    if(Input.GetButtonDown("buttonB"))
+                    {
+                        if (!isDashing && Input.GetAxisRaw("Horizontal") != 0)
+                        {
+                            StartCoroutine(StartDashing(0.4f));
                         }
                     }
-                    else if (holdingSword != 0)
+                    if (Input.GetButtonDown("buttonY"))
                     {
-                        DropSword();
+                        if (targetedSword != null) //if you're near a sword
+                        {
+                            if (holdingSword == 0)
+                            {
+                                PickUpSword(targetedSword);
+                            }
+                            else
+                            {
+                                SwitchSwords(targetedSword);
+                            }
+                        }
+                        else if (holdingSword != 0)
+                        {
+                            DropSword();
+                        }
+                    }
+                    if(Input.GetButtonDown("buttonX"))
+                    {
+                        if (holdingSword != 0)
+                        {
+                            if (targetedMeteor != null)
+                            {
+                                StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
+                            }
+                            else if (!isAttacking)
+                            {
+                                StartCoroutine(Attack(0.5f));
+                            }
+                        }
+                        else
+                        {
+                            Debug.Log("You have no sword!");
+                        }
                     }
                 }
-                if (targetedMeteor != null)
+
+                if (targetedMeteor != null && !prone)
                 {
                     if (holdingSword == 0)
                     {
@@ -215,26 +248,6 @@ public class PlayerController : MonoBehaviour
                         gui.TogglePrompt(true, "(X)\nAttack Meteor");
                     }
                 }
-                if(Input.GetButtonDown("buttonX"))
-                {
-                    if (holdingSword != 0)
-                    {
-                        if (targetedMeteor != null)
-                        {
-                            gui.TogglePrompt(false, "");
-                            StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
-                        }
-                        else if (!isAttacking)
-                        {
-                            StartCoroutine(Attack(0.5f));
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("You have no sword!");
-                    }
-                }
-
                 UpdateAnimations();
                 break;
         }
@@ -275,6 +288,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = false;
         canDoubleJump = false;
         touchedWallDirection = 0;
+        prone = false;
 
         playerHealth = playerMaxHealth;
         playerScore = 0;
@@ -342,6 +356,7 @@ public class PlayerController : MonoBehaviour
     {
         if(collision.GetContact(0).normal.y > 0.5f)
         {
+            prone = false;
             isGrounded = true;
             canDoubleJump = true;
             touchedWallDirection = 0;
@@ -421,6 +436,10 @@ public class PlayerController : MonoBehaviour
             {
                 horizontalDrag = currentDrag / 2;
             }
+            Debug.Log(Mathf.Abs(rb.velocity.y));
+            if (Mathf.Abs(rb.velocity.y) > 10.0f) {
+                rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y / 2.0f, rb.velocity.z);
+            }
             yield return null;
         }
         dashing = false;
@@ -499,6 +518,7 @@ public class PlayerController : MonoBehaviour
         {
             yield break; ///exit if this is still running
         }
+
         playerState = 2;
         gui.ScaleBlackBars(50.0f, 0.5f);
         
@@ -530,16 +550,19 @@ public class PlayerController : MonoBehaviour
             meteorsDestroyed++;
             gui.UpdateMeteorsDestroyed(meteorsDestroyed);
             Destroy(meteor);
+            ResetBreakables();
             if (timingGrade >= 2)
             {
-                ResetBreakables(); //Reset only if timing grade was EXCELLENT
+                //ResetBreakables(); //Reset only if timing grade was EXCELLENT
             }
         }
         else
         {
             TakeDamage(1);
+            prone = true;
+
         }
-        
+
     }
 
     private void PickUpSword(GameObject pickedUpSword)
