@@ -251,7 +251,7 @@ public class PlayerController : MonoBehaviour
                     {
                         if(!CheckForCeiling())
                         {
-                            gui.TogglePrompt(true, "(X)\nAttack Meteor");
+                            gui.TogglePrompt(true, "Attack Meteor", "buttonsXA");
                         }
                         else
                         {
@@ -414,11 +414,11 @@ public class PlayerController : MonoBehaviour
                 targetedSword = other.gameObject;
                 if(holdingSword == 0)
                 {
-                    gui.TogglePlayerActionText(true, "(Y) Equip");
+                    gui.TogglePlayerActionText(true, "Equip");
                 }
                 else
                 {
-                    gui.TogglePlayerActionText(true, "(Y) Swap");
+                    gui.TogglePlayerActionText(true, "Swap");
                 }
             }            
         }            
@@ -565,6 +565,8 @@ public class PlayerController : MonoBehaviour
 
         if (timingGrade > 0)
         {
+            AddScore(timingGrade * 100);
+
             holdingSword = 0;
             EquipSword(0);
             gui.UpdateEquipmentUI("EQUIP: -");
@@ -646,6 +648,7 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int amount)
     {
         playerHealth -= amount;
+        gui.FlashRed();
         gui.UpdateHealthUI(playerHealth);
 
         if (playerHealth <= 0)

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GUIController : MonoBehaviour
 {
+    public Sprite buttonX;
+    public Sprite buttonsXA;
     // Start is called before the first frame update
     public Text promptText;
     public Text playerActionText;
@@ -20,6 +22,7 @@ public class GUIController : MonoBehaviour
     public Text meteorLandingTimer;
 
     public GameObject fullScreenBlack;
+    public GameObject fullScreenRed;
     public GameObject gameOverMenu;
     public static bool menuUnlocked;
 
@@ -81,6 +84,27 @@ public class GUIController : MonoBehaviour
     {
         promptText.gameObject.SetActive(toggle);
         promptText.text = text;
+        if (promptText.gameObject.transform.GetChild(0).GetComponent<Image>() != null)
+        {
+            promptText.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        }
+    }
+    public void TogglePrompt(bool toggle, string text, string buttonPrompt)
+    {
+        promptText.gameObject.SetActive(toggle);
+        promptText.text = text;
+        if (promptText.gameObject.transform.GetChild(0).GetComponent<Image>() != null)
+        {
+            promptText.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            if (buttonPrompt == "buttonX")
+            {
+                promptText.gameObject.transform.GetChild(0).GetComponent<Image>().sprite = buttonX;
+            }
+            if (buttonPrompt == "buttonsXA")
+            {
+                promptText.gameObject.transform.GetChild(0).GetComponent<Image>().sprite = buttonsXA;
+            }
+        }
     }
 
     public void TogglePlayerActionText(bool toggle, string text)
@@ -97,12 +121,24 @@ public class GUIController : MonoBehaviour
 
         gameOverMenu.SetActive(true); //May be redundant in the future
         gameOverMenu.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        fullScreenRed.SetActive(true); //May be redundant in the future
+        fullScreenRed.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         fullScreenBlack.SetActive(true); //May be redundant in the future
         fullScreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
         StartCoroutine(FadeUI(fullScreenBlack, 0.0f, 3.0f));
 
         tempEquipText.text = "EQUIP: -";
         ResetTimer();
+    }
+    public void FlashRed()
+    {
+        StartCoroutine(StartFlashRed());
+    }
+    private IEnumerator StartFlashRed()
+    {
+        yield return StartCoroutine(FadeUI(fullScreenRed, 1.0f, 0.15f));
+        yield return StartCoroutine(FadeUI(fullScreenRed, 0.0f, 0.15f));
+        fullScreenRed.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
     }
 
     public void UpdateHealthUI(int newValue)
@@ -147,7 +183,7 @@ public class GUIController : MonoBehaviour
         {
             meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
             meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
-            meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "s";
+            meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "";
         }
         else
         {
@@ -164,6 +200,7 @@ public class GUIController : MonoBehaviour
             uiElement.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Lerp(alpha, alphaTarget, t));
             yield return null;
         }
+        uiElement.GetComponent<CanvasRenderer>().SetAlpha(alphaTarget);
     }
 
     public void ScaleBlackBars(float heightTarget, float duration)
