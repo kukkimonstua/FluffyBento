@@ -11,7 +11,7 @@ public class GUIController : MonoBehaviour
     public Text scoreAdditionText;
     private IEnumerator animatedScore;
 
-    public Text healthText;
+    public HealthDisplay healthDisplay;
     public Text scoreText;
     public Text meteorCounterText;
     public Text timerText;
@@ -107,7 +107,7 @@ public class GUIController : MonoBehaviour
 
     public void UpdateHealthUI(int newValue)
     {
-        healthText.text = "Health: " + newValue;
+        healthDisplay.UpdateDisplay(newValue);
     }
     public void UpdateScoreUI(int newValue)
     {

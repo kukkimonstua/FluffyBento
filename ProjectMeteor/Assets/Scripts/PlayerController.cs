@@ -217,11 +217,12 @@ public class PlayerController : MonoBehaviour
                             DropSword();
                         }
                     }
+                    
                     if(Input.GetButtonDown("buttonX"))
                     {
                         if (holdingSword != 0)
                         {
-                            if (targetedMeteor != null)
+                            if (targetedMeteor != null && !CheckForCeiling())
                             {
                                 StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
                             }
@@ -236,7 +237,10 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-
+                if (Input.GetButton("buttonX") && Input.GetButton("Jump"))
+                {
+                    Debug.Log("X + A");
+                }
                 if (targetedMeteor != null && !prone)
                 {
                     if (holdingSword == 0)
@@ -245,7 +249,14 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        gui.TogglePrompt(true, "(X)\nAttack Meteor");
+                        if(!CheckForCeiling())
+                        {
+                            gui.TogglePrompt(true, "(X)\nAttack Meteor");
+                        }
+                        else
+                        {
+                            gui.TogglePrompt(true, "There's a ceiling!");
+                        }
                     }
                 }
                 UpdateAnimations();
@@ -253,6 +264,18 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+    private bool CheckForCeiling()
+    {
+        if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 300.0f))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     private void EquipSword(int swordID)
     {
         switch (swordID)
@@ -436,7 +459,6 @@ public class PlayerController : MonoBehaviour
             {
                 horizontalDrag = currentDrag / 2;
             }
-            Debug.Log(Mathf.Abs(rb.velocity.y));
             if (Mathf.Abs(rb.velocity.y) > 10.0f) {
                 rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y / 2.0f, rb.velocity.z);
             }
