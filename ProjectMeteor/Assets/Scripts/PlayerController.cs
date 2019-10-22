@@ -106,14 +106,17 @@ public class PlayerController : MonoBehaviour
                 }
 
                 gui.TogglePrompt(false, "");
-                gui.TogglePlayerActionText(false, "");
+                gui.HidePlayerActionText();
                 break;
 
             default:
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    //ResetLevel();
                     TakeDamage(1); //USE THIS TO TEST DAMAGE TAKING
+                }
+                if (Input.GetKeyDown(KeyCode.G))
+                {
+                    AddScore(transform.position, 10); //USE THIS TO TEST DAMAGE TAKING
                 }
 
                 TrackLowestMeteor();
@@ -316,7 +319,7 @@ public class PlayerController : MonoBehaviour
         playerHealth = playerMaxHealth;
         playerScore = 0;
         meteorsDestroyed = 0;
-        gui.TogglePlayerActionText(false, "");
+        gui.HidePlayerActionText();
         gui.ResetGUI();
         gui.UpdateHealthUI(playerHealth);
         gui.UpdateScoreUI(playerScore);
@@ -339,7 +342,15 @@ public class PlayerController : MonoBehaviour
     {
         lowestMeteorPosition = 400.0f; //the current height at which meteors spawn
         GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
-        if (meteors.Length <= 0) gui.UpdateMeteorDirectionUI(0, 0);
+        if (meteors.Length <= 0)
+        {
+            gui.lowestMeteorMarker.gameObject.SetActive(false);
+            gui.UpdateMeteorDirectionUI(0, 0, new Vector3());
+        }
+        else
+        {
+            gui.lowestMeteorMarker.gameObject.SetActive(true);
+        }
 
         foreach (GameObject meteor in meteors)
         {
@@ -355,11 +366,11 @@ public class PlayerController : MonoBehaviour
 
                 if (leftAngleDifference < rightAngleDifference)
                 {
-                    gui.UpdateMeteorDirectionUI(-1, leftAngleDifference);
+                    gui.UpdateMeteorDirectionUI(-1, leftAngleDifference, meteor.transform.position);
                 }
                 else
                 {
-                    gui.UpdateMeteorDirectionUI(1, rightAngleDifference);
+                    gui.UpdateMeteorDirectionUI(1, rightAngleDifference, meteor.transform.position);
                 }
             }
             else
@@ -414,11 +425,11 @@ public class PlayerController : MonoBehaviour
                 targetedSword = other.gameObject;
                 if(holdingSword == 0)
                 {
-                    gui.TogglePlayerActionText(true, "Equip");
+                    gui.TogglePlayerActionText(targetedSword, holdingSword);
                 }
                 else
                 {
-                    gui.TogglePlayerActionText(true, "Swap");
+                    gui.TogglePlayerActionText(targetedSword, holdingSword);
                 }
             }            
         }            
@@ -436,7 +447,7 @@ public class PlayerController : MonoBehaviour
             if (other.gameObject.CompareTag("Sword"))
             {
                 targetedSword = null;
-                gui.TogglePlayerActionText(false, "");
+                gui.HidePlayerActionText();
             }
         }        
     }
@@ -515,7 +526,7 @@ public class PlayerController : MonoBehaviour
                     {
                         if(!hit.transform.gameObject.GetComponent<BreakableController>().isBroken)
                         {
-                            AddScore(50);
+                            AddScore(hit.transform.position, 50);
                             hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
                             brokeSomething = true;
                         }
@@ -565,7 +576,7 @@ public class PlayerController : MonoBehaviour
 
         if (timingGrade > 0)
         {
-            AddScore(timingGrade * 100);
+            
 
             holdingSword = 0;
             EquipSword(0);
@@ -574,10 +585,16 @@ public class PlayerController : MonoBehaviour
             meteorsDestroyed++;
             gui.UpdateMeteorsDestroyed(meteorsDestroyed);
             Destroy(meteor);
+
             ResetBreakables();
             if (timingGrade >= 2)
             {
                 //ResetBreakables(); //Reset only if timing grade was EXCELLENT
+                AddScore(transform.position, 300);
+            }
+            else
+            {
+                AddScore(transform.position, 100);
             }
         }
         else
@@ -591,7 +608,7 @@ public class PlayerController : MonoBehaviour
 
     private void PickUpSword(GameObject pickedUpSword)
     {
-        gui.TogglePlayerActionText(false, "");
+        gui.HidePlayerActionText();
         holdingSword = pickedUpSword.GetComponent<SwordController>().swordID;
         EquipSword(holdingSword);
         gui.UpdateEquipmentUI("EQUIP: Sword " + holdingSword);
@@ -616,11 +633,10 @@ public class PlayerController : MonoBehaviour
         holdingSword = pickedUpSword.GetComponent<SwordController>().swordID;
         EquipSword(holdingSword);
         gui.UpdateEquipmentUI("EQUIP: Sword " + holdingSword);
+        gui.HidePlayerActionText();
 
         Destroy(pickedUpSword);
-
         Instantiate(swordToSpawn, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
-        gui.TogglePlayerActionText(false, "");
     }
 
     private void DropSword()
@@ -656,10 +672,10 @@ public class PlayerController : MonoBehaviour
             GameOver(); //From health loss
         }
     }
-    public void AddScore(int amount)
+    public void AddScore(Vector3 floatPosition, int amount)
     {
         playerScore += amount;
-        gui.AnimateScore(amount);
+        gui.AnimateScore(floatPosition, amount);
         gui.UpdateScoreUI(playerScore);
     }
 
@@ -667,7 +683,7 @@ public class PlayerController : MonoBehaviour
     {
         playerState = 3;
         CameraController.SwitchToEndingCamera();
-        gui.TogglePlayerActionText(false, "");
+        gui.HidePlayerActionText();
         gui.TogglePrompt(false, "");
         gui.ShowGameOverUI(3.0f, 2.0f); //This ends with unlocking the menu        
     }

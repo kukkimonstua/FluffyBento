@@ -30,7 +30,6 @@ public class HealthDisplay : MonoBehaviour
         float counter = 0.0f;
         float imageWidth = affectedHeart.GetComponent<RectTransform>().rect.width;
         float imageHeight = affectedHeart.GetComponent<RectTransform>().rect.height;
-        Debug.Log(imageWidth);
 
         while (counter < halfDuration)
         {

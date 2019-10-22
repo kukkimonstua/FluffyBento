@@ -12,6 +12,10 @@ public class GUIController : MonoBehaviour
     public Text playerActionText;
     public Text scoreAdditionText;
     private IEnumerator animatedScore;
+    public Transform actionTextClamp;
+    public Transform scoreTextClamp;
+    public Transform meteorTestClamp;
+    public Image lowestMeteorMarker;
 
     public HealthDisplay healthDisplay;
     public Text scoreText;
@@ -30,6 +34,7 @@ public class GUIController : MonoBehaviour
     public GameObject bottomBlackBar;
 
     public Text meteorDirectionMarker; //Text for now
+    private Vector2 meteorDirectionMarkerOriginalPosition;
 
     public Text tempEquipText; //Replace with icon eventually
 
@@ -45,6 +50,7 @@ public class GUIController : MonoBehaviour
     }
     void Start()
     {
+        meteorDirectionMarkerOriginalPosition = meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition;
         animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 0.0f);
         ResetTimer();
     }
@@ -67,8 +73,9 @@ public class GUIController : MonoBehaviour
             timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, (int)milliseconds);
         }        
     }
-    public void AnimateScore(int scoreToAdd)
+    public void AnimateScore(Vector3 floatPosition, int scoreToAdd)
     {
+        scoreTextClamp.position = floatPosition;
         scoreAdditionText.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
         scoreAdditionText.text = "+" + scoreToAdd;
 
@@ -107,10 +114,30 @@ public class GUIController : MonoBehaviour
         }
     }
 
-    public void TogglePlayerActionText(bool toggle, string text)
+    public void TogglePlayerActionText(GameObject targetedSword, int holdingSword)
     {
-        playerActionText.gameObject.SetActive(toggle);
-        playerActionText.text = text;
+        if (targetedSword != null)
+        {
+            if (holdingSword == 0)
+            {
+                playerActionText.text = "Equip";
+            }
+            else
+            {
+                playerActionText.text = "Swap";
+            }
+            actionTextClamp.position = targetedSword.transform.position;
+            playerActionText.gameObject.SetActive(true);
+        } 
+        else
+        {
+            HidePlayerActionText();
+        }
+    }
+    public void HidePlayerActionText()
+    {
+        playerActionText.gameObject.SetActive(false);
+        playerActionText.text = "";
     }
 
     public void ResetGUI()
@@ -158,7 +185,7 @@ public class GUIController : MonoBehaviour
     {
         meteorCounterText.text = "Destroyed: " + newValue;
     }
-    public void UpdateMeteorDirectionUI(int direction, float distance)
+    public void UpdateMeteorDirectionUI(int direction, float distance, Vector3 meteorPosition)
     {
         if (direction == 0)
         {
@@ -172,8 +199,11 @@ public class GUIController : MonoBehaviour
         {
             meteorDirectionMarker.text = ((int)distance / 2) + "\n>>>";
         }
-        Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 0.3f, 0.0f);
-        meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition += drift;
+
+        Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 5.0f, 0.0f);
+        meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
+
+        meteorTestClamp.position = meteorPosition + new Vector3(0.0f, 75.0f, 0.0f); //75 is current radius of meteor
     }
     public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold, float sliderRange)
     {

@@ -25,6 +25,9 @@ public class TimingWindow : MonoBehaviour
 
     public Sprite buttonsNone;
     public Sprite buttonX;
+    public Sprite buttonA;
+    public Sprite buttonB;
+    public Sprite buttonY;
 
     void Start()
     {
@@ -56,6 +59,9 @@ public class TimingWindow : MonoBehaviour
         float alphaValue = 0.2f;
         FadeTimingWindowUI(alphaValue);
         StartCoroutine(ShowFeedbackText(true, 1.0f));
+
+        //int buttonRouletteIndex = 0;
+        //float buttonRouletteTimer = 0.0f;
 
         pressable = false;
         while (counter < duration)
@@ -98,6 +104,35 @@ public class TimingWindow : MonoBehaviour
                         feedbackText = "Miss...";
                     }                    
                 }
+            }
+            else
+            {
+                /*
+                buttonRouletteTimer += Time.deltaTime;
+                if (buttonRouletteTimer > 0.1f) {
+                    buttonRouletteTimer = 0.0f;
+                    buttonRouletteIndex++;
+                }
+                if (buttonRouletteIndex > 3)
+                {
+                    buttonRouletteIndex = 0;
+                }
+                switch(buttonRouletteIndex)
+                {
+                    case 0:
+                        button.sprite = buttonX;
+                        break;
+                    case 1:
+                        button.sprite = buttonA;
+                        break;
+                    case 2:
+                        button.sprite = buttonB;
+                        break;
+                    case 3:
+                        button.sprite = buttonY;
+                        break;
+                }
+                */
             }
             counter += Time.deltaTime;
             yield return null;

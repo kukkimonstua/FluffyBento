@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MeteorController : MonoBehaviour
 {
-    public Material testColour;
-    private Material originalColour;
+    //public Material testColour;
+    //private Material originalColour;
 
     public bool withinAttackRange;
     public bool isLowest;
@@ -16,7 +16,7 @@ public class MeteorController : MonoBehaviour
 
     void Start()
     {
-        originalColour = transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material;
+        //originalColour = transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material;
         isLowest = false;
         withinAttackRange = false;
 
@@ -54,11 +54,11 @@ public class MeteorController : MonoBehaviour
 
         if (isLowest)
         {
-            transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = testColour;
+            //transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = testColour;
         }
         else
         {
-            transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = originalColour;
+            //transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = originalColour;
         }
 
     }
