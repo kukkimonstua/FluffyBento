@@ -6,6 +6,9 @@ public class MeteorManager : MonoBehaviour
 {
     [Header("Linked GameObjects")]
     public GameObject meteor;
+    public GameObject meteorZanbato;
+    public GameObject meteorBroadsword;
+    public GameObject meteorKatana;
     public Transform playerOrigin;
     private float worldRadius;
     public Transform meteorOrigin;
@@ -20,18 +23,27 @@ public class MeteorManager : MonoBehaviour
     public int maxMeteorsOnScreen = 5;
     public float spawnDelay = 5.0f;
     private static float meteorSpawnTimer;
+    public int maxMeteorsForLevel = 10;
+    public int numOfMeteorsSpawned = 0; //Make private eventually
+
+    public int specialMeteorRate = 3;
+    private int specialMeteorCounter = 0;
 
     void Start()
     {
         meteorSpawnTimer = 0.0f;
         worldRadius = PlayerController.worldRadius;
+        PlayerController.maxMeteorsForLevel = maxMeteorsForLevel;
+        numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
     }
 
     void Update()
     {
         fallSpeed = meteorSpeed;
 
-        if (PlayerController.playerState == 1 && GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen)
+        if (PlayerController.playerState == 1
+            && GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen
+            && numOfMeteorsSpawned < maxMeteorsForLevel)
         {
             meteorSpawnTimer += Time.deltaTime;
             if (meteorSpawnTimer > spawnDelay)
@@ -55,12 +67,35 @@ public class MeteorManager : MonoBehaviour
                 return;
             }
         }
+        GameObject meteorToSpawn = meteor;
 
-        Instantiate(meteor, spawnPoint.position, spawnPoint.rotation);
+        if (specialMeteorRate != 0)
+        {
+            specialMeteorCounter++;
+            if (specialMeteorCounter >= specialMeteorRate)
+            {
+                specialMeteorCounter = 0;
+                int meteorID = Random.Range(0, 3) + 1;
+                switch (meteorID)
+                {
+                    default:
+                        meteorToSpawn = meteorZanbato;
+                        break;
+                    case 2:
+                        meteorToSpawn = meteorBroadsword;
+                        break;
+                    case 3:
+                        meteorToSpawn = meteorKatana;
+                        break;
+                }
+            }
+        }
+        Instantiate(meteorToSpawn, spawnPoint.position, spawnPoint.rotation);
+        numOfMeteorsSpawned++;
         meteorSpawnTimer = 0.0f;
     }
 
-    public static void ResetMeteors()
+    public void ResetMeteors()
     {
         meteorSpawnTimer = 0.0f;
         var currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
@@ -68,6 +103,7 @@ public class MeteorManager : MonoBehaviour
         {
             Destroy(meteor);
         }
+        numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
         Debug.Log("Meteors Cleared!");
     }
 }

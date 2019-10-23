@@ -67,7 +67,7 @@ public class SwordManager : MonoBehaviour
         Instantiate(swordToSpawn, spawnPoint.position, spawnPoint.rotation);
         swordSpawnTimer = 0.0f;
     }
-    public static void ResetSwords()
+    public void ResetSwords()
     {
         swordSpawnTimer = 0.0f;
         var currentSwords = GameObject.FindGameObjectsWithTag("Sword");

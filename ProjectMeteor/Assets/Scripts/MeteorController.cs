@@ -6,7 +6,7 @@ public class MeteorController : MonoBehaviour
 {
     //public Material testColour;
     //private Material originalColour;
-
+    public int meteorID;
     public bool withinAttackRange;
     public bool isLowest;
 

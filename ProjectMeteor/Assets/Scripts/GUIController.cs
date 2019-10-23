@@ -28,6 +28,7 @@ public class GUIController : MonoBehaviour
     public GameObject fullScreenBlack;
     public GameObject fullScreenRed;
     public GameObject gameOverMenu;
+    public GameObject victoryScreenMenu;
     public static bool menuUnlocked;
 
     public GameObject topBlackBar;
@@ -146,6 +147,8 @@ public class GUIController : MonoBehaviour
         TogglePrompt(false, "");
         meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
 
+        victoryScreenMenu.SetActive(true); //May be redundant in the future
+        victoryScreenMenu.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         gameOverMenu.SetActive(true); //May be redundant in the future
         gameOverMenu.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         fullScreenRed.SetActive(true); //May be redundant in the future
@@ -257,6 +260,18 @@ public class GUIController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         StartCoroutine(FadeUI(gameOverMenu, 1.0f, duration));
         StartCoroutine(FadeUI(fullScreenBlack, 1.0f, duration));
+        yield return new WaitForSeconds(duration);
+        menuUnlocked = true;
+    }
+    public void ShowVictoryUI(float duration, float delay)
+    {
+        StartCoroutine(FadeInVictoryScreen(duration, delay));
+    }
+    private IEnumerator FadeInVictoryScreen(float duration, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(FadeUI(victoryScreenMenu, 1.0f, duration));
+        StartCoroutine(FadeUI(fullScreenBlack, 0.5f, duration));
         yield return new WaitForSeconds(duration);
         menuUnlocked = true;
     }

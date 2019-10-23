@@ -195,6 +195,8 @@ MonoBehaviour:
   worldOrigin: {fileID: 0}
   meteorWorldOrigin: {fileID: 0}
   playerOrigin: {fileID: 0}
+  meteorManager: {fileID: 0}
+  swordManager: {fileID: 0}
   isGrounded: 0
   canDoubleJump: 0
   touchedWallDirection: 0
@@ -206,9 +208,9 @@ MonoBehaviour:
   meteorDeathThreshold: 50
   avatarModel: {fileID: 1186575190478466613}
   anim: {fileID: 5235106637848572252}
-  equippedZanbato: {fileID: 8245969326520047235}
-  equippedBroadsword: {fileID: 1438531422636892238}
-  equippedKatana: {fileID: 4725303582234421914}
+  equippedZanbato: {fileID: 4725303582234421914}
+  equippedBroadsword: {fileID: 8245969326520047235}
+  equippedKatana: {fileID: 1438531422636892238}
   timingWindow: {fileID: 0}
   pauseMenu: {fileID: 0}
   timingGrade: 0
