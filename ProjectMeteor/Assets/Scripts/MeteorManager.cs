@@ -9,6 +9,7 @@ public class MeteorManager : MonoBehaviour
     public GameObject meteorZanbato;
     public GameObject meteorBroadsword;
     public GameObject meteorKatana;
+    public GameObject flyingMeteor;
     public Transform playerOrigin;
     private float worldRadius;
     public Transform meteorOrigin;
@@ -29,9 +30,16 @@ public class MeteorManager : MonoBehaviour
     public int specialMeteorRate = 3;
     private int specialMeteorCounter = 0;
 
+    public bool flyingMeteors;
+    public static float flyingMeteorMoveSpeed;
+    public float flyingMeteorSpeed = 20.0f;
+    public float flyingMeteorSpawnDelay = 3.0f;
+    private float flyingMeteorSpawnTimer;
+
     void Start()
     {
         meteorSpawnTimer = 0.0f;
+        flyingMeteorSpawnTimer = 0.0f;
         worldRadius = PlayerController.worldRadius;
         PlayerController.maxMeteorsForLevel = maxMeteorsForLevel;
         numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
@@ -40,6 +48,7 @@ public class MeteorManager : MonoBehaviour
     void Update()
     {
         fallSpeed = meteorSpeed;
+        flyingMeteorMoveSpeed = flyingMeteorSpeed;
 
         if (PlayerController.playerState == 1
             && GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen
@@ -49,6 +58,16 @@ public class MeteorManager : MonoBehaviour
             if (meteorSpawnTimer > spawnDelay)
             {
                 SpawnMeteor();
+            }
+        }
+
+        if (flyingMeteors)
+        {
+            flyingMeteorSpawnTimer += Time.deltaTime;
+            if (flyingMeteorSpawnTimer > flyingMeteorSpawnDelay)
+            {
+                SpawnFlyingMeteor();
+                flyingMeteorSpawnTimer = 0.0f;
             }
         }
     }
@@ -93,6 +112,13 @@ public class MeteorManager : MonoBehaviour
         Instantiate(meteorToSpawn, spawnPoint.position, spawnPoint.rotation);
         numOfMeteorsSpawned++;
         meteorSpawnTimer = 0.0f;
+    }
+    private void SpawnFlyingMeteor()
+    {
+        meteorOrigin.Rotate(0.0f, Random.Range(0, 360.0f), 0.0f);
+        spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * worldRadius * Random.Range(0, 1.0f)) + (playerOrigin.transform.up * spawnHeight);
+
+        Instantiate(flyingMeteor, spawnPoint.position, spawnPoint.rotation);
     }
 
     public void ResetMeteors()

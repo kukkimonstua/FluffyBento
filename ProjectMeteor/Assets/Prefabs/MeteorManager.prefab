@@ -83,6 +83,8 @@ MonoBehaviour:
     type: 3}
   meteorKatana: {fileID: 166136263068938293, guid: 1e90c2c0a823beb42bfd631c2969ecb3,
     type: 3}
+  flyingMeteor: {fileID: 6456937489050536949, guid: f840bee3feb57d84b88c33e9afe04e30,
+    type: 3}
   playerOrigin: {fileID: 0}
   meteorOrigin: {fileID: 944358062722250177}
   spawnPoint: {fileID: 944358063297982244}
@@ -92,6 +94,10 @@ MonoBehaviour:
   spawnDelay: 15
   maxMeteorsForLevel: 5
   numOfMeteorsSpawned: 0
+  specialMeteorRate: 3
+  flyingMeteors: 1
+  flyingMeteorSpeed: 30
+  flyingMeteorSpawnDelay: 0.5
 --- !u!1 &944358063297982243
 GameObject:
   m_ObjectHideFlags: 0

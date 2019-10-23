@@ -10575,6 +10575,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeteorManager
       objectReference: {fileID: 0}
+    - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
+        type: 3}
+      propertyPath: playerOrigin
+      value: 
+      objectReference: {fileID: 1511200955}
     - target: {fileID: 944358063281928567, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10630,11 +10635,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
-        type: 3}
-      propertyPath: playerOrigin
-      value: 
-      objectReference: {fileID: 1511200955}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 612561d6cc276ae49bb10ce9d96137f2, type: 3}
 --- !u!1001 &3376312177620066445
@@ -13977,6 +13977,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SwordManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8541793977485378971, guid: 9d09149b2425dde4182d9f437322ce9c,
+        type: 3}
+      propertyPath: playerOrigin
+      value: 
+      objectReference: {fileID: 1511200955}
     - target: {fileID: 8541793977485378970, guid: 9d09149b2425dde4182d9f437322ce9c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14032,10 +14037,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8541793977485378971, guid: 9d09149b2425dde4182d9f437322ce9c,
-        type: 3}
-      propertyPath: playerOrigin
-      value: 
-      objectReference: {fileID: 1511200955}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d09149b2425dde4182d9f437322ce9c, type: 3}
