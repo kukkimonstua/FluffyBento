@@ -24,10 +24,6 @@ public class FlyingMeteorController : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<PlayerController>() != null)
-        {
-            collision.gameObject.GetComponent<PlayerController>().TakeDamage(1);
-        }
         Destroy(gameObject);
     }
 }
