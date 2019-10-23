@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     public Transform worldOrigin;
     public Transform meteorWorldOrigin;
     public Transform playerOrigin;
+    public MeteorManager meteorManager;
+    public SwordManager swordManager;
     public static float worldRadius; //Accessed by a LOT of different scripts
 
     [Header("PLAYER MOVEMENT")]
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
     private int playerHealth;
     private int playerScore;
     private int meteorsDestroyed;
+    public static int maxMeteorsForLevel = 0;
     public static float lowestMeteorPosition;
     public float meteorDeathThreshold = 100.0f;
 
@@ -88,14 +91,15 @@ public class PlayerController : MonoBehaviour
 
                 if (Input.GetButtonDown("buttonX") && GUIController.menuUnlocked)
                 {
-                    MeteorManager.ResetMeteors();
-                    SwordManager.ResetSwords();
+                    meteorManager.ResetMeteors();
+                    swordManager.ResetSwords();
                     ResetLevel();
                 }
 
                 break; //No fall multiplier for a floaty death is totally intentional
 
             case 2:
+                avatarModelRotation = 180.0f;
                 rb.velocity = Vector3.up * 0;
                 touchedWallDirection = 0;
                 isGrounded = false;
@@ -263,6 +267,16 @@ public class PlayerController : MonoBehaviour
                     }
                 }
                 UpdateAnimations();
+
+                if (playerState == 4)
+                {
+                    if (Input.GetButtonDown("buttonX") && GUIController.menuUnlocked)
+                    {
+                        meteorManager.ResetMeteors();
+                        swordManager.ResetSwords();
+                        ResetLevel();
+                    }
+                }
                 break;
         }
         
@@ -553,7 +567,7 @@ public class PlayerController : MonoBehaviour
         }
 
         playerState = 2;
-        gui.ScaleBlackBars(50.0f, 0.5f);
+        gui.ScaleBlackBars(70.0f, 0.5f);
         
         //Get the current position of the object to be moved
         Vector3 startPos = fromPosition.position;
@@ -562,7 +576,7 @@ public class PlayerController : MonoBehaviour
 
         float counter = 0;
         timingGrade = 0;
-        timingWindow.GetComponent<TimingWindow>().StartTimingWindow(duration);
+        timingWindow.GetComponent<TimingWindow>().StartTimingWindow(duration, holdingSword);
 
         while (counter < duration)
         {
@@ -570,21 +584,36 @@ public class PlayerController : MonoBehaviour
             fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
             yield return null;
         }
+        avatarModelRotation = 0.0f;
         playerState = 1;
         CameraController.SwitchToMainCamera();
         gui.ScaleBlackBars(0.0f, 0.5f);
 
         if (timingGrade > 0)
         {
-            
+            if (holdingSword == meteor.GetComponent<MeteorController>().meteorID)
+            {
+                Destroy(meteor);
+                meteorsDestroyed++;
+                gui.UpdateMeteorsDestroyed(meteorsDestroyed);
+            }
+            else
+            {
+                Debug.Log("That's the wrong sword!");
+                prone = true;
+                gui.TogglePrompt(true, "That sword didn't work!");
+            }            
 
             holdingSword = 0;
             EquipSword(0);
             gui.UpdateEquipmentUI("EQUIP: -");
 
-            meteorsDestroyed++;
-            gui.UpdateMeteorsDestroyed(meteorsDestroyed);
-            Destroy(meteor);
+            //Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
+            if (meteorsDestroyed >= maxMeteorsForLevel)
+            {
+                //Debug.Log("YOU WIN!");
+                GameClear();
+            }
 
             ResetBreakables();
             if (timingGrade >= 2)
@@ -686,6 +715,13 @@ public class PlayerController : MonoBehaviour
         gui.HidePlayerActionText();
         gui.TogglePrompt(false, "");
         gui.ShowGameOverUI(3.0f, 2.0f); //This ends with unlocking the menu        
+    }
+    private void GameClear()
+    {
+        playerState = 4;
+        gui.HidePlayerActionText();
+        gui.TogglePrompt(false, "");
+        gui.ShowVictoryUI(3.0f, 2.0f); //This ends with unlocking the menu        
     }
     private void UpdateAnimations()
     {

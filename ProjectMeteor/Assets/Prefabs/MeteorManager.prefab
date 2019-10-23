@@ -77,6 +77,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meteor: {fileID: 166136263068938293, guid: 288bcf77b9242b3428958d52d04518fd, type: 3}
+  meteorZanbato: {fileID: 166136263068938293, guid: fab45bf290e97974496c41126d556cd1,
+    type: 3}
+  meteorBroadsword: {fileID: 166136263068938293, guid: a633f35deaf64794c92751d535a9d104,
+    type: 3}
+  meteorKatana: {fileID: 166136263068938293, guid: 1e90c2c0a823beb42bfd631c2969ecb3,
+    type: 3}
   playerOrigin: {fileID: 0}
   meteorOrigin: {fileID: 944358062722250177}
   spawnPoint: {fileID: 944358063297982244}
@@ -84,6 +90,8 @@ MonoBehaviour:
   meteorSpeed: 3
   maxMeteorsOnScreen: 3
   spawnDelay: 15
+  maxMeteorsForLevel: 5
+  numOfMeteorsSpawned: 0
 --- !u!1 &944358063297982243
 GameObject:
   m_ObjectHideFlags: 0

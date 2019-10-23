@@ -143,8 +143,20 @@ public class TimingWindow : MonoBehaviour
         StartCoroutine(ShowFeedbackText(false, 1.0f));
     }
 
-    public void StartTimingWindow(float duration)
+    public void StartTimingWindow(float duration, int swordID)
     {
+        switch (swordID)
+        {
+            default:
+                shrinker.gameObject.GetComponent<RawImage>().color = new Color(255.0f / 255.0f, 145.0f / 255.0f, 177.0f / 255.0f);
+                break;
+            case 2:
+                shrinker.gameObject.GetComponent<RawImage>().color = new Color(255.0f / 255.0f, 255.0f / 255.0f, 145.0f / 255.0f);
+                break;
+            case 3:
+                shrinker.gameObject.GetComponent<RawImage>().color = new Color(145.0f / 255.0f, 242.0f / 255.0f, 255.0f / 255.0f);
+                break;
+        }
         FadeTimingWindowUI(1.0f);
         StartCoroutine(TimingWindowCoroutine(duration));
     }

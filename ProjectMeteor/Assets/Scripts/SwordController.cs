@@ -23,13 +23,13 @@ public class SwordController : MonoBehaviour
         switch (swordID)
         {
             default:
-                ps1.SetActive(true);
+                ps3.SetActive(true);
                 break;
             case 2:
-                ps2.SetActive(true);
+                ps1.SetActive(true);
                 break;
             case 3:
-                ps3.SetActive(true);
+                ps2.SetActive(true);
                 break;
         }
 
