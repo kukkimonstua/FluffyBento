@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
                 break; //No fall multiplier for a floaty death is totally intentional
 
             case 2:
-                avatarModelRotation = 180.0f;
+                avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180.0f, transform.eulerAngles.z);
                 rb.velocity = Vector3.up * 0;
                 touchedWallDirection = 0;
                 isGrounded = false;
@@ -402,7 +402,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.GetContact(0).normal.y > 0.5f)
+        if(collision.gameObject.GetComponent<FlyingMeteorController>() != null)
+        {
+            TakeDamage(1);
+        }
+        else if(collision.GetContact(0).normal.y > 0.5f)
         {
             prone = false;
             isGrounded = true;
@@ -591,7 +595,7 @@ public class PlayerController : MonoBehaviour
 
         if (timingGrade > 0)
         {
-            if (holdingSword == meteor.GetComponent<MeteorController>().meteorID)
+            if (meteor.GetComponent<MeteorController>().meteorID == 0 || holdingSword == meteor.GetComponent<MeteorController>().meteorID)
             {
                 Destroy(meteor);
                 meteorsDestroyed++;
