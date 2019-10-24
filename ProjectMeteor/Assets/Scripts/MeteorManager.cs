@@ -6,6 +6,10 @@ public class MeteorManager : MonoBehaviour
 {
     [Header("Linked GameObjects")]
     public GameObject meteor;
+    public GameObject meteorZanbato;
+    public GameObject meteorBroadsword;
+    public GameObject meteorKatana;
+    public GameObject flyingMeteor;
     public Transform playerOrigin;
     private float worldRadius;
     public Transform meteorOrigin;
@@ -20,18 +24,36 @@ public class MeteorManager : MonoBehaviour
     public int maxMeteorsOnScreen = 5;
     public float spawnDelay = 5.0f;
     private static float meteorSpawnTimer;
+    public int maxMeteorsForLevel = 10;
+    public int numOfMeteorsSpawned = 0; //Make private eventually
+
+    public int specialMeteorRate = 3;
+    private int specialMeteorCounter = 0;
+
+    public bool flyingMeteors;
+    public static float flyingMeteorMoveSpeed;
+    public float flyingMeteorSpeed = 20.0f;
+    public float flyingMeteorSpawnDelay = 3.0f;
+    private float flyingMeteorSpawnTimer;
 
     void Start()
     {
         meteorSpawnTimer = 0.0f;
+        flyingMeteorSpawnTimer = 0.0f;
         worldRadius = PlayerController.worldRadius;
+        PlayerController.maxMeteorsForLevel = maxMeteorsForLevel;
+        numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
     }
 
     void Update()
     {
         fallSpeed = meteorSpeed;
+        flyingMeteorMoveSpeed = flyingMeteorSpeed;
 
-        if (PlayerController.playerState == 1 && GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen)
+        if (!TutorialManager.tutorialActive
+            && PlayerController.playerState == 1
+            && GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen
+            && numOfMeteorsSpawned < maxMeteorsForLevel)
         {
             meteorSpawnTimer += Time.deltaTime;
             if (meteorSpawnTimer > spawnDelay)
@@ -39,9 +61,19 @@ public class MeteorManager : MonoBehaviour
                 SpawnMeteor();
             }
         }
+
+        if (flyingMeteors)
+        {
+            flyingMeteorSpawnTimer += Time.deltaTime;
+            if (flyingMeteorSpawnTimer > flyingMeteorSpawnDelay)
+            {
+                SpawnFlyingMeteor();
+                flyingMeteorSpawnTimer = 0.0f;
+            }
+        }
     }
 
-    void SpawnMeteor()
+    public void SpawnMeteor()
     {
         meteorOrigin.Rotate(0.0f, Random.Range(0, 6) * 60.0f, 0.0f);
         spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * worldRadius) + (playerOrigin.transform.up * spawnHeight);
@@ -55,12 +87,42 @@ public class MeteorManager : MonoBehaviour
                 return;
             }
         }
+        GameObject meteorToSpawn = meteor;
 
-        Instantiate(meteor, spawnPoint.position, spawnPoint.rotation);
+        if (specialMeteorRate != 0)
+        {
+            specialMeteorCounter++;
+            if (specialMeteorCounter >= specialMeteorRate)
+            {
+                specialMeteorCounter = 0;
+                int meteorID = Random.Range(0, 3) + 1;
+                switch (meteorID)
+                {
+                    default:
+                        meteorToSpawn = meteorZanbato;
+                        break;
+                    case 2:
+                        meteorToSpawn = meteorBroadsword;
+                        break;
+                    case 3:
+                        meteorToSpawn = meteorKatana;
+                        break;
+                }
+            }
+        }
+        Instantiate(meteorToSpawn, spawnPoint.position, spawnPoint.rotation);
+        numOfMeteorsSpawned++;
         meteorSpawnTimer = 0.0f;
     }
+    private void SpawnFlyingMeteor()
+    {
+        meteorOrigin.Rotate(0.0f, Random.Range(0, 360.0f), 0.0f);
+        spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * worldRadius * Random.Range(0, 1.0f)) + (playerOrigin.transform.up * spawnHeight);
 
-    public static void ResetMeteors()
+        Instantiate(flyingMeteor, spawnPoint.position, spawnPoint.rotation);
+    }
+
+    public void ResetMeteors()
     {
         meteorSpawnTimer = 0.0f;
         var currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
@@ -68,6 +130,7 @@ public class MeteorManager : MonoBehaviour
         {
             Destroy(meteor);
         }
+        numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
         Debug.Log("Meteors Cleared!");
     }
 }

@@ -12,12 +12,10 @@ public class PauseMenu : MonoBehaviour
     public Button btn;
     public EventSystem es;
 
-
-
     // Update is called once per frame
     void Update()
     {
-       if (Input.GetKeyDown(KeyCode.Escape))
+       if (Input.GetButtonDown("Submit"))
         {
             if (GameIsPaused)
             {

@@ -5,13 +5,17 @@ using UnityEngine.UI;
 
 public class TimingWindow : MonoBehaviour
 {
-    // Start is called before the first frame update
     public PlayerController player;
-
+    public Image button;
     public RectTransform shrinker;
-    private static float shrinkerDiameter;
-    private static float minShrinkerDiameter;
-    private static float maxShrinkerDiameter;
+    private float shrinkerDiameter;
+    private float minShrinkerDiameter;
+    private float maxShrinkerDiameter;
+    private float shrinkerTrueValue; //current image means 96% of the diameter
+
+    public float goodThreshold = 200;
+    public float sweetThreshold = 150;
+    public float deadThreshold = 125;
 
     public Text displayText;
     private static string feedbackText;
@@ -19,13 +23,19 @@ public class TimingWindow : MonoBehaviour
     public static bool gotPressed;
     private bool pressable;
 
+    public Sprite buttonsNone;
+    public Sprite buttonX;
+    public Sprite buttonA;
+    public Sprite buttonB;
+    public Sprite buttonY;
+
     void Start()
     {
-        shrinkerDiameter = 50.0f;
         gotPressed = false;
         pressable = false;
         minShrinkerDiameter = 50.0f;
         maxShrinkerDiameter = 500.0f;
+        shrinkerDiameter = maxShrinkerDiameter;
         feedbackText = "";
         FadeTimingWindowUI(0.0f);
         displayText.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
@@ -38,16 +48,20 @@ public class TimingWindow : MonoBehaviour
         shrinker.sizeDelta = new Vector2(shrinkerDiameter, shrinkerDiameter);
     }
 
-    private IEnumerator TimingWindowCoroutine(float duration)
+    private IEnumerator TimingWindowCoroutine(float duration) //Currently, 3.0 secs for whole sequence
     {
         float counter = 0.0f;
-        float counterOffset = Random.Range(1.0f, 2.2f);
-        shrinkerDiameter = 50.0f;
+        float counterOffset = Random.Range(duration * 0.33f, duration * 0.66f);
+        shrinkerDiameter = maxShrinkerDiameter;
+        button.sprite = buttonsNone;
         feedbackText = "Ready...";
 
         float alphaValue = 0.2f;
         FadeTimingWindowUI(alphaValue);
-        StartCoroutine(ShowFeedbackText(true));
+        StartCoroutine(ShowFeedbackText(true, 1.0f));
+
+        //int buttonRouletteIndex = 0;
+        //float buttonRouletteTimer = 0.0f;
 
         pressable = false;
         while (counter < duration)
@@ -56,6 +70,7 @@ public class TimingWindow : MonoBehaviour
             {
                 gotPressed = false;
                 pressable = true;
+                button.sprite = buttonX;
             }
             if (pressable)
             {
@@ -65,18 +80,20 @@ public class TimingWindow : MonoBehaviour
                     FadeTimingWindowUI(alphaValue);
                     feedbackText = "";
                     shrinkerDiameter = Mathf.Lerp(maxShrinkerDiameter, minShrinkerDiameter, (counter - counterOffset) / (duration - counterOffset));
-                    if (shrinkerDiameter < 125) gotPressed = true;
+                    shrinkerTrueValue = shrinkerDiameter * 0.96f;
+
+                    if (shrinkerTrueValue < deadThreshold * 0.75) gotPressed = true;
                 }
                 else
                 {
                     if (alphaValue > 0.0f) alphaValue -= 0.05f;
                     FadeTimingWindowUI(alphaValue);
-                    if (shrinkerDiameter < 150 && shrinkerDiameter > 125)
+                    if (shrinkerTrueValue < sweetThreshold && shrinkerTrueValue > deadThreshold)
                     {
                         player.timingGrade = 2;
                         feedbackText = "Excellent!";
                     }
-                    else if (shrinkerDiameter < 200 && shrinkerDiameter > 125)
+                    else if (shrinkerTrueValue < goodThreshold && shrinkerTrueValue > deadThreshold)
                     {
                         player.timingGrade = 1;
                         feedbackText = "Good!";
@@ -85,46 +102,103 @@ public class TimingWindow : MonoBehaviour
                     {
                         player.timingGrade = 0;
                         feedbackText = "Miss...";
-                    }
+                    }                    
                 }
+            }
+            else
+            {
+                /*
+                buttonRouletteTimer += Time.deltaTime;
+                if (buttonRouletteTimer > 0.1f) {
+                    buttonRouletteTimer = 0.0f;
+                    buttonRouletteIndex++;
+                }
+                if (buttonRouletteIndex > 3)
+                {
+                    buttonRouletteIndex = 0;
+                }
+                switch(buttonRouletteIndex)
+                {
+                    case 0:
+                        button.sprite = buttonX;
+                        break;
+                    case 1:
+                        button.sprite = buttonA;
+                        break;
+                    case 2:
+                        button.sprite = buttonB;
+                        break;
+                    case 3:
+                        button.sprite = buttonY;
+                        break;
+                }
+                */
             }
             counter += Time.deltaTime;
             yield return null;
         }
-        Debug.Log(feedbackText + ": " + shrinkerDiameter);
-        player.AddScore(player.timingGrade * 100);
+        //Debug.Log(feedbackText + ": " + shrinkerDiameter);
 
         FadeTimingWindowUI(0.0f);
-        StartCoroutine(ShowFeedbackText(false));
+        StartCoroutine(ShowFeedbackText(false, 1.0f));
     }
 
-    public void StartTimingWindow(float duration)
+    public void StartTimingWindow(float duration, int swordID)
     {
+        switch (swordID)
+        {
+            default:
+                shrinker.gameObject.GetComponent<RawImage>().color = new Color(255.0f / 255.0f, 145.0f / 255.0f, 177.0f / 255.0f);
+                break;
+            case 2:
+                shrinker.gameObject.GetComponent<RawImage>().color = new Color(255.0f / 255.0f, 255.0f / 255.0f, 145.0f / 255.0f);
+                break;
+            case 3:
+                shrinker.gameObject.GetComponent<RawImage>().color = new Color(145.0f / 255.0f, 242.0f / 255.0f, 255.0f / 255.0f);
+                break;
+        }
         FadeTimingWindowUI(1.0f);
         StartCoroutine(TimingWindowCoroutine(duration));
     }
 
-    private IEnumerator ShowFeedbackText(bool state)
+    private IEnumerator ShowFeedbackText(bool state, float duration)
     {
+        Vector3 startingPosition = displayText.transform.localPosition;
         if (state)
         {
-            float alphaValue = 0.0f;
-            while (alphaValue < 1.0f)
+            float startAlpha = 0.0f;
+            for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / duration)
             {
-                alphaValue += 0.02f;
+                float alphaValue = Mathf.Lerp(startAlpha, 1.0f, t);
                 displayText.GetComponent<CanvasRenderer>().SetAlpha(alphaValue);
+                displayText.transform.localPosition = startingPosition + new Vector3(0.0f, (1.0f - alphaValue) * 20, 0.0f);
+                //displayText.rectTransform.localScale = new Vector3(1.0f + alphaValue / 2, 1.0f + alphaValue / 2, 1.0f + alphaValue / 2);
                 yield return null;
             }
+            displayText.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
         }
         else
         {
-            float alphaValue = 1.0f;
-            while (alphaValue > 0.0f)
+            float startAlpha = 1.0f;
+            for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / duration)
             {
-                alphaValue -= 0.02f;
+                float alphaValue = Mathf.Lerp(startAlpha, 0.0f, t);
                 displayText.GetComponent<CanvasRenderer>().SetAlpha(alphaValue);
+                displayText.transform.localPosition = startingPosition + new Vector3(0.0f, (alphaValue - 1.0f) * 20, 0.0f);
+                //displayText.rectTransform.localScale = new Vector3(1.0f + alphaValue / 2, 1.0f + alphaValue / 2, 1.0f + alphaValue / 2);
                 yield return null;
             }
+            displayText.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        }
+        displayText.transform.localPosition = startingPosition;
+    }
+    private IEnumerator FadeUI(GameObject uiElement, float alphaTarget, float duration)
+    {
+        float alpha = uiElement.GetComponent<CanvasRenderer>().GetAlpha();
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / duration)
+        {
+            uiElement.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Lerp(alpha, alphaTarget, t));
+            yield return null;
         }
     }
 

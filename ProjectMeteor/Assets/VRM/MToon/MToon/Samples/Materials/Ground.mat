@@ -4,11 +4,12 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Ground
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 10623, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: MTOON_OUTLINE_COLOR_FIXED MTOON_OUTLINE_WIDTH_SCREEN
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,6 +20,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _CutTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -50,27 +55,93 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OutlineWidthTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ReceiveShadowTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _RimTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadeTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShadingGradeTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SphereAdd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _UvAnimMaskTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _BlendMode: 0
     - _BumpScale: 1
+    - _CullMode: 2
+    - _CutRotation: 0
     - _Cutoff: 0.5
+    - _DebugMode: 0
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EmissionGain: 0
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _IndirectLightIntensity: 0.1
+    - _LightColorAttenuation: 0
+    - _MToonVersion: 32
+    - _MainRotation: 0
+    - _MaskPosterize: 2
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _OutlineColorMode: 0
+    - _OutlineCullMode: 1
+    - _OutlineLightingMix: 1
+    - _OutlineScaledMaxDistance: 10
+    - _OutlineWidth: 1
+    - _OutlineWidthMode: 2
     - _Parallax: 0.02
+    - _Posterize: 2
+    - _ReceiveShadowRate: 1
+    - _RimFresnelPower: 1.5
+    - _RimLift: 0
+    - _RimLightingMix: 0
+    - _ShadeShift: 0
+    - _ShadeToony: 1
+    - _ShadingGradeRate: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Speed: 30
     - _SrcBlend: 1
+    - _USEMASK: 0
+    - _USEPOS: 0
+    - _USESHEET: 0
+    - _UVScrollX: 0
+    - _UVScrollY: 0
     - _UVSec: 0
+    - _UvAnimRotation: 0
+    - _UvAnimScrollX: 0
+    - _UvAnimScrollY: 0
     - _ZWrite: 1
+    - _xx: 1
+    - _yy: 1
     m_Colors:
-    - _Color: {r: 0.35294116, g: 0.35294116, b: 0.35294116, a: 1}
+    - _Color: {r: 0.5660378, g: 0.4841401, b: 0.38714847, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadeColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}

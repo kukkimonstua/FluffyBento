@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MeteorController : MonoBehaviour
 {
-    public Material testColour;
-    private Material originalColour;
-
+    //public Material testColour;
+    //private Material originalColour;
+    public int meteorID;
     public bool withinAttackRange;
     public bool isLowest;
 
@@ -16,7 +16,7 @@ public class MeteorController : MonoBehaviour
 
     void Start()
     {
-        originalColour = transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material;
+        //originalColour = transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material;
         isLowest = false;
         withinAttackRange = false;
 
@@ -38,11 +38,13 @@ public class MeteorController : MonoBehaviour
         {
             if (isLowest)
             {
-                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 20.0f + (Mathf.Sin(Time.time * 10.0f) * 2.5f + 2.5f);
+                fallMarkerInstance.GetComponentInChildren<Light>().color = Color.yellow;
+                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 8.0f + (Mathf.Sin(Time.time * 9.0f) * 2.5f + 2.5f);
             }
             else
             {
-                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 5.0f + (Mathf.Sin(Time.time * 5.0f) * 2.5f + 2.5f);
+                fallMarkerInstance.GetComponentInChildren<Light>().color = Color.red;
+                fallMarkerInstance.GetComponentInChildren<Light>().intensity = 4.0f + (Mathf.Sin(Time.time * 3.0f) * 2.5f + 2.5f);
             }
         }
         if (PlayerController.playerState == 1)
@@ -52,11 +54,11 @@ public class MeteorController : MonoBehaviour
 
         if (isLowest)
         {
-            transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = testColour;
+            //transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = testColour;
         }
         else
         {
-            transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = originalColour;
+            //transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = originalColour;
         }
 
     }

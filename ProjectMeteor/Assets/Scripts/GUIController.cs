@@ -5,22 +5,37 @@ using UnityEngine.UI;
 
 public class GUIController : MonoBehaviour
 {
+    public Sprite buttonX;
+    public Sprite buttonsXA;
     // Start is called before the first frame update
     public Text promptText;
+    public Text playerActionText;
+    public Text scoreAdditionText;
+    private IEnumerator animatedScore;
+    public Transform actionTextClamp;
+    public Transform scoreTextClamp;
+    public Transform meteorTestClamp;
+    public Image lowestMeteorMarker;
 
-    public Text healthText;
+    public HealthDisplay healthDisplay;
     public Text scoreText;
     public Text meteorCounterText;
     public Text timerText;
     public Slider meteorLandingSlider;
     public Text meteorLandingDanger;
+    public Text meteorLandingTimer;
 
     public GameObject fullScreenBlack;
+    public GameObject fullScreenRed;
     public GameObject gameOverMenu;
+    public GameObject victoryScreenMenu;
     public static bool menuUnlocked;
 
     public GameObject topBlackBar;
     public GameObject bottomBlackBar;
+
+    public Text meteorDirectionMarker; //Text for now
+    private Vector2 meteorDirectionMarkerOriginalPosition;
 
     public Text tempEquipText; //Replace with icon eventually
 
@@ -34,9 +49,10 @@ public class GUIController : MonoBehaviour
         seconds = 0;
         milliseconds = 0;
     }
-
     void Start()
     {
+        meteorDirectionMarkerOriginalPosition = meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition;
+        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 0.0f);
         ResetTimer();
     }
 
@@ -58,11 +74,71 @@ public class GUIController : MonoBehaviour
             timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, (int)milliseconds);
         }        
     }
+    public void AnimateScore(Vector3 floatPosition, int scoreToAdd)
+    {
+        scoreTextClamp.position = floatPosition;
+        scoreAdditionText.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+        scoreAdditionText.text = "+" + scoreToAdd;
+
+        //Vector2 originalPosition = scoreAdditionText.GetComponent<RectTransform>().position;
+        //scoreAdditionText.GetComponent<RectTransform>().position -= new Vector3(0.0f, 1.0f, 0.0f);
+
+        StopCoroutine(animatedScore);
+        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 1.0f); // create an IEnumerator object
+        StartCoroutine(animatedScore);
+    }
 
     public void TogglePrompt(bool toggle, string text)
     {
         promptText.gameObject.SetActive(toggle);
         promptText.text = text;
+        if (promptText.gameObject.transform.GetChild(0).GetComponent<Image>() != null)
+        {
+            promptText.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+        }
+    }
+    public void TogglePrompt(bool toggle, string text, string buttonPrompt)
+    {
+        promptText.gameObject.SetActive(toggle);
+        promptText.text = text;
+        if (promptText.gameObject.transform.GetChild(0).GetComponent<Image>() != null)
+        {
+            promptText.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            if (buttonPrompt == "buttonX")
+            {
+                promptText.gameObject.transform.GetChild(0).GetComponent<Image>().sprite = buttonX;
+            }
+            if (buttonPrompt == "buttonsXA")
+            {
+                promptText.gameObject.transform.GetChild(0).GetComponent<Image>().sprite = buttonsXA;
+            }
+        }
+    }
+
+    public void TogglePlayerActionText(GameObject targetedSword, int holdingSword)
+    {
+        if (targetedSword != null)
+        {
+            if (holdingSword == 0)
+            {
+                playerActionText.text = "Equip";
+            }
+            else
+            {
+                playerActionText.text = "Swap";
+            }
+            actionTextClamp.position = targetedSword.transform.position;
+            playerActionText.gameObject.SetActive(true);
+        } 
+        else
+        {
+            HidePlayerActionText();
+        }
+    }
+    public void HidePlayerActionText()
+    {
+        playerActionText.gameObject.SetActive(false);
+        playerActionText.text = "";
     }
 
     public void ResetGUI()
@@ -71,20 +147,33 @@ public class GUIController : MonoBehaviour
         TogglePrompt(false, "");
         meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
 
+        victoryScreenMenu.SetActive(true); //May be redundant in the future
+        victoryScreenMenu.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         gameOverMenu.SetActive(true); //May be redundant in the future
         gameOverMenu.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        fullScreenRed.SetActive(true); //May be redundant in the future
+        fullScreenRed.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         fullScreenBlack.SetActive(true); //May be redundant in the future
         fullScreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
         StartCoroutine(FadeUI(fullScreenBlack, 0.0f, 3.0f));
 
         tempEquipText.text = "EQUIP: -";
         ResetTimer();
-
+    }
+    public void FlashRed()
+    {
+        StartCoroutine(StartFlashRed());
+    }
+    private IEnumerator StartFlashRed()
+    {
+        yield return StartCoroutine(FadeUI(fullScreenRed, 1.0f, 0.15f));
+        yield return StartCoroutine(FadeUI(fullScreenRed, 0.0f, 0.15f));
+        fullScreenRed.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
     }
 
     public void UpdateHealthUI(int newValue)
     {
-        healthText.text = "Health: " + newValue;
+        healthDisplay.UpdateDisplay(newValue);
     }
     public void UpdateScoreUI(int newValue)
     {
@@ -99,7 +188,26 @@ public class GUIController : MonoBehaviour
     {
         meteorCounterText.text = "Destroyed: " + newValue;
     }
+    public void UpdateMeteorDirectionUI(int direction, float distance, Vector3 meteorPosition)
+    {
+        if (direction == 0)
+        {
+            meteorDirectionMarker.text = "";
+        }
+        else if (direction < 0)
+        {
+            meteorDirectionMarker.text = ((int)distance / 2) + "\n<<<";
+        }
+        else
+        {
+            meteorDirectionMarker.text = ((int)distance / 2) + "\n>>>";
+        }
 
+        Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 5.0f, 0.0f);
+        meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
+
+        meteorTestClamp.position = meteorPosition + new Vector3(0.0f, 75.0f, 0.0f); //75 is current radius of meteor
+    }
     public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold, float sliderRange)
     {
         //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
@@ -107,10 +215,13 @@ public class GUIController : MonoBehaviour
         if(lowestMeteorPosition < meteorDeathThreshold + (sliderRange / 3) && PlayerController.playerState == 1)
         {
             meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
+            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+            meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "";
         }
         else
         {
             meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         }
     }
 
@@ -122,6 +233,7 @@ public class GUIController : MonoBehaviour
             uiElement.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Lerp(alpha, alphaTarget, t));
             yield return null;
         }
+        uiElement.GetComponent<CanvasRenderer>().SetAlpha(alphaTarget);
     }
 
     public void ScaleBlackBars(float heightTarget, float duration)
@@ -148,6 +260,18 @@ public class GUIController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         StartCoroutine(FadeUI(gameOverMenu, 1.0f, duration));
         StartCoroutine(FadeUI(fullScreenBlack, 1.0f, duration));
+        yield return new WaitForSeconds(duration);
+        menuUnlocked = true;
+    }
+    public void ShowVictoryUI(float duration, float delay)
+    {
+        StartCoroutine(FadeInVictoryScreen(duration, delay));
+    }
+    private IEnumerator FadeInVictoryScreen(float duration, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(FadeUI(victoryScreenMenu, 1.0f, duration));
+        StartCoroutine(FadeUI(fullScreenBlack, 0.5f, duration));
         yield return new WaitForSeconds(duration);
         menuUnlocked = true;
     }

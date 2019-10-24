@@ -31,7 +31,8 @@ public class SwordManager : MonoBehaviour
 
     void Update()
     {
-        if (PlayerController.playerState == 1)
+        if (!TutorialManager.tutorialActive
+            && PlayerController.playerState == 1)
         {
             swordSpawnTimer += Time.deltaTime;
             if (swordSpawnTimer > spawnDelay)
@@ -43,8 +44,7 @@ public class SwordManager : MonoBehaviour
             }
         }            
     }
-
-    void SpawnSword()
+    public void SpawnSword()
     {
         GameObject swordToSpawn = new GameObject();
         int swordID = Random.Range(0, 3) + 1;
@@ -67,7 +67,7 @@ public class SwordManager : MonoBehaviour
         Instantiate(swordToSpawn, spawnPoint.position, spawnPoint.rotation);
         swordSpawnTimer = 0.0f;
     }
-    public static void ResetSwords()
+    public void ResetSwords()
     {
         swordSpawnTimer = 0.0f;
         var currentSwords = GameObject.FindGameObjectsWithTag("Sword");
