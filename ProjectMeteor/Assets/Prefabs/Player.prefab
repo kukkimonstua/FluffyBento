@@ -208,9 +208,9 @@ MonoBehaviour:
   meteorDeathThreshold: 50
   avatarModel: {fileID: 1186575190478466613}
   anim: {fileID: 5235106637848572252}
-  equippedZanbato: {fileID: 4725303582234421914}
-  equippedBroadsword: {fileID: 8245969326520047235}
-  equippedKatana: {fileID: 1438531422636892238}
+  equippedZanbato: {fileID: 6772005499209362455}
+  equippedBroadsword: {fileID: 6772005498595294862}
+  equippedKatana: {fileID: 6772005499585141627}
   timingWindow: {fileID: 0}
   pauseMenu: {fileID: 0}
   timingGrade: 0
@@ -302,21 +302,21 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 2311254005944833882}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8245969326520047235 stripped
+--- !u!1 &6772005499585141627 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 5943810515388383705, guid: 1aec4e9be8bab6f48a8f030d1be88f7c,
+  m_CorrespondingSourceObject: {fileID: 9073001016609852449, guid: 1aec4e9be8bab6f48a8f030d1be88f7c,
     type: 3}
   m_PrefabInstance: {fileID: 2311254005944833882}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1438531422636892238 stripped
+--- !u!1 &6772005498595294862 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 3739546733085472532, guid: 1aec4e9be8bab6f48a8f030d1be88f7c,
+  m_CorrespondingSourceObject: {fileID: 9073001017566161364, guid: 1aec4e9be8bab6f48a8f030d1be88f7c,
     type: 3}
   m_PrefabInstance: {fileID: 2311254005944833882}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4725303582234421914 stripped
+--- !u!1 &6772005499209362455 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 7025791165957733824, guid: 1aec4e9be8bab6f48a8f030d1be88f7c,
+  m_CorrespondingSourceObject: {fileID: 9073001018179451725, guid: 1aec4e9be8bab6f48a8f030d1be88f7c,
     type: 3}
   m_PrefabInstance: {fileID: 2311254005944833882}
   m_PrefabAsset: {fileID: 0}

@@ -94,10 +94,10 @@ MonoBehaviour:
   spawnDelay: 15
   maxMeteorsForLevel: 5
   numOfMeteorsSpawned: 0
-  specialMeteorRate: 3
-  flyingMeteors: 1
+  specialMeteorRate: 0
+  flyingMeteors: 0
   flyingMeteorSpeed: 30
-  flyingMeteorSpawnDelay: 0.5
+  flyingMeteorSpawnDelay: 2
 --- !u!1 &944358063297982243
 GameObject:
   m_ObjectHideFlags: 0

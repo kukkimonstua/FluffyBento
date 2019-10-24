@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
                 {
                     meteorManager.ResetMeteors();
                     swordManager.ResetSwords();
+                    TutorialManager.ResetTutorial();
                     ResetLevel();
                 }
 
@@ -274,6 +275,7 @@ public class PlayerController : MonoBehaviour
                     {
                         meteorManager.ResetMeteors();
                         swordManager.ResetSwords();
+                        TutorialManager.ResetTutorial();
                         ResetLevel();
                     }
                 }
@@ -603,10 +605,15 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                Debug.Log("That's the wrong sword!");
                 prone = true;
-                gui.TogglePrompt(true, "That sword didn't work!");
-            }            
+                gui.TogglePrompt(true, "What?! It didn't work!");
+            }
+            if (TutorialManager.tutorialActive)
+            {
+                TutorialManager.EndTutorial();
+                Debug.Log("We're done");
+                meteorManager.SpawnMeteor();
+            }
 
             holdingSword = 0;
             EquipSword(0);
@@ -636,7 +643,6 @@ public class PlayerController : MonoBehaviour
             prone = true;
 
         }
-
     }
 
     private void PickUpSword(GameObject pickedUpSword)
@@ -669,7 +675,7 @@ public class PlayerController : MonoBehaviour
         gui.HidePlayerActionText();
 
         Destroy(pickedUpSword);
-        Instantiate(swordToSpawn, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
+        Instantiate(swordToSpawn, transform.position, transform.rotation);
     }
 
     private void DropSword()
@@ -691,7 +697,7 @@ public class PlayerController : MonoBehaviour
         holdingSword = 0;
         EquipSword(0);
         gui.UpdateEquipmentUI("EQUIP: -");
-        Instantiate(swordToSpawn, transform.position + new Vector3(0.0f, 1.0f, 0.0f), transform.rotation);
+        Instantiate(swordToSpawn, transform.position, transform.rotation);
     }
 
     public void TakeDamage(int amount)

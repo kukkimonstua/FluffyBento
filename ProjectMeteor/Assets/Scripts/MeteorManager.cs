@@ -50,7 +50,8 @@ public class MeteorManager : MonoBehaviour
         fallSpeed = meteorSpeed;
         flyingMeteorMoveSpeed = flyingMeteorSpeed;
 
-        if (PlayerController.playerState == 1
+        if (!TutorialManager.tutorialActive
+            && PlayerController.playerState == 1
             && GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen
             && numOfMeteorsSpawned < maxMeteorsForLevel)
         {
@@ -72,7 +73,7 @@ public class MeteorManager : MonoBehaviour
         }
     }
 
-    void SpawnMeteor()
+    public void SpawnMeteor()
     {
         meteorOrigin.Rotate(0.0f, Random.Range(0, 6) * 60.0f, 0.0f);
         spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * worldRadius) + (playerOrigin.transform.up * spawnHeight);
