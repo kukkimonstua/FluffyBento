@@ -9,17 +9,19 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
+    public GameObject controls;
     public Button btn;
     public EventSystem es;
 
     // Update is called once per frame
     void Update()
     {
-       if (Input.GetButtonDown("Submit"))
+       if (Input.GetButtonDown("Cancel"))
         {
             if (GameIsPaused)
             {
                 Resume();
+                controls.SetActive(false);
             } else
             {
                 Pause();
@@ -50,6 +52,11 @@ public class PauseMenu : MonoBehaviour
     public void QuitGame()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void showControls()
+    {
+        controls.SetActive(true);
     }
 
 
