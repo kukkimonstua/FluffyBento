@@ -21,7 +21,6 @@ public class PauseMenu : MonoBehaviour
             if (GameIsPaused)
             {
                 Resume();
-                controls.SetActive(false);
             } else
             {
                 Pause();
@@ -35,6 +34,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+        controls.SetActive(false);
     }
 
     void Pause()
@@ -54,7 +54,7 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
     }
 
-    public void showControls()
+    public void ShowControls()
     {
         controls.SetActive(true);
     }

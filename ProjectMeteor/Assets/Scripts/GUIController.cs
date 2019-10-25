@@ -37,6 +37,7 @@ public class GUIController : MonoBehaviour
     public MeteorDirectionMarker meteorDirectionMarker; //Text for now
     private Vector2 meteorDirectionMarkerOriginalPosition;
 
+    public Text subtitles;
     public Text tempEquipText; //Replace with icon eventually
 
     float minutes;
@@ -192,18 +193,24 @@ public class GUIController : MonoBehaviour
     {
         meteorDirectionMarker.direction = direction;
         meteorDirectionMarker.distance = distance;
-        if (direction == 0 || distance < 10)
+        if (direction == 0)
         {
-            meteorDirectionMarker.GetComponent<Text>().text = "IT'S ABOVE YOU!";
+            meteorDirectionMarker.GetComponent<Text>().text = "";
         }
         else
         {
-            meteorDirectionMarker.GetComponent<Text>().text = (int) (distance * 1.5f) + "m";
+            if (distance < 10)
+            {
+                meteorDirectionMarker.GetComponent<Text>().text = "IT'S ABOVE YOU!";
+            }
+            else
+            {
+                meteorDirectionMarker.GetComponent<Text>().text = (int)(distance * 1.0f) + "m";
+            }
         }
-        
 
         Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 5.0f, 0.0f);
-        meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
+        //meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
 
         meteorTestClamp.position = meteorPosition + new Vector3(0.0f, 75.0f, 0.0f); //75 is current radius of meteor
     }
@@ -273,5 +280,10 @@ public class GUIController : MonoBehaviour
         StartCoroutine(FadeUI(fullScreenBlack, 0.5f, duration));
         yield return new WaitForSeconds(duration);
         menuUnlocked = true;
+    }
+
+    public void UpdateSubtitles(string dialogue)
+    {
+        subtitles.text = dialogue;
     }
 }

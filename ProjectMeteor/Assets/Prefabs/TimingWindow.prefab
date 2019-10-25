@@ -200,8 +200,9 @@ MonoBehaviour:
   player: {fileID: 0}
   button: {fileID: 5912299519396160597}
   shrinker: {fileID: 1829793303258161863}
-  goodThreshold: 200
-  sweetThreshold: 150
+  goodThreshold: 250
+  greatThreshold: 200
+  perfectThreshold: 150
   deadThreshold: 125
   displayText: {fileID: 0}
   buttonsNone: {fileID: 4116711184687805582, guid: dfd6acc656e07a5458a22f8fe102ae29,

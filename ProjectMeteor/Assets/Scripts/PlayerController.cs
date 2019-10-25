@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public Transform worldOrigin;
     public Transform meteorWorldOrigin;
     public Transform playerOrigin;
+    public TutorialManager tutorialManager;
     public MeteorManager meteorManager;
     public SwordManager swordManager;
     public static float worldRadius; //Accessed by a LOT of different scripts
@@ -93,7 +94,7 @@ public class PlayerController : MonoBehaviour
                 {
                     meteorManager.ResetMeteors();
                     swordManager.ResetSwords();
-                    TutorialManager.ResetTutorial();
+                    tutorialManager.ResetTutorial();
                     ResetLevel();
                 }
 
@@ -269,7 +270,7 @@ public class PlayerController : MonoBehaviour
                     {
                         meteorManager.ResetMeteors();
                         swordManager.ResetSwords();
-                        TutorialManager.ResetTutorial();
+                        tutorialManager.ResetTutorial();
                         ResetLevel();
                     }
                 }
@@ -604,8 +605,8 @@ public class PlayerController : MonoBehaviour
             }
             if (TutorialManager.tutorialActive)
             {
-                TutorialManager.EndTutorial();
-                Debug.Log("We're done");
+                tutorialManager.secondActionCleared = true;
+                tutorialManager.EndTutorial();
                 meteorManager.SpawnMeteor();
             }
 
@@ -647,6 +648,10 @@ public class PlayerController : MonoBehaviour
         gui.UpdateEquipmentUI("EQUIP: Sword " + holdingSword);
         Destroy(pickedUpSword);
 
+        if (TutorialManager.tutorialActive)
+        {
+            tutorialManager.firstActionCleared = true;
+        }
     }
     private void SwitchSwords(GameObject pickedUpSword)
     {
