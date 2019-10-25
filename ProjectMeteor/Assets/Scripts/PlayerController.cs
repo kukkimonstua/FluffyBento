@@ -226,29 +226,23 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                     
-                    if(Input.GetButtonDown("buttonX"))
+                    
+                    if (Input.GetButton("buttonX") && Input.GetButton("Jump"))
                     {
-                        if (holdingSword != 0)
+                        if (targetedMeteor != null && !CheckForCeiling())
                         {
-                            if (targetedMeteor != null && !CheckForCeiling())
-                            {
-                                StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
-                            }
-                            else if (!isAttacking)
-                            {
-                                StartCoroutine(Attack(0.5f));
-                            }
+                            StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
                         }
-                        else
+                    }
+                    if (Input.GetButtonDown("buttonX"))
+                    {
+                        if (holdingSword != 0 && !isAttacking)
                         {
-                            Debug.Log("You have no sword!");
+                            StartCoroutine(Attack(0.5f));
                         }
                     }
                 }
-                if (Input.GetButton("buttonX") && Input.GetButton("Jump"))
-                {
-                    Debug.Log("X + A");
-                }
+                
                 if (targetedMeteor != null && !prone)
                 {
                     if (holdingSword == 0)
@@ -627,14 +621,14 @@ public class PlayerController : MonoBehaviour
             }
 
             ResetBreakables();
-            if (timingGrade >= 2)
+            if (timingGrade >= 3)
             {
                 //ResetBreakables(); //Reset only if timing grade was EXCELLENT
-                AddScore(transform.position, 300);
+                AddScore(transform.position, 500);
             }
             else
             {
-                AddScore(transform.position, 100);
+                AddScore(transform.position, timingGrade * 100);
             }
         }
         else

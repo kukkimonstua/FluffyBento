@@ -34,7 +34,7 @@ public class GUIController : MonoBehaviour
     public GameObject topBlackBar;
     public GameObject bottomBlackBar;
 
-    public Text meteorDirectionMarker; //Text for now
+    public MeteorDirectionMarker meteorDirectionMarker; //Text for now
     private Vector2 meteorDirectionMarkerOriginalPosition;
 
     public Text tempEquipText; //Replace with icon eventually
@@ -190,18 +190,17 @@ public class GUIController : MonoBehaviour
     }
     public void UpdateMeteorDirectionUI(int direction, float distance, Vector3 meteorPosition)
     {
-        if (direction == 0)
+        meteorDirectionMarker.direction = direction;
+        meteorDirectionMarker.distance = distance;
+        if (direction == 0 || distance < 10)
         {
-            meteorDirectionMarker.text = "";
-        }
-        else if (direction < 0)
-        {
-            meteorDirectionMarker.text = ((int)distance / 2) + "\n<<<";
+            meteorDirectionMarker.GetComponent<Text>().text = "IT'S ABOVE YOU!";
         }
         else
         {
-            meteorDirectionMarker.text = ((int)distance / 2) + "\n>>>";
+            meteorDirectionMarker.GetComponent<Text>().text = (int) (distance * 1.5f) + "m";
         }
+        
 
         Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 5.0f, 0.0f);
         meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;

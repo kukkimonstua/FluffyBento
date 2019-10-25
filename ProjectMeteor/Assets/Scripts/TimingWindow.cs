@@ -13,8 +13,9 @@ public class TimingWindow : MonoBehaviour
     private float maxShrinkerDiameter;
     private float shrinkerTrueValue; //current image means 96% of the diameter
 
-    public float goodThreshold = 200;
-    public float sweetThreshold = 150;
+    public float goodThreshold = 250;
+    public float greatThreshold = 200;
+    public float perfectThreshold = 150;
     public float deadThreshold = 125;
 
     public Text displayText;
@@ -82,16 +83,40 @@ public class TimingWindow : MonoBehaviour
                     shrinkerDiameter = Mathf.Lerp(maxShrinkerDiameter, minShrinkerDiameter, (counter - counterOffset) / (duration - counterOffset));
                     shrinkerTrueValue = shrinkerDiameter * 0.96f;
 
+                    /*
+                    if (shrinkerTrueValue < perfectThreshold && shrinkerTrueValue > deadThreshold)
+                    {
+                        Debug.Log("Perfect!");
+                    }
+                    else if (shrinkerTrueValue < greatThreshold && shrinkerTrueValue > deadThreshold)
+                    {
+                        Debug.Log("Great!");
+                    }
+                    else if (shrinkerTrueValue < goodThreshold && shrinkerTrueValue > deadThreshold)
+                    {
+                        Debug.Log("Good!");
+                    }
+                    else
+                    {
+                        Debug.Log("Miss...");
+                    }
+                    */
+
                     if (shrinkerTrueValue < deadThreshold * 0.75) gotPressed = true;
                 }
                 else
                 {
                     if (alphaValue > 0.0f) alphaValue -= 0.05f;
                     FadeTimingWindowUI(alphaValue);
-                    if (shrinkerTrueValue < sweetThreshold && shrinkerTrueValue > deadThreshold)
+                    if (shrinkerTrueValue < perfectThreshold && shrinkerTrueValue > deadThreshold)
+                    {
+                        player.timingGrade = 3;
+                        feedbackText = "Perfect!";
+                    }
+                    else if(shrinkerTrueValue < greatThreshold && shrinkerTrueValue > deadThreshold)
                     {
                         player.timingGrade = 2;
-                        feedbackText = "Excellent!";
+                        feedbackText = "Great!";
                     }
                     else if (shrinkerTrueValue < goodThreshold && shrinkerTrueValue > deadThreshold)
                     {
