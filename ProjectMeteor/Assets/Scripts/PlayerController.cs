@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
                 }
                 if (holdingSword == 0)
                 {
-                    moveSpeed = defaultMoveSpeed * 1.5f;
+                    moveSpeed = defaultMoveSpeed * 1.25f;
                 }
                 else
                 {
@@ -230,7 +230,7 @@ public class PlayerController : MonoBehaviour
                     
                     if (Input.GetButton("buttonX") && Input.GetButton("Jump"))
                     {
-                        if (targetedMeteor != null && !CheckForCeiling())
+                        if (holdingSword != 0 && targetedMeteor != null && !CheckForCeiling())
                         {
                             StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
                         }
@@ -315,6 +315,7 @@ public class PlayerController : MonoBehaviour
                 equippedKatana.SetActive(true);
                 break;
         }
+        gui.UpdateEquipmentUI(swordID);
     }
 
     private void ResetLevel()
@@ -606,13 +607,11 @@ public class PlayerController : MonoBehaviour
             if (TutorialManager.tutorialActive)
             {
                 tutorialManager.secondActionCleared = true;
-                tutorialManager.EndTutorial();
                 meteorManager.SpawnMeteor();
             }
 
             holdingSword = 0;
             EquipSword(0);
-            gui.UpdateEquipmentUI("EQUIP: -");
 
             //Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
             if (meteorsDestroyed >= maxMeteorsForLevel)
@@ -645,7 +644,6 @@ public class PlayerController : MonoBehaviour
         gui.HidePlayerActionText();
         holdingSword = pickedUpSword.GetComponent<SwordController>().swordID;
         EquipSword(holdingSword);
-        gui.UpdateEquipmentUI("EQUIP: Sword " + holdingSword);
         Destroy(pickedUpSword);
 
         if (TutorialManager.tutorialActive)
@@ -670,7 +668,6 @@ public class PlayerController : MonoBehaviour
         }
         holdingSword = pickedUpSword.GetComponent<SwordController>().swordID;
         EquipSword(holdingSword);
-        gui.UpdateEquipmentUI("EQUIP: Sword " + holdingSword);
         gui.HidePlayerActionText();
 
         Destroy(pickedUpSword);
@@ -695,7 +692,7 @@ public class PlayerController : MonoBehaviour
 
         holdingSword = 0;
         EquipSword(0);
-        gui.UpdateEquipmentUI("EQUIP: -");
+        
         Instantiate(swordToSpawn, transform.position, transform.rotation);
     }
 

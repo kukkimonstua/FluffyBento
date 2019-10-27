@@ -18,6 +18,14 @@ public class SwordController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (rb != null)
+        {
+            if (rb.velocity.y > 0)
+            {
+                rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y / 2, rb.velocity.z);
+            }
+        }
+        
         //transform.position += Vector3.up * Physics2D.gravity.y * Time.deltaTime * fallSpeed;
 
     }

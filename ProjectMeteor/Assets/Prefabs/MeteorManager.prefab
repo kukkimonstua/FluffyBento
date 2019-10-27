@@ -89,7 +89,7 @@ MonoBehaviour:
   meteorOrigin: {fileID: 944358062722250177}
   spawnPoint: {fileID: 944358063297982244}
   spawnHeight: 300
-  meteorSpeed: 3
+  meteorSpeed: 2
   maxMeteorsOnScreen: 3
   spawnDelay: 15
   maxMeteorsForLevel: 5

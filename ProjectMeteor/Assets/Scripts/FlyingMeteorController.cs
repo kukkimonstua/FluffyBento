@@ -10,6 +10,8 @@ public class FlyingMeteorController : MonoBehaviour
 
     void Start()
     {
+
+        // YOU CAN'T CREATE A NEW GAMEOBJECT, FIND ANOTHER SOLUTION
         rb = GetComponent<Rigidbody>();
         GameObject origin = new GameObject();
         origin.transform.position = new Vector3(0.0f, 0.0f, 0.0f);

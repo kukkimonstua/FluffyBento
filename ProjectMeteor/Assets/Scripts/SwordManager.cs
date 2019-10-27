@@ -46,7 +46,7 @@ public class SwordManager : MonoBehaviour
     }
     public void SpawnSword()
     {
-        GameObject swordToSpawn = new GameObject();
+        GameObject swordToSpawn; //DON'T SET TO NEW GAMEOBJECT
         int swordID = Random.Range(0, 3) + 1;
         switch (swordID)
         {

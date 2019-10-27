@@ -66,6 +66,7 @@ public class TutorialManager : MonoBehaviour
         StopCoroutine(tutorialInstance);
         tutorialInstance = TutorialSequencePart3();
         StartCoroutine(tutorialInstance);
+        EndTutorial();
     }
 
     private IEnumerator SayDialogue(string dialogue)

@@ -38,7 +38,7 @@ public class GUIController : MonoBehaviour
     private Vector2 meteorDirectionMarkerOriginalPosition;
 
     public Text subtitles;
-    public Text tempEquipText; //Replace with icon eventually
+    public SwordEquipIcon swordEquipIcon; //Replace with icon eventually
 
     float minutes;
     float seconds;
@@ -129,6 +129,10 @@ public class GUIController : MonoBehaviour
                 playerActionText.text = "Swap";
             }
             actionTextClamp.position = targetedSword.transform.position;
+            if (targetedSword.GetComponent<SwordController>() != null)
+            {
+                swordEquipIcon.ShowTargetedSwordType(targetedSword.GetComponent<SwordController>().swordID);
+            }
             playerActionText.gameObject.SetActive(true);
         } 
         else
@@ -138,6 +142,7 @@ public class GUIController : MonoBehaviour
     }
     public void HidePlayerActionText()
     {
+        swordEquipIcon.ShowTargetedSwordType(0);
         playerActionText.gameObject.SetActive(false);
         playerActionText.text = "";
     }
@@ -158,7 +163,7 @@ public class GUIController : MonoBehaviour
         fullScreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
         StartCoroutine(FadeUI(fullScreenBlack, 0.0f, 3.0f));
 
-        tempEquipText.text = "EQUIP: -";
+        swordEquipIcon.UpdateCurrentlyEquipped(0);
         ResetTimer();
     }
     public void FlashRed()
@@ -180,14 +185,14 @@ public class GUIController : MonoBehaviour
     {
         scoreText.text = "Score: " + newValue;
     }
-    public void UpdateEquipmentUI(string tempString)
+    public void UpdateEquipmentUI(int swordType)
     {
-        tempEquipText.text = tempString;
+        swordEquipIcon.UpdateCurrentlyEquipped(swordType);
     }
 
     public void UpdateMeteorsDestroyed(int newValue)
     {
-        meteorCounterText.text = "Destroyed: " + newValue;
+        meteorCounterText.text = "× " + newValue;
     }
     public void UpdateMeteorDirectionUI(int direction, float distance, Vector3 meteorPosition)
     {
