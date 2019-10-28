@@ -37492,7 +37492,7 @@ Terrain:
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
   m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 250
+  m_DetailObjectDistance: 50
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000
@@ -39678,6 +39678,42 @@ PrefabInstance:
     - target: {fileID: 448458, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
       propertyPath: m_LocalScale.z
       value: 7.4977074
+      objectReference: {fileID: 0}
+    - target: {fileID: 419722, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.6919591
+      objectReference: {fileID: 0}
+    - target: {fileID: 419722, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.14557694
+      objectReference: {fileID: 0}
+    - target: {fileID: 419722, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.14557694
+      objectReference: {fileID: 0}
+    - target: {fileID: 419722, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6919591
+      objectReference: {fileID: 0}
+    - target: {fileID: 419722, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.184
+      objectReference: {fileID: 0}
+    - target: {fileID: 419722, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.09500182
+      objectReference: {fileID: 0}
+    - target: {fileID: 419722, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.217
+      objectReference: {fileID: 0}
+    - target: {fileID: 419722, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90.00001
+      objectReference: {fileID: 0}
+    - target: {fileID: 419722, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 23.762001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 93466df78c8716e4b862b3630d4458f6, type: 3}
@@ -44979,11 +45015,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 7994374088859159525, guid: 4d831cb9487e12a41baa0bf009bd86f6,
-        type: 3}
-      propertyPath: m_SelectedEditorRenderState
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7994374088859159524, guid: 4d831cb9487e12a41baa0bf009bd86f6,
         type: 3}
       propertyPath: m_Size.y
@@ -44993,6 +45024,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Center.y
       value: 0.14867371
+      objectReference: {fileID: 0}
+    - target: {fileID: 7994374088859159525, guid: 4d831cb9487e12a41baa0bf009bd86f6,
+        type: 3}
+      propertyPath: m_SelectedEditorRenderState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4d831cb9487e12a41baa0bf009bd86f6, type: 3}
