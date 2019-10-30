@@ -28,15 +28,22 @@ public class PlayerController : MonoBehaviour
     public MeteorManager meteorManager;
     public SwordManager swordManager;
     public static float worldRadius; //Accessed by a LOT of different scripts
+    public static float worldHeight;
 
     [Header("PLAYER MOVEMENT")]
     private Vector3 circularVelocity;
-    public bool isGrounded; //Make these
-    public bool canDoubleJump; //public when
-    public float touchedWallDirection; //you're debugging.
     private int previousWallJumpDirection;
     private int holdingSword; //0 is nothing, 1 - 3 are the different types
     private bool prone;
+
+    [Header("DEBUGGING TOOLS")]
+    public bool isGrounded; //Make these
+    public bool canDoubleJump; //public when
+    public float touchedWallDirection; //you're debugging.
+    public GameObject targetedMeteor;
+    private float targetedMeteorDistance;
+    public float meteorAttackRange = 175.0f;
+    public GameObject targetedSword;
 
     [Header("GAME SETTINGS")]
     public static int playerState; //1 = running, 2 = attacking, 3 = game over
@@ -44,9 +51,6 @@ public class PlayerController : MonoBehaviour
     public GameObject zanbato;
     public GameObject broadsword;
     public GameObject katana;
-
-    private GameObject targetedMeteor;
-    private GameObject targetedSword;
 
     private Vector3 startingPosition;
     public int playerMaxHealth = 3;
@@ -76,6 +80,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
+        worldHeight = 300.0f;
         rb = GetComponent<Rigidbody>();
         myCollider = GetComponent<CapsuleCollider>();
         startingPosition = transform.position;
@@ -228,13 +233,7 @@ public class PlayerController : MonoBehaviour
                     }
                     
                     
-                    if (Input.GetButton("buttonX") && Input.GetButton("Jump"))
-                    {
-                        if (holdingSword != 0 && targetedMeteor != null && !CheckForCeiling())
-                        {
-                            StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
-                        }
-                    }
+                    
                     if (Input.GetButtonDown("buttonX"))
                     {
                         if (holdingSword != 0 && !isAttacking)
@@ -242,26 +241,47 @@ public class PlayerController : MonoBehaviour
                             StartCoroutine(Attack(0.5f));
                         }
                     }
-                }
-                
-                if (targetedMeteor != null && !prone)
-                {
-                    if (holdingSword == 0)
+                    if (Input.GetButton("buttonX") && Input.GetButton("Jump"))
                     {
-                        gui.TogglePrompt(true, "You need a sword!");
-                    }
-                    else
-                    {
-                        if(!CheckForCeiling())
+                        if (holdingSword != 0 && targetedMeteor != null && targetedMeteorDistance < meteorAttackRange)
                         {
-                            gui.TogglePrompt(true, "Attack Meteor", "buttonsXA");
+                            StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
+                        }
+                    }
+                }
+
+                targetedMeteorDistance = CheckAboveForMeteor();
+                if (targetedMeteorDistance >= worldHeight) // i.e. if there is none within range
+                {
+                    targetedMeteor = null;
+                    gui.TogglePrompt(false, "");
+                    gui.UpdateMeteorHeightUI(0.0f);
+                }
+                else
+                {
+                    //targetMeteor is guaranteed set to something so...
+                    if (targetedMeteor != null && !prone)
+                    {
+                        if (holdingSword == 0)
+                        {
+                            gui.UpdateMeteorHeightUI(0.0f);
+                            gui.TogglePrompt(true, "You need a sword!");
                         }
                         else
                         {
-                            gui.TogglePrompt(true, "There's a ceiling!");
+                            if (targetedMeteorDistance > meteorAttackRange)
+                            {
+                                gui.TogglePrompt(true, "It's still too far!");
+                            }
+                            else
+                            {
+                                gui.TogglePrompt(true, "Attack Meteor", "buttonsXA");
+                            }
+
                         }
                     }
                 }
+                
                 UpdateAnimations();
 
                 if (playerState == 4)
@@ -280,8 +300,16 @@ public class PlayerController : MonoBehaviour
     }
     private bool CheckForCeiling()
     {
-        if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 300.0f))
+        if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 500.0f))
         {
+            if (hit.transform.gameObject.CompareTag("Meteor"))
+            {
+                Debug.Log("meteor is " + hit.distance + " away");
+            }
+            else
+            {
+                Debug.Log("something is " + hit.distance + " away");
+            }
             return true;
         }
         else
@@ -289,6 +317,45 @@ public class PlayerController : MonoBehaviour
             return false;
         }
     }
+
+    private float CheckAboveForMeteor()
+    {
+        if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, worldHeight))
+        {
+            if (hit.transform.gameObject.CompareTag("Meteor"))
+            {
+
+                targetedMeteor = hit.transform.gameObject;
+                Debug.Log("meteor is " + hit.distance + " away");
+
+                if (targetedMeteorDistance > meteorAttackRange)
+                {
+                    //don't use targetedMeteorDistance BEFORE you set it...
+                    gui.UpdateMeteorHeightUI(targetedMeteorDistance - meteorAttackRange);
+                    gui.TogglePrompt(true, "It's still too far!");
+                    //also indicate that it's the lowest one or NOT.
+                }
+                else
+                {
+                    gui.UpdateMeteorHeightUI(0.0f);
+                }
+
+                return hit.distance;
+            }
+            else
+            {
+                gui.UpdateMeteorHeightUI(0.0f);
+                Debug.Log("something is " + hit.distance + " away");
+                return worldHeight;
+            }
+        }
+        else
+        {
+            gui.UpdateMeteorHeightUI(0.0f);
+            return worldHeight;
+        }
+    }
+
 
     private void EquipSword(int swordID)
     {
@@ -432,8 +499,8 @@ public class PlayerController : MonoBehaviour
         {
             if (other.gameObject.CompareTag("Meteor"))
             {
-                targetedMeteor = other.gameObject;
-                targetedMeteor.GetComponent<MeteorController>().withinAttackRange = true;                
+                //targetedMeteor = other.gameObject;
+                //targetedMeteor.GetComponent<MeteorController>().withinAttackRange = true;                
             }
 
             if (other.gameObject.CompareTag("Sword"))
@@ -457,8 +524,8 @@ public class PlayerController : MonoBehaviour
             if (other.gameObject.CompareTag("Meteor"))
             {
                 other.GetComponent<MeteorController>().withinAttackRange = false;
-                targetedMeteor = null;
-                gui.TogglePrompt(false, "");
+                //targetedMeteor = null;
+                //gui.TogglePrompt(false, "");
             }
             if (other.gameObject.CompareTag("Sword"))
             {

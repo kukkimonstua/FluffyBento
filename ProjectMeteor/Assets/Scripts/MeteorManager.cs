@@ -75,6 +75,7 @@ public class MeteorManager : MonoBehaviour
 
     public void SpawnMeteor()
     {
+        //THIS WILL NOT DO ANYMORE. USE FIXED POINTS.
         meteorOrigin.Rotate(0.0f, Random.Range(0, 6) * 60.0f, 0.0f);
         spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * worldRadius) + (playerOrigin.transform.up * spawnHeight);
 

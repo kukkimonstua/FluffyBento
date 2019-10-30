@@ -63,10 +63,10 @@ public class TutorialManager : MonoBehaviour
         {
             yield return null;
         }
+        EndTutorial();
         StopCoroutine(tutorialInstance);
         tutorialInstance = TutorialSequencePart3();
         StartCoroutine(tutorialInstance);
-        EndTutorial();
     }
 
     private IEnumerator SayDialogue(string dialogue)

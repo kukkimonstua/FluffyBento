@@ -34,7 +34,8 @@ public class GUIController : MonoBehaviour
     public GameObject topBlackBar;
     public GameObject bottomBlackBar;
 
-    public MeteorDirectionMarker meteorDirectionMarker; //Text for now
+    public MeteorDirectionMarker meteorDirectionMarker;
+    public Text meteorHeightMarker; //Text for now
     private Vector2 meteorDirectionMarkerOriginalPosition;
 
     public Text subtitles;
@@ -204,9 +205,9 @@ public class GUIController : MonoBehaviour
         }
         else
         {
-            if (distance < 10)
+            if (distance < 30)
             {
-                meteorDirectionMarker.GetComponent<Text>().text = "IT'S ABOVE YOU!";
+                meteorDirectionMarker.GetComponent<Text>().text = "";
             }
             else
             {
@@ -218,6 +219,18 @@ public class GUIController : MonoBehaviour
         //meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
 
         meteorTestClamp.position = meteorPosition + new Vector3(0.0f, 75.0f, 0.0f); //75 is current radius of meteor
+    }
+    public void UpdateMeteorHeightUI(float distance)
+    {
+        if (distance <= 0.0f)
+        {
+            meteorHeightMarker.gameObject.SetActive(false);
+        }
+        else
+        {
+            meteorHeightMarker.gameObject.SetActive(true);
+            meteorHeightMarker.text = (int) distance + "m too far";
+        }
     }
     public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold, float sliderRange)
     {

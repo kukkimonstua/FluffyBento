@@ -97,7 +97,7 @@ MonoBehaviour:
   specialMeteorRate: 0
   flyingMeteors: 0
   flyingMeteorSpeed: 30
-  flyingMeteorSpawnDelay: 2
+  flyingMeteorSpawnDelay: 99
 --- !u!1 &944358063297982243
 GameObject:
   m_ObjectHideFlags: 0
