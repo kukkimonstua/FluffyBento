@@ -184,7 +184,7 @@ public class GUIController : MonoBehaviour
     }
     public void UpdateScoreUI(int newValue)
     {
-        scoreText.text = "Score: " + newValue;
+        scoreText.text = newValue.ToString("000000");
     }
     public void UpdateEquipmentUI(int swordType)
     {
@@ -193,7 +193,7 @@ public class GUIController : MonoBehaviour
 
     public void UpdateMeteorsDestroyed(int newValue)
     {
-        meteorCounterText.text = "× " + newValue;
+        meteorCounterText.text = "×" + newValue;
     }
     public void UpdateMeteorDirectionUI(int direction, float distance, Vector3 meteorPosition)
     {
