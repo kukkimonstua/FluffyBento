@@ -25,7 +25,18 @@ public class TutorialManager : MonoBehaviour
         tutorialActive = true;
         foreach (TutorialObject to in tutorialObjects)
         {
-            to.SpawnMyObject();
+            
+            if (to.myObject.GetComponent<MeteorController>() != null)
+            {
+                //Debug.Log("a tutorial meteor!");
+                GameObject meteor = Instantiate(to.myObject, to.gameObject.transform.position, to.gameObject.transform.rotation);
+
+                gui.AddMinimapMeteor(meteor);
+            }
+            else
+            {
+                to.SpawnMyObject();
+            }
         }
         ToggleControlPrompts(true);
 

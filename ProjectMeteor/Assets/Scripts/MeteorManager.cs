@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MeteorManager : MonoBehaviour
 {
+    public GUIController gui;
+
     [Header("Linked GameObjects")]
     public GameObject meteor;
     public GameObject meteorZanbato;
@@ -76,7 +78,7 @@ public class MeteorManager : MonoBehaviour
     public void SpawnMeteor()
     {
         //THIS WILL NOT DO ANYMORE. USE FIXED POINTS.
-        meteorOrigin.Rotate(0.0f, Random.Range(0, 6) * 60.0f, 0.0f);
+        meteorOrigin.Rotate(0.0f, Random.Range(0, 12) * 30.0f, 0.0f);
         spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * worldRadius) + (playerOrigin.transform.up * spawnHeight);
 
         var currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
@@ -111,7 +113,12 @@ public class MeteorManager : MonoBehaviour
                 }
             }
         }
-        Instantiate(meteorToSpawn, spawnPoint.position, spawnPoint.rotation);
+
+        GameObject newMeteor = Instantiate(meteorToSpawn, spawnPoint.position, spawnPoint.rotation);
+        if (meteor.GetComponent<MeteorController>() != null)
+        {
+            gui.AddMinimapMeteor(newMeteor);
+        }
         numOfMeteorsSpawned++;
         meteorSpawnTimer = 0.0f;
     }

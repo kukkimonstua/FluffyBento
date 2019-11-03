@@ -43,7 +43,55 @@ public class GUIController : MonoBehaviour
 
     float minutes;
     float seconds;
-    float milliseconds;    
+    float milliseconds;
+
+    public List<GameObject> currentMeteors;
+    private List<GameObject> minimapMeteors;
+    public GameObject minimap;
+    public PlayerMinimapMarker playerMarker;
+    public GameObject minimapMeteorMarker;
+
+    public void ResetMinimap()
+    {
+        minimapMeteors = new List<GameObject>();
+        currentMeteors = new List<GameObject>();
+        foreach (Transform marker in minimap.gameObject.transform)
+        {
+            if (marker.GetComponent<MeteorMinimapMarker>() != null)
+            {
+                Destroy(marker.gameObject);
+            }
+        }
+    }
+    public void UpdatePlayerMarker(Vector3 playerPosition)
+    {
+        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 3.0f, playerPosition.z / 3.0f);
+    }
+    public void AddMinimapMeteor(GameObject meteor)
+    {
+        GameObject newMarker = Instantiate(minimapMeteorMarker);
+        newMarker.transform.SetParent(minimap.transform);
+        Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
+        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 3.0f, meteor.transform.position.z / 3.0f);
+
+        minimapMeteors.Add(newMarker);
+        currentMeteors.Add(meteor);
+        Debug.Log(minimapMeteors.IndexOf(newMarker));
+        Debug.Log(currentMeteors.IndexOf(meteor));
+        Debug.Log(minimapMeteors.Count);
+        Debug.Log(currentMeteors.Count);
+    }
+    public void RemoveMinimapMeteor(GameObject meteor)
+    {
+        int meteorIndex = currentMeteors.IndexOf(meteor);
+        Debug.Log(minimapMeteors.Count);
+        Debug.Log(currentMeteors.Count);
+
+        currentMeteors.Remove(meteor);
+        GameObject relatedMarker = minimapMeteors[meteorIndex];
+        Destroy(relatedMarker);
+        minimapMeteors.Remove(minimapMeteors[meteorIndex]);
+    }
 
     void ResetTimer()
     {
@@ -55,13 +103,31 @@ public class GUIController : MonoBehaviour
     {
         meteorDirectionMarkerOriginalPosition = meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition;
         animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 0.0f);
-        ResetTimer();
+        
     }
 
     void Update()
     {
         if(PlayerController.playerState == 1)
         {
+            if (currentMeteors.Count != 0)
+            {
+                foreach (GameObject m in currentMeteors)
+                {
+                    GameObject relatedMarker = minimapMeteors[currentMeteors.IndexOf(m)];
+                    if (m.GetComponent<MeteorController>() != null && relatedMarker.GetComponent<MeteorMinimapMarker>() != null)
+                    {
+                        relatedMarker.GetComponent<MeteorMinimapMarker>().isLowest = m.GetComponent<MeteorController>().isLowest;
+                    }
+                    //Debug.Log(m.transform.position.x + ", " + m.transform.position.z);
+                }
+                //Debug.Log("There are " + currentMeteors.Count);
+            }
+            else
+            {
+                Debug.Log("ALL CLEAR" + currentMeteors.Count);
+            }
+
             milliseconds += Time.deltaTime * 100;
             if (milliseconds >= 100)
             {
@@ -74,7 +140,7 @@ public class GUIController : MonoBehaviour
                 milliseconds = 0;
             }
             timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, (int)milliseconds);
-        }        
+        }
     }
     public void AnimateScore(Vector3 floatPosition, int scoreToAdd)
     {
@@ -166,6 +232,7 @@ public class GUIController : MonoBehaviour
 
         swordEquipIcon.UpdateCurrentlyEquipped(0);
         ResetTimer();
+        ResetMinimap();
     }
     public void FlashRed()
     {

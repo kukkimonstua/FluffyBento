@@ -29,6 +29,8 @@ public class MeteorController : MonoBehaviour
                 fallMarkerInstance = Instantiate(fallMarkerPrefab, fallPosition - 0.05f * fallDirection, Quaternion.identity); // small displacement to avoid z-fighting with the ground
             }
         }
+
+        //MiniMap.AddMinimapMeteor(this);
     }
 
     // Update is called once per frame
@@ -65,6 +67,7 @@ public class MeteorController : MonoBehaviour
 
     private void OnDestroy()
     {
+        //MiniMap.RemoveMinimapMeteor(this);
         if (fallMarkerInstance != null) {
             Destroy(fallMarkerInstance);
         }

@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     public float touchedWallDirection; //you're debugging.
     public GameObject targetedMeteor;
     private float targetedMeteorDistance;
-    public float meteorAttackRange = 175.0f;
+    public float meteorAttackRange = 200.0f;
     public GameObject targetedSword;
 
     [Header("GAME SETTINGS")]
@@ -99,8 +99,8 @@ public class PlayerController : MonoBehaviour
                 {
                     meteorManager.ResetMeteors();
                     swordManager.ResetSwords();
-                    tutorialManager.ResetTutorial();
                     ResetLevel();
+                    tutorialManager.ResetTutorial();
                 }
 
                 break; //No fall multiplier for a floaty death is totally intentional
@@ -281,7 +281,7 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-                
+                gui.UpdatePlayerMarker(transform.position);
                 UpdateAnimations();
 
                 if (playerState == 4)
@@ -290,32 +290,13 @@ public class PlayerController : MonoBehaviour
                     {
                         meteorManager.ResetMeteors();
                         swordManager.ResetSwords();
-                        tutorialManager.ResetTutorial();
                         ResetLevel();
+                        tutorialManager.ResetTutorial();
                     }
                 }
                 break;
         }
         
-    }
-    private bool CheckForCeiling()
-    {
-        if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, 500.0f))
-        {
-            if (hit.transform.gameObject.CompareTag("Meteor"))
-            {
-                Debug.Log("meteor is " + hit.distance + " away");
-            }
-            else
-            {
-                Debug.Log("something is " + hit.distance + " away");
-            }
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     private float CheckAboveForMeteor()
@@ -326,7 +307,7 @@ public class PlayerController : MonoBehaviour
             {
 
                 targetedMeteor = hit.transform.gameObject;
-                Debug.Log("meteor is " + hit.distance + " away");
+                //Debug.Log("meteor is " + hit.distance + " away");
 
                 if (targetedMeteorDistance > meteorAttackRange)
                 {
@@ -345,7 +326,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 gui.UpdateMeteorHeightUI(0.0f);
-                Debug.Log("something is " + hit.distance + " away");
+                //Debug.Log("something is " + hit.distance + " away");
                 return worldHeight;
             }
         }
@@ -419,7 +400,6 @@ public class PlayerController : MonoBehaviour
     }
     private void TrackLowestMeteor()
     {
-        lowestMeteorPosition = 400.0f; //the current height at which meteors spawn
         GameObject[] meteors = GameObject.FindGameObjectsWithTag("Meteor");
         if (meteors.Length <= 0)
         {
@@ -431,6 +411,7 @@ public class PlayerController : MonoBehaviour
             gui.lowestMeteorMarker.gameObject.SetActive(true);
         }
 
+        lowestMeteorPosition = worldHeight; //the current height at which meteors spawn
         foreach (GameObject meteor in meteors)
         {
             if (meteor.transform.position.y < lowestMeteorPosition)
@@ -662,6 +643,7 @@ public class PlayerController : MonoBehaviour
         {
             if (meteor.GetComponent<MeteorController>().meteorID == 0 || holdingSword == meteor.GetComponent<MeteorController>().meteorID)
             {
+                gui.RemoveMinimapMeteor(meteor);
                 Destroy(meteor);
                 meteorsDestroyed++;
                 gui.UpdateMeteorsDestroyed(meteorsDestroyed);
