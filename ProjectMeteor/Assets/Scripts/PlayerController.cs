@@ -77,12 +77,21 @@ public class PlayerController : MonoBehaviour
     public int timingGrade;
     public GUIController gui;
 
+    [Header("SOUND")]
+    public AudioClip jumpSound;
+    public AudioClip wallJumpSound;
+    public AudioClip swordEquipSound;
+    public AudioClip explosionSound;
+
+    private AudioSource audioSource;
+
     void Awake()
     {
         worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
         worldHeight = 300.0f;
         rb = GetComponent<Rigidbody>();
         myCollider = GetComponent<CapsuleCollider>();
+        audioSource = GetComponent<AudioSource>();
         startingPosition = transform.position;
         defaultMoveSpeed = moveSpeed;
         ResetLevel();
@@ -197,14 +206,15 @@ public class PlayerController : MonoBehaviour
                             {
                                 canDoubleJump = false;
                                 rb.velocity = Vector3.up * jumpForce;
+                                audioSource.PlayOneShot(jumpSound);
                             }
                         }
                         else
                         {
                             isGrounded = false;
                             rb.velocity = Vector3.up * jumpForce;
+                            audioSource.PlayOneShot(jumpSound);
                         }
-                    
                     }
                     if(Input.GetButtonDown("buttonB"))
                     {
@@ -225,6 +235,7 @@ public class PlayerController : MonoBehaviour
                             {
                                 SwitchSwords(targetedSword);
                             }
+                            audioSource.PlayOneShot(swordEquipSound);
                         }
                         else if (holdingSword != 0)
                         {
@@ -572,6 +583,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         rb.velocity = Vector3.up * jumpForce * jumpMultiplier;
+        audioSource.PlayOneShot(wallJumpSound);
         circularVelocity *= -2.0f;
     }
     private IEnumerator Attack(float duration)
@@ -647,6 +659,7 @@ public class PlayerController : MonoBehaviour
                 Destroy(meteor);
                 meteorsDestroyed++;
                 gui.UpdateMeteorsDestroyed(meteorsDestroyed);
+                audioSource.PlayOneShot(explosionSound);
             }
             else
             {

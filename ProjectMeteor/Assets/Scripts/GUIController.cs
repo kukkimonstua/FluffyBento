@@ -70,7 +70,7 @@ public class GUIController : MonoBehaviour
     public void AddMinimapMeteor(GameObject meteor)
     {
         GameObject newMarker = Instantiate(minimapMeteorMarker);
-        newMarker.transform.SetParent(minimap.transform);
+        newMarker.transform.SetParent(minimap.transform, false);
         Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
         newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 3.0f, meteor.transform.position.z / 3.0f);
 

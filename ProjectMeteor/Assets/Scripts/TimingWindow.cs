@@ -30,8 +30,11 @@ public class TimingWindow : MonoBehaviour
     public Sprite buttonB;
     public Sprite buttonY;
 
+    private AudioSource audioSource;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         gotPressed = false;
         pressable = false;
         minShrinkerDiameter = 50.0f;
