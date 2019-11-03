@@ -28,24 +28,24 @@ public class MeteorDirectionMarker : MonoBehaviour
             arrows[0].gameObject.SetActive(true);
             arrows[1].gameObject.SetActive(true);
             arrows[2].gameObject.SetActive(true);
-            arrows[0].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(-20.0f, 15.0f, 0.0f);
-            arrows[1].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0.0f, 15.0f, 0.0f);
-            arrows[2].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(20.0f, 15.0f, 0.0f);
+            //arrows[0].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(-20.0f, 15.0f, 0.0f);
+            //arrows[1].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0.0f, 15.0f, 0.0f);
+            //arrows[2].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(20.0f, 15.0f, 0.0f);
         }
         else if (distance > 30.0f)
         {
             arrows[0].gameObject.SetActive(true);
             arrows[1].gameObject.SetActive(true);
             arrows[2].gameObject.SetActive(false);
-            arrows[0].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(-10.0f, 15.0f, 0.0f);
-            arrows[1].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(10.0f, 15.0f, 0.0f);
+            //arrows[0].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(-10.0f, 15.0f, 0.0f);
+            //arrows[1].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(10.0f, 15.0f, 0.0f);
         }
         else if (distance > 10.0f)
         {
-            arrows[0].gameObject.SetActive(false);
-            arrows[1].gameObject.SetActive(true);
+            arrows[0].gameObject.SetActive(true);
+            arrows[1].gameObject.SetActive(false);
             arrows[2].gameObject.SetActive(false);
-            arrows[1].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0.0f, 15.0f, 0.0f);
+            //arrows[1].gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0.0f, 15.0f, 0.0f);
         }
         else
         {
@@ -53,70 +53,62 @@ public class MeteorDirectionMarker : MonoBehaviour
             arrows[1].gameObject.SetActive(false);
             arrows[2].gameObject.SetActive(false);
         }
+
         flashLoopTimer += Time.deltaTime;
-        if (direction > 0)
+        if (flashLoopTimer > flashLoopDuration * 0.75f)
         {
-            foreach (Image arrow in arrows)
-            {
-                arrow.sprite = rightArrow;
-            }
-            if (flashLoopTimer > flashLoopDuration * 0.75f)
-            {
-                arrows[0].color = Color.white;
-                arrows[1].color = Color.white;
-                arrows[2].color = Color.yellow;
-            }
-            else if (flashLoopTimer > flashLoopDuration * 0.5f)
-            {
-                arrows[0].color = Color.white;
-                arrows[1].color = Color.yellow;
-                arrows[2].color = Color.white;
-            }
-            else if (flashLoopTimer > flashLoopDuration * 0.25f)
-            {
-                arrows[0].color = Color.yellow;
-                arrows[1].color = Color.white;
-                arrows[2].color = Color.white;
-            }
-            else
-            {
-                arrows[0].color = Color.white;
-                arrows[1].color = Color.white;
-                arrows[2].color = Color.white;
-            }
+            arrows[0].GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+            arrows[1].GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+            arrows[2].GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+        }
+        else if (flashLoopTimer > flashLoopDuration * 0.5f)
+        {
+            arrows[0].GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+            arrows[1].GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+            arrows[2].GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+        }
+        else if (flashLoopTimer > flashLoopDuration * 0.25f)
+        {
+            arrows[0].GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+            arrows[1].GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+            arrows[2].GetComponent<CanvasRenderer>().SetAlpha(1.0f);
         }
         else
         {
+            arrows[0].GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+            arrows[1].GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+            arrows[2].GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+        }
+        if (direction > 0)
+        {
+            GetComponent<RectTransform>().localScale = new Vector3(1.0f, 1.0f, 1.0f);
             foreach (Image arrow in arrows)
             {
-                arrow.sprite = leftArrow;
-            }
-            if (flashLoopTimer > flashLoopDuration * 0.75f)
+                //arrow.sprite = rightArrow;
+            }            
+        }
+        else
+        {
+            GetComponent<RectTransform>().localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+        }
+        GetComponent<Text>().text = "";
+        /*
+        if (direction == 0)
+        {
+            GetComponent<Text>().text = "";
+        }
+        else
+        {
+            if (distance < 30)
             {
-                arrows[0].color = Color.yellow;
-                arrows[1].color = Color.white;
-                arrows[2].color = Color.white;
-            }
-            else if (flashLoopTimer > flashLoopDuration * 0.5f)
-            {
-                arrows[0].color = Color.white;
-                arrows[1].color = Color.yellow;
-                arrows[2].color = Color.white;
-            }
-            else if (flashLoopTimer > flashLoopDuration * 0.25f)
-            {
-                arrows[0].color = Color.white;
-                arrows[1].color = Color.white;
-                arrows[2].color = Color.yellow;
+                GetComponent<Text>().text = "";
             }
             else
             {
-                arrows[0].color = Color.white;
-                arrows[1].color = Color.white;
-                arrows[2].color = Color.white;
+                GetComponent<Text>().text = (int)(distance * 1.0f) + "m";
             }
         }
-        
+        */
 
         if (flashLoopTimer >= flashLoopDuration)
         {

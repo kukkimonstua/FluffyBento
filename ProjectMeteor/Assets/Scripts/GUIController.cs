@@ -266,26 +266,12 @@ public class GUIController : MonoBehaviour
     {
         meteorDirectionMarker.direction = direction;
         meteorDirectionMarker.distance = distance;
-        if (direction == 0)
-        {
-            meteorDirectionMarker.GetComponent<Text>().text = "";
-        }
-        else
-        {
-            if (distance < 30)
-            {
-                meteorDirectionMarker.GetComponent<Text>().text = "";
-            }
-            else
-            {
-                meteorDirectionMarker.GetComponent<Text>().text = (int)(distance * 1.0f) + "m";
-            }
-        }
-
-        Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 5.0f, 0.0f);
-        //meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
 
         meteorTestClamp.position = meteorPosition + new Vector3(0.0f, 75.0f, 0.0f); //75 is current radius of meteor
+
+        //Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 5.0f, 0.0f);
+        //meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
+
     }
     public void UpdateMeteorHeightUI(float distance)
     {
