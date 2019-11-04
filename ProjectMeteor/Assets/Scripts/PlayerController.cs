@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("LINKS TO GUI")]
     public GameObject timingWindow;
-    public PauseMenu pauseMenu;
+   // public PauseMenu pauseMenu;
     public int timingGrade;
     public GUIController gui;
 
@@ -793,28 +793,26 @@ public class PlayerController : MonoBehaviour
     }
     private void UpdateAnimations()
     {
-        if (pauseMenu.Paused() == false)
+        if (!PauseMenu.GameIsPaused)
         {
             avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
+            if (Input.GetAxisRaw("Horizontal") < 0)
+            {
+                if (avatarModelRotation < 90.0f) avatarModelRotation += 30.0f;
+                running = true;
+            }
+            else if (Input.GetAxisRaw("Horizontal") > 0)
+            {
+                if (avatarModelRotation > -90.0f) avatarModelRotation -= 30.0f;
+                running = true;
+            }
+            else
+            {
+                running = false;
+            }
+            anim.SetBool("running", running);
+            anim.SetBool("dashing", dashing);
+            anim.SetBool("attacking", isAttacking);
         }
-        
-
-        if (Input.GetAxisRaw("Horizontal") < 0)
-        {
-            if (avatarModelRotation < 90.0f) avatarModelRotation += 30.0f;
-            running = true;
-        }
-        else if (Input.GetAxisRaw("Horizontal") > 0)
-        {
-            if (avatarModelRotation > -90.0f) avatarModelRotation -= 30.0f;
-            running = true;
-        }
-        else
-        {
-            running = false;
-        }
-        anim.SetBool("running", running);
-        anim.SetBool("dashing", dashing);
-        anim.SetBool("attacking", isAttacking);
     }
 }

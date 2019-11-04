@@ -6,21 +6,20 @@ public class CameraController : MonoBehaviour
 {
     public Transform player;
     public Transform playerOrigin;
-    public float zoomLevel = 10.0f;
+    public float zoomLevel = 12.0f;
     private float defaultZoomLevel;
-    private bool zooming;
-
     private float zoom;
-    private float maxZoomLevel;
+
     private Vector3 cameraHeight;
+    public float verticalPosThreshold = 5.0f;
+
+    private float tiltCameraValue;
+    public static float tutorialCameraTimer;
+    //public static bool moving = false;
 
     public static int cameraState;
     public Transform attackCameraPosition;
     public Transform endingCameraPosition;
-
-    private float tiltCameraValue;
-    //public static bool moving = false;
-
     private static float endingZoom;
     private static float endingZoomTarget;
 
@@ -29,19 +28,10 @@ public class CameraController : MonoBehaviour
         defaultZoomLevel = zoomLevel;
         tiltCameraValue = 0.0f;
         cameraState = 1;
-        zooming = false;
     }
     
     void LateUpdate()
     {
-        if (Input.GetButton("buttonL"))
-        {
-            ChangeZoomLevel(zoomLevel, -0.5f);
-        }
-        if (Input.GetButton("buttonR"))
-        {
-            ChangeZoomLevel(zoomLevel, 0.5f);
-        }
         switch (cameraState)
         {
             case 3: //Victory or defeat.
@@ -64,27 +54,46 @@ public class CameraController : MonoBehaviour
                 break;
 
             default: //or 1
-                maxZoomLevel = zoomLevel * 1.5f;
-                zoom = zoomLevel + Mathf.Abs(PlayerController.lowestMeteorPosition - 300.0f) / 30;
-                if (zoom > maxZoomLevel) zoom = maxZoomLevel;
+                if (Input.GetButton("buttonL"))
+                {
+                    ChangeZoomLevel(zoomLevel, -20.0f);
+                }
+                if (Input.GetButton("buttonR"))
+                {
+                    ChangeZoomLevel(zoomLevel, 20.0f);
+                }
+
+                zoom = zoomLevel + Mathf.Abs(PlayerController.lowestMeteorPosition - PlayerController.worldHeight) / 20.0f;
+                if (zoom > zoomLevel * 1.5f) zoom = zoomLevel * 1.5f;
                 cameraHeight = playerOrigin.transform.up * zoom / 2.5f;
+                Debug.Log(zoom);
 
                 //Player on high platforms
-                if (player.position.y > 5)
+                if (player.position.y > verticalPosThreshold)
                 {
-                    zoom += (player.position.y - 5.0f) / 2; //This is adjustable
-                    cameraHeight += new Vector3(0.0f, player.position.y - 5.0f, 0.0f);
+                    zoom += (player.position.y - verticalPosThreshold) / 3; //This is adjustable
+                    cameraHeight += new Vector3(0.0f, player.position.y - verticalPosThreshold, 0.0f);
                 }
 
 
                 transform.position = playerOrigin.position + (playerOrigin.transform.forward * zoom) + cameraHeight;
                 transform.rotation = playerOrigin.rotation;
 
-                tiltCameraValue += Input.GetAxis("Vertical") * -4.0f;
-                tiltCameraValue = Mathf.Clamp(tiltCameraValue, -40.0f, 40.0f);
-                tiltCameraValue *= 0.9f;
-                if (tiltCameraValue > 0) transform.Translate(0.0f, tiltCameraValue / 3.0f, 0.0f);
+                
 
+                if (!PauseMenu.GameIsPaused)
+                {
+                    tiltCameraValue += Input.GetAxisRaw("Vertical") * -4.0f;
+                    if (tutorialCameraTimer > 0.0f)
+                    {
+                        tiltCameraValue = -40.0f;
+                        tutorialCameraTimer -= Time.deltaTime;
+                    }
+                    tiltCameraValue = Mathf.Clamp(tiltCameraValue, -40.0f, 40.0f);
+                    tiltCameraValue *= 0.9f;
+                }
+
+                if (tiltCameraValue > 0) transform.Translate(0.0f, tiltCameraValue / 3.0f, 0.0f);
                 transform.Rotate(5.0f - zoom / 5 + tiltCameraValue, 180.0f, 0, Space.Self);
                 break;
         }
@@ -108,15 +117,18 @@ public class CameraController : MonoBehaviour
 
     private void ChangeZoomLevel(float currentLevel, float direction)
     {
-        if (direction < 0 && currentLevel > defaultZoomLevel * 0.5)
+        currentLevel += direction * Time.deltaTime;
+        if (currentLevel > defaultZoomLevel * 2.0f)
         {
-            zoomLevel += direction;
+            currentLevel = defaultZoomLevel * 2.0f;
         }
-        if (direction > 0 && currentLevel < defaultZoomLevel * 2.0)
+        if (currentLevel < defaultZoomLevel * 0.5f)
         {
-            zoomLevel += direction;
+            currentLevel = defaultZoomLevel * 0.5f;
         }
+        zoomLevel = currentLevel;
 
+        /*
         if (!zooming && 0 == 1)
         {
             if (direction < 0 && currentLevel > defaultZoomLevel * 0.5)
@@ -130,7 +142,9 @@ public class CameraController : MonoBehaviour
                 StartCoroutine(ZoomToNewLevel(defaultZoomLevel / 2, 0.3f));
             }
         }
+        */
     }
+    /*
     private IEnumerator ZoomToNewLevel(float amount, float duration)
     {
         float counter = 0;
@@ -145,6 +159,7 @@ public class CameraController : MonoBehaviour
         }
         zooming = false;
     }
+    */
 
     //THIS ISN'T WORKING YET
     private IEnumerator MoveToPosition(Transform fromPosition, Transform toPosition, float duration)

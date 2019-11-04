@@ -76,16 +76,16 @@ public class GUIController : MonoBehaviour
 
         minimapMeteors.Add(newMarker);
         currentMeteors.Add(meteor);
-        Debug.Log(minimapMeteors.IndexOf(newMarker));
-        Debug.Log(currentMeteors.IndexOf(meteor));
-        Debug.Log(minimapMeteors.Count);
-        Debug.Log(currentMeteors.Count);
+        //Debug.Log(minimapMeteors.IndexOf(newMarker));
+        //Debug.Log(currentMeteors.IndexOf(meteor));
+        //Debug.Log(minimapMeteors.Count);
+        //Debug.Log(currentMeteors.Count);
     }
     public void RemoveMinimapMeteor(GameObject meteor)
     {
         int meteorIndex = currentMeteors.IndexOf(meteor);
-        Debug.Log(minimapMeteors.Count);
-        Debug.Log(currentMeteors.Count);
+        //Debug.Log(minimapMeteors.Count);
+        //Debug.Log(currentMeteors.Count);
 
         currentMeteors.Remove(meteor);
         GameObject relatedMarker = minimapMeteors[meteorIndex];

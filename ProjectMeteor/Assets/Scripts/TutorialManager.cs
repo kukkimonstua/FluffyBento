@@ -30,7 +30,6 @@ public class TutorialManager : MonoBehaviour
             {
                 //Debug.Log("a tutorial meteor!");
                 GameObject meteor = Instantiate(to.myObject, to.gameObject.transform.position, to.gameObject.transform.rotation);
-
                 gui.AddMinimapMeteor(meteor);
             }
             else
@@ -39,8 +38,7 @@ public class TutorialManager : MonoBehaviour
             }
         }
         ToggleControlPrompts(true);
-
-
+        CameraController.tutorialCameraTimer = 3.0f;
         StartCoroutine(StartTutorialSequence());
     }
     public void EndTutorial()
