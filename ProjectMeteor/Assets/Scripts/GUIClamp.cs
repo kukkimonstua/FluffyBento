@@ -31,7 +31,7 @@ public class GUIClamp : MonoBehaviour
             if (guiToClamp.GetComponent<CanvasRenderer>().GetAlpha() > 0.0f)
             {
                 stillFading = true;
-                transform.position += new Vector3(0.0f, guiToClamp.GetComponent<CanvasRenderer>().GetAlpha() / 10, 0.0f);
+                transform.position += new Vector3(0.0f, guiToClamp.GetComponent<CanvasRenderer>().GetAlpha() * Time.deltaTime, 0.0f);
             }
             else
             {

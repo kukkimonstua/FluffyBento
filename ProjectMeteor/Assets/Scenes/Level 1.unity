@@ -3902,6 +3902,7 @@ MonoBehaviour:
   player: {fileID: 727737899}
   playerOrigin: {fileID: 1511200955}
   zoomLevel: 12
+  verticalPosThreshold: 5
   attackCameraPosition: {fileID: 1498761693}
   endingCameraPosition: {fileID: 350078253}
 --- !u!43 &1025736374
@@ -8572,6 +8573,16 @@ PrefabInstance:
       propertyPath: gui
       value: 
       objectReference: {fileID: 586829205}
+    - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
+        type: 3}
+      propertyPath: maxMeteorsForLevel
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
+        type: 3}
+      propertyPath: maxMeteorsOnScreen
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 944358063281928567, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8686,6 +8697,11 @@ PrefabInstance:
       propertyPath: tutorialManager
       value: 
       objectReference: {fileID: 409292998}
+    - target: {fileID: 3376312176963667617, guid: 44b25c30ff1b3b84ab3c0356c0509782,
+        type: 3}
+      propertyPath: swordEquipSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 084e549f538d66846a66a92e43f90187, type: 3}
     - target: {fileID: 3376312176963667622, guid: 44b25c30ff1b3b84ab3c0356c0509782,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9012,6 +9028,16 @@ PrefabInstance:
       propertyPath: es
       value: 
       objectReference: {fileID: 1034411520}
+    - target: {fileID: 3060790673072334703, guid: f4f7f762586e18e47be6f0f7b68f1408,
+        type: 3}
+      propertyPath: eventSystem
+      value: 
+      objectReference: {fileID: 1034411520}
+    - target: {fileID: 3060790673072334703, guid: f4f7f762586e18e47be6f0f7b68f1408,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 475994989}
     - target: {fileID: 7975215424208532869, guid: f4f7f762586e18e47be6f0f7b68f1408,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9167,6 +9193,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5826545068037128335, guid: f4f7f762586e18e47be6f0f7b68f1408,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7371979767728109738, guid: f4f7f762586e18e47be6f0f7b68f1408,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 475994989}
+    - target: {fileID: 7371979767728109738, guid: f4f7f762586e18e47be6f0f7b68f1408,
+        type: 3}
+      propertyPath: eventSystem
+      value: 
+      objectReference: {fileID: 1034411520}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4f7f762586e18e47be6f0f7b68f1408, type: 3}
 --- !u!1001 &8541793977835850693

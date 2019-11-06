@@ -66,7 +66,6 @@ public class CameraController : MonoBehaviour
                 zoom = zoomLevel + Mathf.Abs(PlayerController.lowestMeteorPosition - PlayerController.worldHeight) / 20.0f;
                 if (zoom > zoomLevel * 1.5f) zoom = zoomLevel * 1.5f;
                 cameraHeight = playerOrigin.transform.up * zoom / 2.5f;
-                Debug.Log(zoom);
 
                 //Player on high platforms
                 if (player.position.y > verticalPosThreshold)
