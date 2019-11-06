@@ -5,34 +5,24 @@ using UnityEngine.SceneManagement;
 public class MenuButton : MonoBehaviour
 {
 	[SerializeField] MenuButtonController menuButtonController;
-	[SerializeField] Animator animator;
-	[SerializeField] AnimatorFunctions animatorFunctions;
-	[SerializeField] int thisIndex;
+	private Animator anim;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-		if(menuButtonController.index == thisIndex)
-		{
-			animator.SetBool ("selected", true);
-			if(Input.GetAxis ("Submit") == 1){
-				animator.SetBool ("pressed", true);
-                //
-                if (menuButtonController.index == 0)
-                {
-                    SceneManager.LoadScene("Level 1");
-                }
-                if (menuButtonController.index == 1)
-                {
-                    SceneManager.LoadScene("Cutscene");
-                }
-            }
-            else if (animator.GetBool ("pressed")){
-				animator.SetBool ("pressed", false);
-				animatorFunctions.disableOnce = true;
-			}
-		}else{
-			animator.SetBool ("selected", false);
-		}
+        anim = GetComponent<Animator>();
+    }
+    void PlaySFX(AudioClip whichSound)
+    {
+        menuButtonController.audioSource.PlayOneShot(whichSound);
+    }
+
+    public void IsSelected(bool state)
+    {
+        anim.SetBool("selected", state);
+    }
+
+    public void IsPressed(bool state)
+    {
+        anim.SetBool("pressed", state);
     }
 }
