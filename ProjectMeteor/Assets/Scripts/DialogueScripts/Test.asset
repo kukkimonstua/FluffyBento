@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueInfo:
   - myName: Yashiro
-    portrait: {fileID: 67926103340967526, guid: fbd469ef84271da47ac32ed5be3d70ce,
-      type: 3}
+    portrait: {fileID: 21300000, guid: 2b413d137d5b5a64ea59275704829e05, type: 3}
     isLeftPortrait: 1
     myText: Took only two days to reach the Royal Palace, huh?
   - myName: Yashiro
@@ -23,7 +22,20 @@ MonoBehaviour:
     isLeftPortrait: 0
     myText: "I guess we didn\u2019t move out as far as we thought..."
   - myName: Chika
-    portrait: {fileID: -2429919002490121231, guid: fbd469ef84271da47ac32ed5be3d70ce,
-      type: 3}
+    portrait: {fileID: 21300000, guid: 8a8dcc9e43ab2b94f8179d3cd5c9e526, type: 3}
     isLeftPortrait: 0
     myText: I will do as I please. Especially in times so dire...
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 2b413d137d5b5a64ea59275704829e05, type: 3}
+    isLeftPortrait: 1
+    myText: Lorem Ipsum
+  - myName: Royal guard
+    portrait: {fileID: -8440024669014223912, guid: 1eb4bd736a09c244d8a6730d2bb56961,
+      type: 3}
+    isLeftPortrait: 0
+    myText: Excuse me
+  - myName: Chika
+    portrait: {fileID: -2429919002490121231, guid: fbd469ef84271da47ac32ed5be3d70ce,
+      type: 3}
+    isLeftPortrait: 1
+    myText: I'm on the left now

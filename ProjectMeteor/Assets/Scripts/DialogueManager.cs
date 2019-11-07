@@ -6,27 +6,39 @@ using UnityEngine.EventSystems;
 
 public class DialogueManager : MonoBehaviour
 {
-    public GameObject dialogueBox;
+    public GameObject dialogueBackground;
     //public Button btn;
     //public EventSystem es;
+
+    public Image fullscreenBlack;
     public Text dialogueName;             //character name
     public Text dialogueText;             //dialogue text
     public Image leftPortrait;        //character sprite
     public Image rightPortrait;
-    public float delay = 0.001f;
-    
+    private bool firstSpriteAppeared;
+    public Image button;
+    public float typeDelay = 0.001f;
+
+    private IEnumerator fadeCoroutine;
+    private bool fadingToNext;
+
     private bool isCurrentlyTyping;
     private string completeText;
+
+    public Color activeShade;
+    public Color inactiveShade;
 
     public static DialogueManager instance;
     private void Awake()
     {
-        if (instance !=null)
+        if (instance != null)
         {
             Debug.LogWarning("Fix This" + gameObject.name);
         }
         else {
             instance = this;
+            firstSpriteAppeared = false;
+            fadingToNext = false;
         }
     }
 
@@ -36,13 +48,13 @@ public class DialogueManager : MonoBehaviour
 
     public void EnqueueDialogue(DialogueBase db)
     {
-        dialogueBox.SetActive(true);
         dialogueInfo.Clear();     //clear to not carry over older queue data
 
-       // es.SetSelectedGameObject(null);
-       // es.SetSelectedGameObject(btn.gameObject);
+        //dialogueBackground.SetActive(true);
+        // es.SetSelectedGameObject(null);
+        // es.SetSelectedGameObject(btn.gameObject);
 
-        foreach(DialogueBase.Info info in db.dialogueInfo)
+        foreach (DialogueBase.Info info in db.dialogueInfo)
         {
             dialogueInfo.Enqueue(info);
         }
@@ -52,11 +64,9 @@ public class DialogueManager : MonoBehaviour
 
     public void DequeueDialogue()
     {
-       if (isCurrentlyTyping == true)
+        if (isCurrentlyTyping || fadeCoroutine != null)
         {
             CompleteText();
-            StopAllCoroutines();
-            isCurrentlyTyping = false;
             return;
         }
 
@@ -69,45 +79,101 @@ public class DialogueManager : MonoBehaviour
         completeText = info.myText;
 
         dialogueName.text = info.myName;
-        dialogueText.text = info.myText;
+        dialogueText.text = "";
 
         if (info.portrait != null)
         {
             if (info.isLeftPortrait)
             {
+                leftPortrait.color = activeShade;
+                rightPortrait.color = inactiveShade;
                 leftPortrait.sprite = info.portrait;
+                
             }
             else
             {
+                leftPortrait.color = inactiveShade;
+                rightPortrait.color = activeShade;
                 rightPortrait.sprite = info.portrait;
+            }
+            if (!firstSpriteAppeared)
+            {
+                firstSpriteAppeared = true;
+                fadeCoroutine = FadeBlackScreen(0.0f, 2.0f); // create an IEnumerator object
             }
         }
         
-        dialogueText.text = "";
         StartCoroutine(TypeText(info));
     }
 
     IEnumerator TypeText(DialogueBase.Info info)
     {
+        //yield return new WaitForSeconds(3.0f);
+        button.enabled = false;
+        if (fadeCoroutine != null)
+        {
+            yield return StartCoroutine(fadeCoroutine);
+            fadeCoroutine = null;
+        }
+
         isCurrentlyTyping = true;     
         foreach (char c in info.myText.ToCharArray())
         {
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSeconds(typeDelay);
             dialogueText.text += c;
             yield return null;
         }
         isCurrentlyTyping = false;
+        button.enabled = true;
     }
 
     private void CompleteText()
     {
-        dialogueText.text = completeText;
+        if (fadeCoroutine != null)
+        {
+            fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        }
+        Debug.Log("Stop all!");
+        StopAllCoroutines();
+        fadeCoroutine = null;
+        isCurrentlyTyping = false;
 
+        button.enabled = true;
+        dialogueText.text = completeText;
     }
 
     public void EndOfDialogue()
     {
-        dialogueBox.SetActive(false);
+        if (!fadingToNext)
+        {
+            fadingToNext = true;
+            Debug.Log("conversation over");
+
+            dialogueBackground.SetActive(false);
+            dialogueName.gameObject.SetActive(false);
+            dialogueText.gameObject.SetActive(false);
+            button.enabled = false;
+
+            StartCoroutine(LoadNextPart());
+        }
+    }
+    private IEnumerator LoadNextPart()
+    {
+        yield return new WaitForSeconds(1.0f);
+        yield return StartCoroutine(FadeBlackScreen(1.0f, 2.0f));
+        Debug.Log("LOAD NEXT PART");
+        fadingToNext = false; // unreachable
+    }
+
+    private IEnumerator FadeBlackScreen(float alphaTarget, float duration)
+    {
+        float alpha = fullscreenBlack.GetComponent<CanvasRenderer>().GetAlpha();
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / duration)
+        {
+            fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Lerp(alpha, alphaTarget, t));
+            yield return null;
+        }
+        fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(alphaTarget);
     }
 
 }
