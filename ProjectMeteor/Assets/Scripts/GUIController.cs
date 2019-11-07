@@ -27,9 +27,8 @@ public class GUIController : MonoBehaviour
 
     public GameObject fullScreenBlack;
     public GameObject fullScreenRed;
-    public GameObject gameOverMenu;
-    public GameObject victoryScreenMenu;
-    public static bool menuUnlocked;
+
+    public ResultsMenu resultsMenu;
 
     public GameObject topBlackBar;
     public GameObject bottomBlackBar;
@@ -76,16 +75,16 @@ public class GUIController : MonoBehaviour
 
         minimapMeteors.Add(newMarker);
         currentMeteors.Add(meteor);
-        Debug.Log(minimapMeteors.IndexOf(newMarker));
-        Debug.Log(currentMeteors.IndexOf(meteor));
-        Debug.Log(minimapMeteors.Count);
-        Debug.Log(currentMeteors.Count);
+        //Debug.Log(minimapMeteors.IndexOf(newMarker));
+        //Debug.Log(currentMeteors.IndexOf(meteor));
+        //Debug.Log(minimapMeteors.Count);
+        //Debug.Log(currentMeteors.Count);
     }
     public void RemoveMinimapMeteor(GameObject meteor)
     {
         int meteorIndex = currentMeteors.IndexOf(meteor);
-        Debug.Log(minimapMeteors.Count);
-        Debug.Log(currentMeteors.Count);
+        //Debug.Log(minimapMeteors.Count);
+        //Debug.Log(currentMeteors.Count);
 
         currentMeteors.Remove(meteor);
         GameObject relatedMarker = minimapMeteors[meteorIndex];
@@ -216,14 +215,10 @@ public class GUIController : MonoBehaviour
 
     public void ResetGUI()
     {
-        menuUnlocked = false;
         TogglePrompt(false, "");
         meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
 
-        victoryScreenMenu.SetActive(true); //May be redundant in the future
-        victoryScreenMenu.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
-        gameOverMenu.SetActive(true); //May be redundant in the future
-        gameOverMenu.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        resultsMenu.HideResultsMenu();
         fullScreenRed.SetActive(true); //May be redundant in the future
         fullScreenRed.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         fullScreenBlack.SetActive(true); //May be redundant in the future
@@ -328,29 +323,10 @@ public class GUIController : MonoBehaviour
             yield return null;
         }
     }
-    public void ShowGameOverUI(float duration, float delay)
+    public void ShowResults(int resultType, float duration, float delay)
     {
-        StartCoroutine(FadeInGameOver(duration, delay));
-    }
-    private IEnumerator FadeInGameOver(float duration, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        StartCoroutine(FadeUI(gameOverMenu, 1.0f, duration));
-        StartCoroutine(FadeUI(fullScreenBlack, 1.0f, duration));
-        yield return new WaitForSeconds(duration);
-        menuUnlocked = true;
-    }
-    public void ShowVictoryUI(float duration, float delay)
-    {
-        StartCoroutine(FadeInVictoryScreen(duration, delay));
-    }
-    private IEnumerator FadeInVictoryScreen(float duration, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        StartCoroutine(FadeUI(victoryScreenMenu, 1.0f, duration));
-        StartCoroutine(FadeUI(fullScreenBlack, 0.5f, duration));
-        yield return new WaitForSeconds(duration);
-        menuUnlocked = true;
+        resultsMenu.ShowResultsMenu(resultType, duration, delay);
+        //StartCoroutine(FadeInGameOver(duration, delay));
     }
 
     public void UpdateSubtitles(string dialogue)

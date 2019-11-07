@@ -73,7 +73,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("LINKS TO GUI")]
     public GameObject timingWindow;
-    public PauseMenu pauseMenu;
     public int timingGrade;
     public GUIController gui;
 
@@ -101,19 +100,8 @@ public class PlayerController : MonoBehaviour
         switch (playerState)
         {
             case 3:
-                
                 rb.velocity = new Vector3(0.0f, rb.velocity.y, 0.0f);
-
-                if (Input.GetButtonDown("buttonX") && GUIController.menuUnlocked)
-                {
-                    meteorManager.ResetMeteors();
-                    swordManager.ResetSwords();
-                    ResetLevel();
-                    tutorialManager.ResetTutorial();
-                }
-
                 break; //No fall multiplier for a floaty death is totally intentional
-
             case 2:
                 avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180.0f, transform.eulerAngles.z);
                 rb.velocity = Vector3.up * 0;
@@ -124,7 +112,6 @@ public class PlayerController : MonoBehaviour
                 {
                     TimingWindow.gotPressed = true;
                 }
-
                 gui.TogglePrompt(false, "");
                 gui.HidePlayerActionText();
                 break;
@@ -140,7 +127,6 @@ public class PlayerController : MonoBehaviour
                 }
 
                 TrackLowestMeteor();
-
                 worldOrigin.LookAt(new Vector3(transform.position.x, worldOrigin.position.y, transform.position.z));
                 transform.rotation = playerOrigin.rotation = worldOrigin.rotation;
                 playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * worldRadius);
@@ -193,7 +179,7 @@ public class PlayerController : MonoBehaviour
                     transform.position = lowestPos;
                 }
                 //Button controls work when NOT prone.
-                if(!prone) { 
+                if(!prone && !PauseMenu.GameIsPaused) { 
                     if (Input.GetButtonDown("Jump"))
                     {
                         if (!isGrounded)
@@ -292,22 +278,29 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-                gui.UpdatePlayerMarker(transform.position);
-                UpdateAnimations();
+                if (!PauseMenu.GameIsPaused)
+                {
+                    gui.UpdatePlayerMarker(transform.position);
+                    UpdateAnimations();
+                }
 
                 if (playerState == 4)
                 {
-                    if (Input.GetButtonDown("buttonX") && GUIController.menuUnlocked)
+                    /*if (Input.GetButtonDown("buttonX") && GUIController.menuUnlocked)
                     {
-                        meteorManager.ResetMeteors();
-                        swordManager.ResetSwords();
-                        ResetLevel();
-                        tutorialManager.ResetTutorial();
-                    }
+                        RestartLevel();
+                    }*/
                 }
                 break;
         }
         
+    }
+    public void RestartLevel()
+    {
+        meteorManager.ResetMeteors();
+        swordManager.ResetSwords();
+        ResetLevel();
+        tutorialManager.ResetTutorial();
     }
 
     private float CheckAboveForMeteor()
@@ -453,7 +446,7 @@ public class PlayerController : MonoBehaviour
         gui.UpdateMeteorLandingUI(lowestMeteorPosition, meteorDeathThreshold, 300.0f - meteorDeathThreshold);
         if (lowestMeteorPosition < meteorDeathThreshold)
         {
-            GameOver(); //From a meteor landing
+            GameOver(ResultsMenu.METEOR_DEATH); //From a meteor landing
         }
     }
 
@@ -766,7 +759,7 @@ public class PlayerController : MonoBehaviour
 
         if (playerHealth <= 0)
         {
-            GameOver(); //From health loss
+            GameOver(ResultsMenu.HEALTH_DEATH); //From health loss
         }
     }
     public void AddScore(Vector3 floatPosition, int amount)
@@ -776,29 +769,25 @@ public class PlayerController : MonoBehaviour
         gui.UpdateScoreUI(playerScore);
     }
 
-    private void GameOver()
+    private void GameOver(int resultType)
     {
         playerState = 3;
         CameraController.SwitchToEndingCamera();
         gui.HidePlayerActionText();
         gui.TogglePrompt(false, "");
-        gui.ShowGameOverUI(3.0f, 2.0f); //This ends with unlocking the menu        
+        gui.ShowResults(resultType, 3.0f, 2.0f); //This ends with unlocking the menu
     }
     private void GameClear()
     {
         playerState = 4;
         gui.HidePlayerActionText();
         gui.TogglePrompt(false, "");
-        gui.ShowVictoryUI(3.0f, 2.0f); //This ends with unlocking the menu        
+        gui.ShowResults(ResultsMenu.VICTORY, 3.0f, 2.0f); //This ends with unlocking the menu        
     }
+
     private void UpdateAnimations()
     {
-        if (pauseMenu.Paused() == false)
-        {
-            avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
-        }
-        
-
+        avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
         if (Input.GetAxisRaw("Horizontal") < 0)
         {
             if (avatarModelRotation < 90.0f) avatarModelRotation += 30.0f;
@@ -816,5 +805,6 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("running", running);
         anim.SetBool("dashing", dashing);
         anim.SetBool("attacking", isAttacking);
+        
     }
 }

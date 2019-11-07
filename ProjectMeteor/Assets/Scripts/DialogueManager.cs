@@ -11,7 +11,8 @@ public class DialogueManager : MonoBehaviour
     //public EventSystem es;
     public Text dialogueName;             //character name
     public Text dialogueText;             //dialogue text
-    public Image dialoguePortrait;        //character sprite
+    public Image leftPortrait;        //character sprite
+    public Image rightPortrait;
     public float delay = 0.001f;
     
     private bool isCurrentlyTyping;
@@ -69,7 +70,18 @@ public class DialogueManager : MonoBehaviour
 
         dialogueName.text = info.myName;
         dialogueText.text = info.myText;
-        dialoguePortrait.sprite = info.portrait;
+
+        if (info.portrait != null)
+        {
+            if (info.isLeftPortrait)
+            {
+                leftPortrait.sprite = info.portrait;
+            }
+            else
+            {
+                rightPortrait.sprite = info.portrait;
+            }
+        }
         
         dialogueText.text = "";
         StartCoroutine(TypeText(info));
