@@ -10,51 +10,54 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4dd438b58791fe94e8be3667dcca9d08, type: 3}
-  m_Name: 1OP
+  m_Name: 2OP
   m_EditorClassIdentifier: 
   dialogueInfo:
-  - myName: 
+  - myName: Yashiro
     portrait: {fileID: 0}
     isLeftPortrait: 1
     myText: '...'
   - myName: Yashiro
     portrait: {fileID: 0}
     isLeftPortrait: 1
-    myText: '...ngh...'
-  - myName: Yashiro
-    portrait: {fileID: 0}
-    isLeftPortrait: 0
-    myText: '...Why is that memory suddenly coming back now?'
+    myText: It took only a day to reach the royal palace by carriage, huh?
   - myName: Yashiro
     portrait: {fileID: 0}
     isLeftPortrait: 1
-    myText: "It\u2019s not like it matters anymore. Especially after how long it\u2019s
-      been."
-  - myName: Yashiro
+    myText: "I guess we didn\u2019t get away as far as we thought..."
+  - myName: Messenger
     portrait: {fileID: 0}
     isLeftPortrait: 0
-    myText: '...Five years, huh...'
-  - myName: 
-    portrait: {fileID: 0}
-    isLeftPortrait: 0
-    myText: '*SLAM*'
-  - myName: Hide
-    portrait: {fileID: 21300000, guid: 8a745e39955ad804ba69a478b672aba9, type: 3}
-    isLeftPortrait: 0
-    myText: MASTER YASHIRO! ARE YOU HERE?!
+    myText: "We\u2019re here."
   - myName: Yashiro
     portrait: {fileID: 21300000, guid: 2b413d137d5b5a64ea59275704829e05, type: 3}
     isLeftPortrait: 1
-    myText: "Keep it down, Hide. I\u2019m trying to take a nap right now."
-  - myName: Hide
-    portrait: {fileID: 21300000, guid: 8a745e39955ad804ba69a478b672aba9, type: 3}
+    myText: '...'
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: '...This gate is as grandiose as always.'
+  - myName: Guard A
+    portrait: {fileID: 67926103340967526, guid: fbd469ef84271da47ac32ed5be3d70ce,
+      type: 3}
     isLeftPortrait: 0
-    myText: "Huh? Oh, I\u2019m so sorry. I\u2019ll leave you in peace."
-  - myName: Hide
-    portrait: {fileID: 21300000, guid: 8a745e39955ad804ba69a478b672aba9, type: 3}
+    myText: P-Princess Chika!
+  - myName: Guard B
+    portrait: {fileID: -2429919002490121231, guid: fbd469ef84271da47ac32ed5be3d70ce,
+      type: 3}
+    isLeftPortrait: 1
+    myText: "You mustn\u2019t be outside the castle, let alone the palace gates!"
+  - myName: Chika
+    portrait: {fileID: 21300000, guid: 8a8dcc9e43ab2b94f8179d3cd5c9e526, type: 3}
     isLeftPortrait: 0
-    myText: "...Wait, NO, I can\u2019t do that!"
-  - myName: Hide
-    portrait: {fileID: 21300000, guid: 8a745e39955ad804ba69a478b672aba9, type: 3}
+    myText: I will do as I please. Especially in times so dire...
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 2b413d137d5b5a64ea59275704829e05, type: 3}
+    isLeftPortrait: 1
+    myText: Heh. The little princess dragged her geta sandals through the dirt for
+      a commoner like me?
+  - myName: Chika
+    portrait: {fileID: 21300000, guid: 8a8dcc9e43ab2b94f8179d3cd5c9e526, type: 3}
     isLeftPortrait: 0
-    myText: "Master, you gotta come out! It\u2019s an emergency!"
+    myText: Yashiro... Since last we spoke, you have developed a crude manner of speaking
+      that I do not care for.
