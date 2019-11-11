@@ -6,59 +6,109 @@ using UnityEngine.EventSystems;
 
 public class DialogueManager : MonoBehaviour
 {
-    public GameObject dialogueBackground;
-    //public Button btn;
-    //public EventSystem es;
-
     public Image fullscreenBlack;
-    public Text dialogueName;             //character name
-    public Text dialogueText;             //dialogue text
-    public Image leftPortrait;        //character sprite
-    public Image rightPortrait;
-    private bool firstSpriteAppeared;
-    public Image button;
-    public float typeDelay = 0.001f;
-
     private IEnumerator fadeCoroutine;
-    private bool fadingToNext;
+    private bool cutsceneEnded;
+    public Image backgroundImage;
 
+    public GameObject dialogueBackground;
+    public Text dialogueName;
+    public Text dialogueText;
+
+    public GameObject continueButton;
     private bool isCurrentlyTyping;
     private string completeText;
+    private float typeDelay = 0.001f;
 
+    public Image leftPortrait;
+    public Image rightPortrait;
+    public Sprite emptyPortrait;
+    private bool firstSpriteAppeared;
     public Color activeShade;
     public Color inactiveShade;
 
+    //FIFO collection (type of list)
+    public Queue<DialogueBase.Info> dialogueInfo = new Queue<DialogueBase.Info>();
     public static DialogueManager instance;
+    private DialogueBase selectedScript;
+    public int debugSceneIndex = 0;
+
+    public DialogueBase script1OP;
+    public Sprite background1OP;
+    public DialogueBase script1ED;
+    public Sprite background1ED;
+    public DialogueBase script2OP;
+    public Sprite background2OP;
+
     private void Awake()
     {
+        if (debugSceneIndex != 0) GameManager.sceneIndex = debugSceneIndex;
+
         if (instance != null)
         {
             Debug.LogWarning("Fix This" + gameObject.name);
         }
-        else {
-            instance = this;
-            firstSpriteAppeared = false;
-            fadingToNext = false;
+        else
+        {
+            instance = this; //Maybe move all code after this to a Start()?
+            StartCutscene();
         }
     }
 
-
-    //FIFO collection (type of list)
-    public Queue<DialogueBase.Info> dialogueInfo = new Queue<DialogueBase.Info>();   
-
-    public void EnqueueDialogue(DialogueBase db)
+    private void Update()
     {
-        dialogueInfo.Clear();     //clear to not carry over older queue data
+        if (Input.GetButtonDown("Cancel"))
+        {
+            SkipToEnd();
+        }
 
-        //dialogueBackground.SetActive(true);
-        // es.SetSelectedGameObject(null);
-        // es.SetSelectedGameObject(btn.gameObject);
+        //reset selection to continue button for non-button clicks
+        if (EventSystem.current.currentSelectedGameObject == null)
+        {
+            EventSystem.current.SetSelectedGameObject(continueButton);
+        }
+        else
+        {
+            continueButton = EventSystem.current.currentSelectedGameObject;
+        }
+    }
+    private void StartCutscene()
+    {
+        switch (GameManager.sceneIndex)
+        {
+            case GameManager.LEVEL_2_OP:
+                selectedScript = script2OP;
+                backgroundImage.sprite = background2OP;
+                break;
+            case GameManager.LEVEL_1_ED:
+                selectedScript = script1ED;
+                backgroundImage.sprite = background1ED;
+                break;
+            default:
+                selectedScript = script1OP;
+                backgroundImage.sprite = background1OP;
+                break;
+        }
 
+        firstSpriteAppeared = false;
+        cutsceneEnded = false;
+        leftPortrait.sprite = emptyPortrait;
+        rightPortrait.sprite = emptyPortrait;
+        dialogueBackground.SetActive(true);
+        dialogueName.gameObject.SetActive(true);
+        dialogueText.gameObject.SetActive(true);
+        continueButton.GetComponent<Image>().enabled = true;
+
+        instance.EnqueueDialogue(selectedScript); // This triggers the dialogue, could possibly be used to restart entire scene?
+    }
+
+    private void EnqueueDialogue(DialogueBase db)
+    {
+        dialogueInfo.Clear(); //clear to not carry over older queue data
         foreach (DialogueBase.Info info in db.dialogueInfo)
         {
             dialogueInfo.Enqueue(info);
         }
-
         DequeueDialogue();
     }
 
@@ -70,8 +120,8 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        if(dialogueInfo.Count == 0){
-            EndOfDialogue();
+        if (dialogueInfo.Count <= 0 || cutsceneEnded) {
+            EndOfDialogue(1.0f);
             return;
         }
 
@@ -88,7 +138,6 @@ public class DialogueManager : MonoBehaviour
                 leftPortrait.color = activeShade;
                 rightPortrait.color = inactiveShade;
                 leftPortrait.sprite = info.portrait;
-                
             }
             else
             {
@@ -99,17 +148,16 @@ public class DialogueManager : MonoBehaviour
             if (!firstSpriteAppeared)
             {
                 firstSpriteAppeared = true;
-                fadeCoroutine = FadeBlackScreen(0.0f, 2.0f); // create an IEnumerator object
+                fadeCoroutine = FadeBlackScreen(0.0f, 1.0f); // create an IEnumerator object
             }
         }
         
         StartCoroutine(TypeText(info));
     }
 
-    IEnumerator TypeText(DialogueBase.Info info)
+    private IEnumerator TypeText(DialogueBase.Info info)
     {
-        //yield return new WaitForSeconds(3.0f);
-        button.enabled = false;
+        continueButton.GetComponent<Image>().enabled = false;
         if (fadeCoroutine != null)
         {
             yield return StartCoroutine(fadeCoroutine);
@@ -124,7 +172,7 @@ public class DialogueManager : MonoBehaviour
             yield return null;
         }
         isCurrentlyTyping = false;
-        button.enabled = true;
+        continueButton.GetComponent<Image>().enabled = true;
     }
 
     private void CompleteText()
@@ -133,36 +181,73 @@ public class DialogueManager : MonoBehaviour
         {
             fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         }
-        Debug.Log("Stop all!");
+        //Debug.Log("Stop all!");
         StopAllCoroutines();
         fadeCoroutine = null;
         isCurrentlyTyping = false;
 
-        button.enabled = true;
+        continueButton.GetComponent<Image>().enabled = true;
         dialogueText.text = completeText;
     }
-
-    public void EndOfDialogue()
+    private void SkipToEnd()
     {
-        if (!fadingToNext)
+        Debug.Log("End this cutscene!"); //Replace with audio feedback
+        fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        CompleteText();
+        EndOfDialogue(0.0f);
+    }
+    private void EndOfDialogue(float delay)
+    {
+        if (!cutsceneEnded)
         {
-            fadingToNext = true;
+            cutsceneEnded = true;
             Debug.Log("conversation over");
 
             dialogueBackground.SetActive(false);
             dialogueName.gameObject.SetActive(false);
             dialogueText.gameObject.SetActive(false);
-            button.enabled = false;
+            continueButton.GetComponent<Image>().enabled = false;
 
-            StartCoroutine(LoadNextPart());
+            StartCoroutine(LoadNextPart(delay));
         }
     }
-    private IEnumerator LoadNextPart()
+
+    private IEnumerator LoadNextPart(float delay)
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(delay);
         yield return StartCoroutine(FadeBlackScreen(1.0f, 2.0f));
+
         Debug.Log("LOAD NEXT PART");
-        fadingToNext = false; // unreachable
+
+        switch(GameManager.sceneIndex)
+        {
+            case GameManager.LEVEL_3_ED:
+                Debug.Log("LOAD MAIN MENU OR CREDITS");
+                break;
+
+            case GameManager.LEVEL_2_ED:
+                GameManager.sceneIndex = GameManager.LEVEL_3_OP;
+                StartCutscene();
+                break;
+            case GameManager.LEVEL_2_OP:
+                //These two lines should be loaded by lvl 2's victory screen
+                GameManager.sceneIndex = GameManager.LEVEL_2_ED;
+                StartCutscene();
+                break;
+
+            case GameManager.LEVEL_1_ED:
+                GameManager.sceneIndex = GameManager.LEVEL_2_OP;
+                StartCutscene();
+                break;
+            default:
+                Debug.Log("LOAD LEVEL 1");
+
+                //These two lines should be loaded by lvl 1's victory screen
+                GameManager.sceneIndex = GameManager.LEVEL_1_ED;
+                StartCutscene();
+
+                break;
+        }
     }
 
     private IEnumerator FadeBlackScreen(float alphaTarget, float duration)
