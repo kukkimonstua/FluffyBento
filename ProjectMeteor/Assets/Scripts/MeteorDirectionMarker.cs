@@ -91,8 +91,8 @@ public class MeteorDirectionMarker : MonoBehaviour
         {
             GetComponent<RectTransform>().localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         }
-        GetComponent<Text>().text = "";
         /*
+        GetComponent<Text>().text = "";
         if (direction == 0)
         {
             GetComponent<Text>().text = "";
