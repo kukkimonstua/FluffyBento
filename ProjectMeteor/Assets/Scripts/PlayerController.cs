@@ -805,6 +805,8 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("running", running);
         anim.SetBool("dashing", dashing);
         anim.SetBool("attacking", isAttacking);
-        
+        anim.SetBool("doublejumping", !canDoubleJump);
+        anim.SetBool("jumping", isGrounded);
+
     }
 }
