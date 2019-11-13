@@ -8,6 +8,7 @@ public class TutorialManager : MonoBehaviour
     private TutorialObject[] tutorialObjects;
     private SpriteRenderer[] controlPrompts;
 
+    public MeteorManager meteorManager;
     public GUIController gui;
     public bool firstActionCleared;
     public bool secondActionCleared;
@@ -22,24 +23,26 @@ public class TutorialManager : MonoBehaviour
 
     public void ResetTutorial()
     {
-        tutorialActive = true;
-        foreach (TutorialObject to in tutorialObjects)
+        if (gameObject.activeSelf)
         {
-            
-            if (to.myObject.GetComponent<MeteorController>() != null)
+            tutorialActive = true;
+            foreach (TutorialObject to in tutorialObjects)
             {
-                //Debug.Log("a tutorial meteor!");
-                GameObject meteor = Instantiate(to.myObject, to.gameObject.transform.position, to.gameObject.transform.rotation);
-                gui.AddMinimapMeteor(meteor);
+                if (to.myObject.GetComponent<MeteorController>() != null)
+                {
+                    GameObject meteor = Instantiate(to.myObject, to.gameObject.transform.position, to.gameObject.transform.rotation);
+                    gui.AddMinimapMeteor(meteor);
+                }
+                else
+                {
+                    to.SpawnMyObject();
+                }
             }
-            else
-            {
-                to.SpawnMyObject();
-            }
+            ToggleControlPrompts(true);
+            CameraController.tutorialCameraTimer = 3.0f;
+            StartCoroutine(StartTutorialSequence());
         }
-        ToggleControlPrompts(true);
-        CameraController.tutorialCameraTimer = 3.0f;
-        StartCoroutine(StartTutorialSequence());
+        
     }
     public void EndTutorial()
     {

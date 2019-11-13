@@ -76,6 +76,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67150537d5084734f930900276c1a5a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gui: {fileID: 0}
+  playerOrigin: {fileID: 0}
+  meteorOrigin: {fileID: 944358062722250177}
+  spawnPoint: {fileID: 944358063297982244}
   meteor: {fileID: 166136263068938293, guid: 288bcf77b9242b3428958d52d04518fd, type: 3}
   meteorZanbato: {fileID: 166136263068938293, guid: fab45bf290e97974496c41126d556cd1,
     type: 3}
@@ -85,11 +89,8 @@ MonoBehaviour:
     type: 3}
   flyingMeteor: {fileID: 6456937489050536949, guid: f840bee3feb57d84b88c33e9afe04e30,
     type: 3}
-  playerOrigin: {fileID: 0}
-  meteorOrigin: {fileID: 944358062722250177}
-  spawnPoint: {fileID: 944358063297982244}
-  spawnHeight: 300
   meteorSpeed: 2
+  currentMeteors: []
   maxMeteorsOnScreen: 3
   spawnDelay: 15
   maxMeteorsForLevel: 5

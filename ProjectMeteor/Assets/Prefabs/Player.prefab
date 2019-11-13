@@ -190,9 +190,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 40
   horizontalDrag: 0.8
-  jumpForce: 16
-  fallMultiplier: 4
-  lowJumpMultiplier: 6
+  jumpForce: 12
+  fallMultiplier: 3
+  lowJumpMultiplier: 4
   worldOrigin: {fileID: 0}
   meteorWorldOrigin: {fileID: 0}
   playerOrigin: {fileID: 0}
@@ -217,12 +217,11 @@ MonoBehaviour:
   equippedBroadsword: {fileID: 6772005498595294862}
   equippedKatana: {fileID: 6772005499585141627}
   timingWindow: {fileID: 0}
-  pauseMenu: {fileID: 0}
   timingGrade: 0
   gui: {fileID: 0}
   jumpSound: {fileID: 8300000, guid: 0d3f3b4753cc94444a9536f1c20c808a, type: 3}
   wallJumpSound: {fileID: 8300000, guid: 2739ce2d70d581941a485d11a7c23d16, type: 3}
-  swordEquipSound: {fileID: 8300000, guid: 297739ffb6bf85340a43cab4b778de5e, type: 3}
+  swordEquipSound: {fileID: 8300000, guid: 084e549f538d66846a66a92e43f90187, type: 3}
   explosionSound: {fileID: 8300000, guid: ceb096a39c89a434f84cd91a08014076, type: 3}
 --- !u!82 &1660102038325301908
 AudioSource:
