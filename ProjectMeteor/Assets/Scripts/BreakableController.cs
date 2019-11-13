@@ -4,23 +4,24 @@ using UnityEngine;
 
 public class BreakableController : MonoBehaviour
 {
-    ////explosion
-    //public float minForce;
-    //public float maxForce;
-    //public float radius;
-
-    public Animator crateAnim;
-
+    // Start is called before the first frame update
     public bool isBroken = false;
     private BoxCollider myCollider;
     public Material testmat;
     private Material originalmat;
 
+    [Header("ANIMATION")]
+    public Animator crateAnim;
+
+    [Header("SOUND")]
+    public AudioClip breakingSound;
+    private AudioSource audioSource;
+
     void Start()
     {
-        //originalmat = GetComponent<MeshRenderer>().material;
+        originalmat = GetComponent<MeshRenderer>().material;
         myCollider = GetComponent<BoxCollider>();
-
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void GetBroken()
@@ -31,9 +32,9 @@ public class BreakableController : MonoBehaviour
             //GetComponent<MeshRenderer>().material = testmat;
             myCollider.enabled = false;
             crateAnim.SetBool("isBroken", isBroken);
-            //Explode();
             //myCollider.center = new Vector3(myCollider.center.x, myCollider.size.y * -0.4f, myCollider.center.z);
             //myCollider.size = new Vector3(myCollider.size.x, myCollider.size.y * 0.1f, myCollider.size.z);
+            audioSource.PlayOneShot(breakingSound);
         }
     }
     public void GetRestored()
@@ -47,19 +48,4 @@ public class BreakableController : MonoBehaviour
             //myCollider.size = new Vector3(myCollider.size.x, myCollider.size.y * 10.0f, myCollider.size.z);
         }
     }
-
-    //public void Explode()
-    //{
-    //    {
-    //        foreach (Transform t in transform)
-    //        {
-    //            var rb = t.GetComponent<Rigidbody>();
-
-    //            if (rb != null)
-    //            {
-    //                rb.AddExplosionForce(Random.Range(minForce, maxForce), transform.position, radius);
-    //            }
-    //        }
-    //    }
-    //}
 }

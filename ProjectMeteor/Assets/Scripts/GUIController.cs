@@ -22,9 +22,12 @@ public class GUIController : MonoBehaviour
     public Text meteorCounterText;
     public Text timerText;
     public Slider meteorLandingSlider;
+    public Image meteorRadialSlider;
+    public Image meteorRadialSliderKnob;
     public Text meteorLandingDanger;
     public Text meteorLandingTimer;
 
+    public Image blaze;
     public GameObject fullScreenBlack;
     public GameObject fullScreenRed;
 
@@ -35,7 +38,6 @@ public class GUIController : MonoBehaviour
 
     public MeteorDirectionMarker meteorDirectionMarker;
     public Text meteorHeightMarker; //Text for now
-    private Vector2 meteorDirectionMarkerOriginalPosition;
 
     public Text subtitles;
     public SwordEquipIcon swordEquipIcon; //Replace with icon eventually
@@ -70,7 +72,7 @@ public class GUIController : MonoBehaviour
     {
         GameObject newMarker = Instantiate(minimapMeteorMarker);
         newMarker.transform.SetParent(minimap.transform, false);
-        Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
+        //Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
         newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 3.0f, meteor.transform.position.z / 3.0f);
 
         minimapMeteors.Add(newMarker);
@@ -100,16 +102,14 @@ public class GUIController : MonoBehaviour
     }
     void Start()
     {
-        meteorDirectionMarkerOriginalPosition = meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition;
-        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 0.0f);
-        
+        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 0.0f);        
     }
 
     void Update()
     {
         if(PlayerController.playerState == 1)
         {
-            if (currentMeteors.Count != 0)
+            if (currentMeteors.Count > 0)
             {
                 foreach (GameObject m in currentMeteors)
                 {
@@ -121,10 +121,6 @@ public class GUIController : MonoBehaviour
                     //Debug.Log(m.transform.position.x + ", " + m.transform.position.z);
                 }
                 //Debug.Log("There are " + currentMeteors.Count);
-            }
-            else
-            {
-                Debug.Log("ALL CLEAR" + currentMeteors.Count);
             }
 
             milliseconds += Time.deltaTime * 100;
@@ -268,7 +264,7 @@ public class GUIController : MonoBehaviour
         //meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
 
     }
-    public void UpdateMeteorHeightUI(float distance)
+    public void UpdateMeteorHeightUI(float distance, int holdingSword)
     {
         if (distance <= 0.0f)
         {
@@ -278,11 +274,21 @@ public class GUIController : MonoBehaviour
         {
             meteorHeightMarker.gameObject.SetActive(true);
             meteorHeightMarker.text = (int) distance + "m too far";
+            if (holdingSword == 0)
+            {
+                meteorHeightMarker.text += "\nYou need a sword!";
+            }
         }
     }
     public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold, float sliderRange)
     {
         //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
+        //Debug.Log((lowestMeteorPosition - meteorDeathThreshold) / sliderRange);
+        meteorRadialSlider.fillAmount = 1 - (lowestMeteorPosition - meteorDeathThreshold) / sliderRange;
+        meteorRadialSliderKnob.rectTransform.localEulerAngles = new Vector3(0.0f, 0.0f, (1.0f - (lowestMeteorPosition - meteorDeathThreshold) / sliderRange) * 360.0f);
+
+        blaze.GetComponent<CanvasRenderer>().SetAlpha(1.0f - (lowestMeteorPosition - meteorDeathThreshold) / (meteorDeathThreshold + (sliderRange / 3)));
+
         meteorLandingSlider.value = (lowestMeteorPosition - meteorDeathThreshold) / sliderRange;
         if(lowestMeteorPosition < meteorDeathThreshold + (sliderRange / 3) && PlayerController.playerState == 1)
         {

@@ -5,8 +5,12 @@ using UnityEngine;
 public class SwordManager : MonoBehaviour
 {
     public Transform playerOrigin;
-    private float worldRadius;
+    public Transform swordOrigin;
+    public Transform spawnPoint;
+    private Vector3[] spawnPoints;
+    private List<int> spawnPointPool;
 
+    [Header("Prefabs")]
     public GameObject sword1;
     public GameObject sword2;
     public GameObject sword3;
@@ -16,17 +20,11 @@ public class SwordManager : MonoBehaviour
     public float spawnDelay = 5.0f;
     private static float swordSpawnTimer;
 
-    public Transform swordOrigin;
-    public Transform spawnPoint;
-
-    [Header("Sword Settings")]
-    public float spawnHeight = 100.0f;
-
 
     void Start()
     {
         swordSpawnTimer = 0.0f;
-        worldRadius = PlayerController.worldRadius;
+        CreateSpawnPoints(12);
     }
 
     void Update()
@@ -44,6 +42,36 @@ public class SwordManager : MonoBehaviour
             }
         }            
     }
+
+    private void CreateSpawnPoints(int points)
+    {
+        int numOfPoints = points;
+        spawnPoints = new Vector3[numOfPoints];
+        spawnPointPool = new List<int>();
+        for (int i = 0; i < numOfPoints; i++)
+        {
+            swordOrigin.Rotate(0.0f, 360.0f / numOfPoints, 0.0f);
+            GameObject newSpawnPoint = new GameObject("SwordSpawnPoint" + i);
+            newSpawnPoint.transform.SetParent(transform);
+            newSpawnPoint.transform.position = swordOrigin.position + (swordOrigin.transform.forward * PlayerController.worldRadius) + (playerOrigin.transform.up * PlayerController.worldHeight);
+            spawnPoints[i] = newSpawnPoint.transform.position;
+        }
+        ResetSpawnPointPool(-1);
+    }
+    private void ResetSpawnPointPool(int exception)
+    {
+        spawnPointPool = new List<int>();
+        int i = 0;
+        foreach (Vector3 sp in spawnPoints)
+        {
+            if (i != exception)
+            {
+                spawnPointPool.Add(i);
+            }
+            i++;
+        }
+    }
+
     public void SpawnSword()
     {
         GameObject swordToSpawn; //DON'T SET TO NEW GAMEOBJECT
@@ -61,8 +89,17 @@ public class SwordManager : MonoBehaviour
                 break;
         }
 
-        swordOrigin.Rotate(0.0f, Random.Range(0, 24) * 15.0f, 0.0f);
-        spawnPoint.position = swordOrigin.position + (swordOrigin.transform.forward * worldRadius) + (playerOrigin.transform.up * spawnHeight);
+        int randomizedSpawnPoint = 0;
+        if (spawnPointPool.Count > 0)
+        {
+            randomizedSpawnPoint = spawnPointPool[Random.Range(0, spawnPointPool.Count)];
+            spawnPointPool.Remove(randomizedSpawnPoint);
+            if (spawnPointPool.Count <= 0)
+            {
+                ResetSpawnPointPool(randomizedSpawnPoint);
+            }
+        }
+        spawnPoint.position = spawnPoints[randomizedSpawnPoint];
 
         Instantiate(swordToSpawn, spawnPoint.position, spawnPoint.rotation);
         swordSpawnTimer = 0.0f;
