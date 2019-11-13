@@ -79,6 +79,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip wallJumpSound;
     public AudioClip swordEquipSound;
     public AudioClip explosionSound;
+    public AudioClip attackSound;
 
     private AudioSource audioSource;
 
@@ -601,6 +602,8 @@ public class PlayerController : MonoBehaviour
         touchedWallDirection = 0;
         float counter = 0;
         bool brokeSomething = false;
+
+        audioSource.PlayOneShot(attackSound);
         while (counter < duration)
         {
             if (!brokeSomething)

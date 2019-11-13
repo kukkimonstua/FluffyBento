@@ -27,6 +27,7 @@ public class GUIController : MonoBehaviour
     public Text meteorLandingDanger;
     public Text meteorLandingTimer;
 
+    public Image blaze;
     public GameObject fullScreenBlack;
     public GameObject fullScreenRed;
 
@@ -37,7 +38,6 @@ public class GUIController : MonoBehaviour
 
     public MeteorDirectionMarker meteorDirectionMarker;
     public Text meteorHeightMarker; //Text for now
-    private Vector2 meteorDirectionMarkerOriginalPosition;
 
     public Text subtitles;
     public SwordEquipIcon swordEquipIcon; //Replace with icon eventually
@@ -102,9 +102,7 @@ public class GUIController : MonoBehaviour
     }
     void Start()
     {
-        meteorDirectionMarkerOriginalPosition = meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition;
-        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 0.0f);
-        
+        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 0.0f);        
     }
 
     void Update()
@@ -289,6 +287,7 @@ public class GUIController : MonoBehaviour
         meteorRadialSlider.fillAmount = 1 - (lowestMeteorPosition - meteorDeathThreshold) / sliderRange;
         meteorRadialSliderKnob.rectTransform.localEulerAngles = new Vector3(0.0f, 0.0f, (1.0f - (lowestMeteorPosition - meteorDeathThreshold) / sliderRange) * 360.0f);
 
+        blaze.GetComponent<CanvasRenderer>().SetAlpha(1.0f - (lowestMeteorPosition - meteorDeathThreshold) / (meteorDeathThreshold + (sliderRange / 3)));
 
         meteorLandingSlider.value = (lowestMeteorPosition - meteorDeathThreshold) / sliderRange;
         if(lowestMeteorPosition < meteorDeathThreshold + (sliderRange / 3) && PlayerController.playerState == 1)

@@ -188,17 +188,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520419b3360e5d644a2256ddd89e84d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 40
-  horizontalDrag: 0.8
-  jumpForce: 12
-  fallMultiplier: 3
-  lowJumpMultiplier: 4
+  currentLevel: 0
   worldOrigin: {fileID: 0}
   meteorWorldOrigin: {fileID: 0}
   playerOrigin: {fileID: 0}
   tutorialManager: {fileID: 0}
   meteorManager: {fileID: 0}
   swordManager: {fileID: 0}
+  moveSpeed: 40
+  horizontalDrag: 0.8
+  jumpForce: 12
+  fallMultiplier: 3
+  lowJumpMultiplier: 4
   isGrounded: 0
   canDoubleJump: 0
   touchedWallDirection: 0
@@ -221,8 +222,9 @@ MonoBehaviour:
   gui: {fileID: 0}
   jumpSound: {fileID: 8300000, guid: 0d3f3b4753cc94444a9536f1c20c808a, type: 3}
   wallJumpSound: {fileID: 8300000, guid: 2739ce2d70d581941a485d11a7c23d16, type: 3}
-  swordEquipSound: {fileID: 8300000, guid: 084e549f538d66846a66a92e43f90187, type: 3}
-  explosionSound: {fileID: 8300000, guid: ceb096a39c89a434f84cd91a08014076, type: 3}
+  swordEquipSound: {fileID: 8300000, guid: 6ade87af9176ee544bae1794924670d4, type: 3}
+  explosionSound: {fileID: 8300000, guid: bcb02f5130c83fa4e914d6b86d0f6ea5, type: 3}
+  attackSound: {fileID: 8300000, guid: 775f9143792851a45b008c810038f2fb, type: 3}
 --- !u!82 &1660102038325301908
 AudioSource:
   m_ObjectHideFlags: 0

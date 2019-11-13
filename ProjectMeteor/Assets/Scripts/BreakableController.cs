@@ -10,10 +10,15 @@ public class BreakableController : MonoBehaviour
     public Material testmat;
     private Material originalmat;
 
+    [Header("SOUND")]
+    public AudioClip breakingSound;
+    private AudioSource audioSource;
+
     void Start()
     {
         originalmat = GetComponent<MeshRenderer>().material;
         myCollider = GetComponent<BoxCollider>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void GetBroken()
@@ -25,6 +30,7 @@ public class BreakableController : MonoBehaviour
             myCollider.enabled = false;
             //myCollider.center = new Vector3(myCollider.center.x, myCollider.size.y * -0.4f, myCollider.center.z);
             //myCollider.size = new Vector3(myCollider.size.x, myCollider.size.y * 0.1f, myCollider.size.z);
+            audioSource.PlayOneShot(breakingSound);
         }
     }
     public void GetRestored()
