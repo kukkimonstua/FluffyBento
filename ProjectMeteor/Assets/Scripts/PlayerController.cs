@@ -6,13 +6,19 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    public int currentLevel = 0;
+    public int sceneLevel = 0;
+    public static int currentLevel;
     public Transform worldOrigin;
     public Transform meteorWorldOrigin;
     public Transform playerOrigin;
     public TutorialManager tutorialManager;
     public MeteorManager meteorManager;
     public SwordManager swordManager;
+    [Header("LINKS TO GUI")]
+    public GUIController gui;
+    public GameObject timingWindow;
+    [HideInInspector] public int timingGrade;
+
     public static float worldRadius; //Accessed by a LOT of different scripts
     public static float worldHeight;
 
@@ -34,30 +40,30 @@ public class PlayerController : MonoBehaviour
     private bool prone;
 
     [Header("DEBUGGING TOOLS")]
-    public bool isGrounded; //Make these
-    public bool canDoubleJump; //public when
-    public float touchedWallDirection; //you're debugging.
-    public GameObject targetedMeteor;
-    private float targetedMeteorDistance;
-    public float meteorAttackRange = 200.0f;
-    public GameObject targetedSword;
+    [SerializeField] private bool isGrounded; //Make these
+    [SerializeField] private bool canDoubleJump; //public when
+    [SerializeField] private float touchedWallDirection; //you're debugging.
+    [SerializeField] private GameObject targetedMeteor;
+    [SerializeField] private GameObject targetedSword;
 
-    [Header("GAME SETTINGS")]
-    public static int playerState; //1 = running, 2 = attacking, 3 = game over
-    
+    [Header("PREFABS")]
     public GameObject zanbato;
     public GameObject broadsword;
     public GameObject katana;
 
-    private Vector3 startingPosition;
+    [Header("GAME SETTINGS")]
     public int playerMaxHealth = 3;
     private int playerHealth;
     private int playerScore;
     private int meteorsDestroyed;
     public static int maxMeteorsForLevel = 0;
     public static float lowestMeteorPosition;
+    private float targetedMeteorDistance;
+    public float meteorAttackRange = 200.0f;
     private float initialDeathDelay = 1.0f;
     public float meteorDeathThreshold = 100.0f;
+    public static int playerState; //1 = running, 2 = attacking, 3 = game over
+    private Vector3 startingPosition;
 
     [Header("LINKS TO MODEL AND ANIMATIONS")]
     public GameObject avatarModel;
@@ -67,12 +73,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject equippedZanbato;
     public GameObject equippedBroadsword;
-    public GameObject equippedKatana;
-
-    [Header("LINKS TO GUI")]
-    public GameObject timingWindow;
-    public int timingGrade;
-    public GUIController gui;
+    public GameObject equippedKatana;    
 
     [Header("SOUND")]
     public AudioClip jumpSound;
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        currentLevel = sceneLevel;
         worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
         worldHeight = 300.0f;
         rb = GetComponent<Rigidbody>();
@@ -203,7 +205,7 @@ public class PlayerController : MonoBehaviour
                         {
                             isGrounded = false;
                             rb.velocity = Vector3.up * jumpForce;
-                            audioSource.PlayOneShot(jumpSound);
+                            //audioSource.PlayOneShot(jumpSound);
                         }
                     }
                     if(Input.GetButtonDown("buttonB"))
