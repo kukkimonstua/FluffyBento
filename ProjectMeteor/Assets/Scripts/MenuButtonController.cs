@@ -10,7 +10,13 @@ public class MenuButtonController : MonoBehaviour {
     public Image fullscreenBlack;
     public Image backgroundImage;
 
-    public GameObject mainMenuUI;
+    private int panelIndex = 0;
+
+    public GameObject startScreenPanel;
+    public GameObject mainMenuPanel;
+    public GameObject levelSelectPanel;
+
+
     public Button initialButton;
     public EventSystem eventSystem;
 	public AudioSource audioSource;
@@ -22,10 +28,33 @@ public class MenuButtonController : MonoBehaviour {
         eventSystem.SetSelectedGameObject(initialButton.gameObject); //Select initial menu option
         previousSelection = initialButton.gameObject.GetComponent<MenuButton>();
 
+        startScreenPanel.SetActive(true);
+        mainMenuPanel.SetActive(false);
+        levelSelectPanel.SetActive(false);
 
         StartCoroutine(FadeLoadScreen(0.0f, 2.0f, 0.0f, GameManager.MAIN_MENU_INDEX));
     }
 	void Update () {
+        switch (panelIndex)
+        {
+            case 0:
+                if (Input.GetButtonDown("Submit") || Input.GetButtonDown("Cancel"))
+                {
+                    if (eventSystem.enabled)
+                    {
+                        OpenMainMenu();
+                    }
+                }
+                break;
+            case 1:
+            case 2:
+                if (Input.GetButtonDown("buttonB"))
+                {
+                    ReturnToStart();
+                }
+                break;
+        }
+        
         if (eventSystem.currentSelectedGameObject != null && eventSystem.currentSelectedGameObject.GetComponent<MenuButton>() != null)
         {
             if (eventSystem.currentSelectedGameObject.GetComponent<MenuButton>() != previousSelection)
@@ -42,6 +71,38 @@ public class MenuButtonController : MonoBehaviour {
         }
 	}
 
+    public void ReturnToStart()
+    {
+        panelIndex = 0;
+        startScreenPanel.SetActive(true);
+        eventSystem.SetSelectedGameObject(startScreenPanel.transform.GetChild(0).gameObject);
+
+        mainMenuPanel.SetActive(false);
+        levelSelectPanel.SetActive(false);
+    }
+    public void OpenMainMenu()
+    {
+        eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
+
+        panelIndex = 1;
+        mainMenuPanel.SetActive(true);
+        eventSystem.SetSelectedGameObject(mainMenuPanel.transform.GetChild(0).gameObject);
+
+        startScreenPanel.SetActive(false);
+        levelSelectPanel.SetActive(false);
+    }
+    public void OpenLevelSelect()
+    {
+        eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
+
+        panelIndex = 2;
+        levelSelectPanel.SetActive(true);
+        eventSystem.SetSelectedGameObject(levelSelectPanel.transform.GetChild(0).gameObject);
+
+        startScreenPanel.SetActive(false);
+        mainMenuPanel.SetActive(false);
+    }
+
     public void StartStoryMode()
     {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
@@ -51,6 +112,20 @@ public class MenuButtonController : MonoBehaviour {
 
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //Load itself, lol
     }
+    public void StartLevel2()
+    {
+        eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
+        Debug.Log("start from level 2!");
+        StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.LEVEL_2_OP));
+    }
+    public void StartLevel3()
+    {
+        eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
+        Debug.Log("start from level 3!");
+        StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.LEVEL_3_OP));
+    }
+
+
     public void StartSurvivalMode()
     {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
