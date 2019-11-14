@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -39,6 +40,12 @@ public class DialogueManager : MonoBehaviour
     public Sprite background1ED;
     public DialogueBase script2OP;
     public Sprite background2OP;
+    public DialogueBase script2ED;
+    public Sprite background2ED;
+    public DialogueBase script3OP;
+    public Sprite background3OP;
+    public DialogueBase script3ED;
+    public Sprite background3ED;
 
     private void Awake()
     {
@@ -76,6 +83,18 @@ public class DialogueManager : MonoBehaviour
     {
         switch (GameManager.sceneIndex)
         {
+            case GameManager.LEVEL_3_ED:
+                selectedScript = script3ED;
+                backgroundImage.sprite = background3ED;
+                break;
+            case GameManager.LEVEL_3_OP:
+                selectedScript = script3OP;
+                backgroundImage.sprite = background3OP;
+                break;
+            case GameManager.LEVEL_2_ED:
+                selectedScript = script2ED;
+                backgroundImage.sprite = background2ED;
+                break;
             case GameManager.LEVEL_2_OP:
                 selectedScript = script2OP;
                 backgroundImage.sprite = background2OP;
@@ -191,10 +210,13 @@ public class DialogueManager : MonoBehaviour
     }
     private void SkipToEnd()
     {
-        Debug.Log("End this cutscene!"); //Replace with audio feedback
-        fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
-        CompleteText();
-        EndOfDialogue(0.0f);
+        if (!cutsceneEnded)
+        {
+            Debug.Log("End this cutscene!"); //Replace with audio feedback
+            fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+            CompleteText();
+            EndOfDialogue(0.0f);
+        }
     }
     private void EndOfDialogue(float delay)
     {
@@ -223,28 +245,32 @@ public class DialogueManager : MonoBehaviour
         {
             case GameManager.LEVEL_3_ED:
                 Debug.Log("LOAD MAIN MENU OR CREDITS");
+                GameManager.sceneIndex = GameManager.MAIN_MENU_INDEX;
+                SceneManager.LoadScene(GameManager.sceneIndex);
                 break;
-
             case GameManager.LEVEL_2_ED:
                 GameManager.sceneIndex = GameManager.LEVEL_3_OP;
                 StartCutscene();
                 break;
-            case GameManager.LEVEL_2_OP:
-                //These two lines should be loaded by lvl 2's victory screen
-                GameManager.sceneIndex = GameManager.LEVEL_2_ED;
-                StartCutscene();
-                break;
-
             case GameManager.LEVEL_1_ED:
                 GameManager.sceneIndex = GameManager.LEVEL_2_OP;
                 StartCutscene();
                 break;
+
+            case GameManager.LEVEL_3_OP:
+                Debug.Log("LOAD LEVEL 3");
+                GameManager.sceneIndex = GameManager.LEVEL_3;
+                SceneManager.LoadScene(GameManager.sceneIndex);
+                break;
+            case GameManager.LEVEL_2_OP:
+                Debug.Log("LOAD LEVEL 2");
+                GameManager.sceneIndex = GameManager.LEVEL_2;
+                SceneManager.LoadScene(GameManager.sceneIndex);
+                break;
             default:
                 Debug.Log("LOAD LEVEL 1");
-
-                //These two lines should be loaded by lvl 1's victory screen
-                GameManager.sceneIndex = GameManager.LEVEL_1_ED;
-                StartCutscene();
+                GameManager.sceneIndex = GameManager.LEVEL_1;
+                SceneManager.LoadScene(GameManager.sceneIndex);
 
                 break;
         }

@@ -9,9 +9,18 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: d2c9a7b4ac07c794eb71ca6989050c2a
   - enabled: 1
-    path: Assets/Scenes/Cutscene.unity
-    guid: abec86f627428244a99fb043183d08c2
-  - enabled: 1
     path: Assets/Scenes/Level 1.unity
     guid: a2f7b75c972d01a438ca99a833baedb1
+  - enabled: 1
+    path: Assets/Scenes/Level 2.unity
+    guid: 82ba542c3a8b6f845937b1a9b64cfc62
+  - enabled: 1
+    path: Assets/Scenes/Level 3.unity
+    guid: c46214fa0a785a844b21b88c85729181
+  - enabled: 1
+    path: Assets/Scenes/SurvivalMode.unity
+    guid: 617d688409b0d6249b290fecc59fa1cb
+  - enabled: 1
+    path: Assets/Scenes/Cutscene.unity
+    guid: abec86f627428244a99fb043183d08c2
   m_configObjects: {}

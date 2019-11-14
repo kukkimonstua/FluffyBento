@@ -84,7 +84,22 @@ public class ResultsMenu : MonoBehaviour
 
     public void Continue()
     {
-        Debug.Log("go to next level");
+        Debug.Log("go to next level because current level is " + PlayerController.currentLevel);
+        if (PlayerController.currentLevel == 3)
+        {
+            GameManager.sceneIndex = GameManager.LEVEL_3_ED;
+            SceneManager.LoadScene(5);
+        }
+        else if (PlayerController.currentLevel == 2)
+        {
+            GameManager.sceneIndex = GameManager.LEVEL_2_ED;
+            SceneManager.LoadScene(5);
+        }
+        else
+        {
+            GameManager.sceneIndex = GameManager.LEVEL_1_ED;
+            SceneManager.LoadScene(5);
+        }
     }
 
     public void RestartGame()

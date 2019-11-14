@@ -152,8 +152,16 @@ public class MenuButtonController : MonoBehaviour {
         if (sceneTarget != GameManager.MAIN_MENU_INDEX)
         {
             //use the scene target value to pick the scene to load
-            GameManager.sceneIndex = GameManager.LEVEL_1_OP;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //THIS IS TEMP
+            GameManager.sceneIndex = sceneTarget;
+            if (GameManager.sceneIndex >= 5)
+            {
+                SceneManager.LoadScene(5); //The cutscene scene
+            }
+            else
+            {
+                SceneManager.LoadScene(GameManager.sceneIndex); //everything else
+            }
+            
         }
         eventSystem.enabled = true;
         

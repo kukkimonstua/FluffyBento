@@ -8688,7 +8688,7 @@ PrefabInstance:
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: maxMeteorsForLevel
-      value: 1
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 944358063281928567, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
@@ -8807,7 +8807,7 @@ PrefabInstance:
     - target: {fileID: 3376312176963667617, guid: 44b25c30ff1b3b84ab3c0356c0509782,
         type: 3}
       propertyPath: sceneLevel
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3376312176963667622, guid: 44b25c30ff1b3b84ab3c0356c0509782,
         type: 3}
