@@ -7,6 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class MenuButtonController : MonoBehaviour {
 
+    public BGMController bgm;
+    public AudioClip bgmClip;
+
     public Image fullscreenBlack;
     public Image backgroundImage;
 
@@ -33,6 +36,7 @@ public class MenuButtonController : MonoBehaviour {
         levelSelectPanel.SetActive(false);
 
         StartCoroutine(FadeLoadScreen(0.0f, 2.0f, 0.0f, GameManager.MAIN_MENU_INDEX));
+        bgm.FadeInMusic(bgmClip, 2.0f);
     }
 	void Update () {
         switch (panelIndex)
@@ -109,6 +113,7 @@ public class MenuButtonController : MonoBehaviour {
 
         Debug.Log("start the story!");
         StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.LEVEL_1_OP));
+        bgm.FadeOutMusic(3.0f);
 
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //Load itself, lol
     }
@@ -117,12 +122,16 @@ public class MenuButtonController : MonoBehaviour {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
         Debug.Log("start from level 2!");
         StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.LEVEL_2_OP));
+        bgm.FadeOutMusic(3.0f);
+
     }
     public void StartLevel3()
     {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
         Debug.Log("start from level 3!");
         StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.LEVEL_3_OP));
+        bgm.FadeOutMusic(3.0f);
+
     }
 
 
@@ -149,6 +158,7 @@ public class MenuButtonController : MonoBehaviour {
             yield return null;
         }
         fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(alphaTarget);
+
         if (sceneTarget != GameManager.MAIN_MENU_INDEX)
         {
             //use the scene target value to pick the scene to load

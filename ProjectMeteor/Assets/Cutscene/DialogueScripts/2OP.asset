@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dd438b58791fe94e8be3667dcca9d08, type: 3}
+  m_Name: 2OP
+  m_EditorClassIdentifier: 
+  dialogueInfo:
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: It took only a day to reach the royal palace by carriage, huh?
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: "I guess we didn\u2019t get away as far as we thought..."
+  - myName: Messenger
+    portrait: {fileID: 0}
+    isLeftPortrait: 0
+    myText: "We\u2019re here."
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: '...This gate is as grandiose as always.'
+  - myName: Guard A
+    portrait: {fileID: 67926103340967526, guid: fbd469ef84271da47ac32ed5be3d70ce,
+      type: 3}
+    isLeftPortrait: 0
+    myText: P-Princess Chika!
+  - myName: Guard B
+    portrait: {fileID: -2429919002490121231, guid: fbd469ef84271da47ac32ed5be3d70ce,
+      type: 3}
+    isLeftPortrait: 1
+    myText: "You mustn\u2019t be outside the castle, let alone the palace gates!"
+  - myName: Chika
+    portrait: {fileID: 21300000, guid: d3d03500022c9034e95e7583620f1059, type: 3}
+    isLeftPortrait: 0
+    myText: I will do as I please. Especially in times so dire...
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 8fa5fe775e314df4d98d988da2cc3062, type: 3}
+    isLeftPortrait: 1
+    myText: Heh. The little princess dragged her geta sandals through the dirt for
+      a commoner like me?
+  - myName: Chika
+    portrait: {fileID: 21300000, guid: d3d03500022c9034e95e7583620f1059, type: 3}
+    isLeftPortrait: 0
+    myText: Yashiro... Since last we spoke, you have developed a crude manner of speaking
+      that I do not care for.

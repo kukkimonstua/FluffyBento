@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class DialogueManager : MonoBehaviour
 {
+    public BGMController bgm;
+
     public Image fullscreenBlack;
     private IEnumerator fadeCoroutine;
     private bool cutsceneEnded;
@@ -32,20 +34,27 @@ public class DialogueManager : MonoBehaviour
     public Queue<DialogueBase.Info> dialogueInfo = new Queue<DialogueBase.Info>();
     public static DialogueManager instance;
     private DialogueBase selectedScript;
+    private AudioClip selectedBGM;
     public int debugSceneIndex = 0;
 
     public DialogueBase script1OP;
     public Sprite background1OP;
+    public AudioClip bgm1OP;
     public DialogueBase script1ED;
     public Sprite background1ED;
+    public AudioClip bgm1ED;
     public DialogueBase script2OP;
     public Sprite background2OP;
+    public AudioClip bgm2OP;
     public DialogueBase script2ED;
     public Sprite background2ED;
+    public AudioClip bgm2ED;
     public DialogueBase script3OP;
     public Sprite background3OP;
+    public AudioClip bgm3OP;
     public DialogueBase script3ED;
     public Sprite background3ED;
+    public AudioClip bgm3ED;
 
     private void Awake()
     {
@@ -86,26 +95,32 @@ public class DialogueManager : MonoBehaviour
             case GameManager.LEVEL_3_ED:
                 selectedScript = script3ED;
                 backgroundImage.sprite = background3ED;
+                selectedBGM = bgm3ED;
                 break;
             case GameManager.LEVEL_3_OP:
                 selectedScript = script3OP;
                 backgroundImage.sprite = background3OP;
+                selectedBGM = bgm3OP;
                 break;
             case GameManager.LEVEL_2_ED:
                 selectedScript = script2ED;
                 backgroundImage.sprite = background2ED;
+                selectedBGM = bgm2ED;
                 break;
             case GameManager.LEVEL_2_OP:
                 selectedScript = script2OP;
                 backgroundImage.sprite = background2OP;
+                selectedBGM = bgm2OP;
                 break;
             case GameManager.LEVEL_1_ED:
                 selectedScript = script1ED;
                 backgroundImage.sprite = background1ED;
+                selectedBGM = bgm1ED;
                 break;
             default:
                 selectedScript = script1OP;
                 backgroundImage.sprite = background1OP;
+                selectedBGM = bgm1OP;
                 break;
         }
 
@@ -168,6 +183,7 @@ public class DialogueManager : MonoBehaviour
             {
                 firstSpriteAppeared = true;
                 fadeCoroutine = FadeBlackScreen(0.0f, 1.0f); // create an IEnumerator object
+                bgm.FadeInMusic(selectedBGM, 0.0f);
             }
         }
         
@@ -237,6 +253,7 @@ public class DialogueManager : MonoBehaviour
     private IEnumerator LoadNextPart(float delay)
     {
         yield return new WaitForSeconds(delay);
+        bgm.FadeOutMusic(2.0f);
         yield return StartCoroutine(FadeBlackScreen(1.0f, 2.0f));
 
         Debug.Log("LOAD NEXT PART");
