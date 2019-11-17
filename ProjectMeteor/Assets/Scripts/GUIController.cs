@@ -21,9 +21,6 @@ public class GUIController : MonoBehaviour
     public Text scoreText;
     public Text meteorCounterText;
     public Text timerText;
-    public Slider meteorLandingSlider;
-    public Image meteorRadialSlider;
-    public Image meteorRadialSliderKnob;
     public Text meteorLandingDanger;
     public Text meteorLandingTimer;
 
@@ -189,6 +186,12 @@ public class GUIController : MonoBehaviour
             meteorCounterText.gameObject.SetActive(false);
             timerText.gameObject.SetActive(false);
         }
+        else
+        {
+            blaze.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+            meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        }
     }
     public void FlashRed()
     {
@@ -249,22 +252,22 @@ public class GUIController : MonoBehaviour
     {
         //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
         //Debug.Log((lowestMeteorPosition - meteorDeathThreshold) / sliderRange);
-        meteorRadialSlider.fillAmount = 1 - (lowestMeteorPosition - meteorDeathThreshold) / sliderRange;
-        meteorRadialSliderKnob.rectTransform.localEulerAngles = new Vector3(0.0f, 0.0f, (1.0f - (lowestMeteorPosition - meteorDeathThreshold) / sliderRange) * 360.0f);
 
-        blaze.GetComponent<CanvasRenderer>().SetAlpha(1.0f - (lowestMeteorPosition - meteorDeathThreshold) / (meteorDeathThreshold + (sliderRange / 3)));
-
-        meteorLandingSlider.value = (lowestMeteorPosition - meteorDeathThreshold) / sliderRange;
-        if(lowestMeteorPosition < meteorDeathThreshold + (sliderRange / 3) && PlayerController.playerState == 1)
+        if (PlayerController.playerState == 1)
         {
-            meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
-            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
-            meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "";
-        }
-        else
-        {
-            meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
-            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+            if (lowestMeteorPosition < meteorDeathThreshold + (sliderRange / 3))
+            {
+                blaze.GetComponent<CanvasRenderer>().SetAlpha(1.0f - (lowestMeteorPosition - meteorDeathThreshold) / (meteorDeathThreshold + (sliderRange / 3)));
+                meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
+                meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+                meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "";
+            }
+            else
+            {
+                blaze.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+                meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+                meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+            }
         }
     }
 
@@ -316,12 +319,17 @@ public class GUIController : MonoBehaviour
     {
         playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 3.0f, playerPosition.z / 3.0f);
     }
-    public void AddMinimapMeteor(GameObject meteor)
+    public void AddMinimapMeteor(GameObject meteor, int type)
     {
         GameObject newMarker = Instantiate(minimapMeteorMarker);
+        if (newMarker.GetComponent<MeteorMinimapMarker>() != null)
+        {
+            newMarker.GetComponent<MeteorMinimapMarker>().type = type;
+        }
         newMarker.transform.SetParent(minimap.transform, false);
         //Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
         newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 3.0f, meteor.transform.position.z / 3.0f);
+
 
         minimapMeteors.Add(newMarker);
         currentMeteors.Add(meteor);

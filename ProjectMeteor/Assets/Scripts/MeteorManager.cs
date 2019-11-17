@@ -105,9 +105,14 @@ public class MeteorManager : MonoBehaviour
             i++;
         }
     }
-
+    public void SpawnSpecialMeteor()
+    {
+        specialMeteorCounter = specialMeteorRate;
+        SpawnMeteor();
+    }
     public void SpawnMeteor()
     {
+        int meteorID = 0;
         GameObject meteorToSpawn = meteor;
         if (specialMeteorRate != 0)
         {
@@ -115,17 +120,20 @@ public class MeteorManager : MonoBehaviour
             if (specialMeteorCounter >= specialMeteorRate)
             {
                 specialMeteorCounter = 0;
-                int meteorID = Random.Range(0, 3) + 1;
+                meteorID = Random.Range(0, 3) + 1;
                 switch (meteorID)
                 {
                     default:
                         meteorToSpawn = meteorZanbato;
+                        Debug.Log("red meteor appeared");
                         break;
                     case 2:
                         meteorToSpawn = meteorBroadsword;
+                        Debug.Log("yellow meteor appeared");
                         break;
                     case 3:
                         meteorToSpawn = meteorKatana;
+                        Debug.Log("blue meteor appeared");
                         break;
                 }
             }
@@ -146,7 +154,7 @@ public class MeteorManager : MonoBehaviour
         GameObject newMeteor = Instantiate(meteorToSpawn, spawnPoint.position, spawnPoint.rotation);
         if (meteor.GetComponent<MeteorController>() != null)
         {
-            gui.AddMinimapMeteor(newMeteor);
+            gui.AddMinimapMeteor(newMeteor, meteorID);
         }
         currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
 
