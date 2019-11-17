@@ -182,10 +182,11 @@ public class PlayerController : MonoBehaviour
                 }
 
 
-                targetedMeteorDistance = CheckAboveForMeteor();
-
                 //Button controls work when NOT prone.
-                if (!prone && !PauseMenu.GameIsPaused) { 
+                if (!prone && !PauseMenu.GameIsPaused) {
+
+                    targetedMeteorDistance = CheckAboveForMeteor();
+
                     if (Input.GetButtonDown("Jump"))
                     {
                         if (!isGrounded)
@@ -675,18 +676,35 @@ public class PlayerController : MonoBehaviour
                 meteorsDestroyed++;
                 gui.UpdateMeteorsDestroyed(meteorsDestroyed);
                 audioSource.PlayOneShot(explosionSound);
+
+                if (TutorialManager.tutorialActive)
+                {
+                    if (currentLevel == 2 || currentLevel == 3)
+                    {
+                        if (!tutorialManager.firstActionCleared)
+                        {
+                            tutorialManager.firstActionCleared = true;
+                            meteorManager.SpawnSpecialMeteor();
+                        }
+                        else if (!tutorialManager.secondActionCleared)
+                        {
+                            tutorialManager.secondActionCleared = true;
+                            meteorManager.SpawnMeteor();
+                        }
+                    }
+                    else
+                    {
+                        tutorialManager.secondActionCleared = true;
+                        meteorManager.SpawnMeteor();
+                    }
+                }
             }
             else
             {
                 prone = true;
                 gui.TogglePrompt(true, "What?! It didn't work!");
             }
-            if (TutorialManager.tutorialActive)
-            {
-                tutorialManager.secondActionCleared = true;
-                meteorManager.SpawnMeteor();
-            }
-
+            
             holdingSword = 0;
             EquipSword(0);
 
@@ -723,7 +741,7 @@ public class PlayerController : MonoBehaviour
         EquipSword(holdingSword);
         Destroy(pickedUpSword);
 
-        if (TutorialManager.tutorialActive)
+        if (TutorialManager.tutorialActive && currentLevel == 1)
         {
             tutorialManager.firstActionCleared = true;
         }

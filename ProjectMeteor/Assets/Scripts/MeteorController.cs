@@ -9,6 +9,7 @@ public class MeteorController : MonoBehaviour
     public int meteorID;
     public bool withinAttackRange;
     public bool isLowest;
+    private float fallMultiplier;
 
     [SerializeField] private GameObject fallMarkerPrefab = null;
     [SerializeField] private Vector3 fallDirection = Vector3.down;
@@ -16,9 +17,10 @@ public class MeteorController : MonoBehaviour
 
     void Start()
     {
-        //originalColour = transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material;
         isLowest = false;
         withinAttackRange = false;
+        fallMultiplier = -1.0f;
+        if (meteorID != 0) fallMultiplier /= 2;
 
         if (fallMarkerPrefab != null)
         {
@@ -29,11 +31,7 @@ public class MeteorController : MonoBehaviour
                 fallMarkerInstance = Instantiate(fallMarkerPrefab, fallPosition - 0.05f * fallDirection, Quaternion.identity); // small displacement to avoid z-fighting with the ground
             }
         }
-
-        //MiniMap.AddMinimapMeteor(this);
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (fallMarkerInstance != null)
@@ -51,23 +49,12 @@ public class MeteorController : MonoBehaviour
         }
         if (PlayerController.playerState == 1)
         {
-            transform.Translate(Vector3.up * -1 * MeteorManager.fallSpeed * Time.deltaTime);
+            transform.Translate(Vector3.up * fallMultiplier * MeteorManager.fallSpeed * Time.deltaTime);
         }
-
-        if (isLowest)
-        {
-            //transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = testColour;
-        }
-        else
-        {
-            //transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = originalColour;
-        }
-
     }
 
     private void OnDestroy()
     {
-        //MiniMap.RemoveMinimapMeteor(this);
         if (fallMarkerInstance != null) {
             Destroy(fallMarkerInstance);
         }
