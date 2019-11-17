@@ -18,7 +18,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: Haaa...
   - myName: Yashiro
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 9401a67fa2e382a48ac36dc0fdb38102, type: 3}
     isLeftPortrait: 1
     myText: "I never would have thought I\u2019d be fighting colossal rocks falling
       from the sky..."
@@ -28,10 +28,149 @@ MonoBehaviour:
     myText: At least the odds of this happening a second time are next to nothing.
       Talk about insanity...
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 7b133ca0cae42b54ca1c27810c278168, type: 3}
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
     isLeftPortrait: 0
     myText: Master Yashiro!
   - myName: Hide
-    portrait: {fileID: 0}
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
     isLeftPortrait: 0
     myText: "You\u2019re all right! And you managed to save the town!"
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: "I\u2019ve always known you were amazing, but to think you fended off
+      every single one of those gigantic meteors..."
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
+    isLeftPortrait: 0
+    myText: "I couldn\u2019t possibly have a better swordsmanship teacher!"
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 8fa5fe775e314df4d98d988da2cc3062, type: 3}
+    isLeftPortrait: 1
+    myText: Hmm. You did well too, Hide.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 8fa5fe775e314df4d98d988da2cc3062, type: 3}
+    isLeftPortrait: 1
+    myText: If you noticed those things coming even a minute later, who knows where
+      we would be right about now?
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 01c9c8d5dfdd91e41bc8ba3793fe941c, type: 3}
+    isLeftPortrait: 0
+    myText: Hehe~
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: I wonder if it's safe to call the townspeople back now.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: "Seems like there\u2019s a weird mist circling around town."
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: "I guess that must have come out of the meteors you destroyed? I\u2019ll
+      go take a look--"
+  - myName: Messenger
+    portrait: {fileID: 0}
+    isLeftPortrait: 0
+    myText: Hail, Captain Yashiro!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
+    isLeftPortrait: 0
+    myText: '...!'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 9401a67fa2e382a48ac36dc0fdb38102, type: 3}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Messenger
+    portrait: {fileID: 21300000, guid: f904b2b23ab417f4eb335387b508e553, type: 3}
+    isLeftPortrait: 0
+    myText: You are Sir Yashiro, former captain of Taneshima's police force, are you
+      not?
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: "You got the wrong guy. I\u2019m just a swordsmanship instructor."
+  - myName: Messenger
+    portrait: {fileID: 21300000, guid: f904b2b23ab417f4eb335387b508e553, type: 3}
+    isLeftPortrait: 0
+    myText: We have a summons for your presence. Princess Chika wishes to speak with
+      you at once.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 8fa5fe775e314df4d98d988da2cc3062, type: 3}
+    isLeftPortrait: 1
+    myText: The heiress of this entire country wishes to speak with a commoner like
+      me? I find that rather hard to believe.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: "What\u2019s this about?"
+  - myName: Messenger
+    portrait: {fileID: 21300000, guid: f904b2b23ab417f4eb335387b508e553, type: 3}
+    isLeftPortrait: 0
+    myText: Her Highness did not supply us with any details. But ignoring her summons
+      is akin to treason.
+  - myName: Messenger
+    portrait: {fileID: 21300000, guid: f904b2b23ab417f4eb335387b508e553, type: 3}
+    isLeftPortrait: 0
+    myText: Now please, come this way. We have prepared a carriage for you.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 8fa5fe775e314df4d98d988da2cc3062, type: 3}
+    isLeftPortrait: 1
+    myText: Heh. Fancy stuff.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    isLeftPortrait: 0
+    myText: Master... Are you really going to the royal palace?
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: "Not like I have much of a say when it\u2019s the princess herself asking
+      me to come."
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: "...You\u2019re coming back, right? You won\u2019t...you know?"
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: "Of course I\u2019ll be back. I\u2019ll just hear what the little miss
+      highness wants to say, and tell her to shove it."
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 8fa5fe775e314df4d98d988da2cc3062, type: 3}
+    isLeftPortrait: 1
+    myText: I have no plans to resume my service for this rotten country.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
+    isLeftPortrait: 0
+    myText: Haha...
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
+    isLeftPortrait: 0
+    myText: "...Yeah. I don\u2019t give a damn about anyone in this world except you,
+      Master Yashiro."
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: But things will be different soon... And for the better...
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: '...?'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
+    isLeftPortrait: 0
+    myText: "All right! Leave things here to me, Master! You shouldn\u2019t keep that
+      princess waiting!"
+  - myName: Messenger
+    portrait: {fileID: 0}
+    isLeftPortrait: 0
+    myText: Sir Yashiro! We must depart at once!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 8fa5fe775e314df4d98d988da2cc3062, type: 3}
+    isLeftPortrait: 1
+    myText: "Hmph. I\u2019ll be back soon."

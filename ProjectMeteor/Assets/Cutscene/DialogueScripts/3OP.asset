@@ -21,3 +21,159 @@ MonoBehaviour:
     portrait: {fileID: 0}
     isLeftPortrait: 1
     myText: It is only in the future where humans grow and change...huh?
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: Pretty little ideals suitable for a pretty little princess.
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: What can a ruling body do when their charge itself is corrupt?
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: Conflict never ends. People attack other people for self-serving reasons.
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: Greed, pride, resentment... And their own delusions of justice.
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: These battles don't need to happen. And yet we throw ourselves into them
+      anyway.
+  - myName: Yashiro
+    portrait: {fileID: 0}
+    isLeftPortrait: 1
+    myText: An endless cycle of destruction and revival. If only it could come to
+      an end...
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: So...this is where they narrowed down the relic's location to?
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: It's not too far from home...
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 5e0ce73ce3085bc4ca4541202f1e12f2, type: 3}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
+    isLeftPortrait: 0
+    myText: Wha-- M-Master Yashiro?!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
+    isLeftPortrait: 0
+    myText: You're already back! I thought you would be gone much longer!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: Yes... You did, didn't you?
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    isLeftPortrait: 0
+    myText: Huh?
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 5e0ce73ce3085bc4ca4541202f1e12f2, type: 3}
+    isLeftPortrait: 1
+    myText: Hide... Why...? Why would you stain yourself with a sin so black...?
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    isLeftPortrait: 0
+    myText: What? Master, I don't get what you're saying.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 5e0ce73ce3085bc4ca4541202f1e12f2, type: 3}
+    isLeftPortrait: 1
+    myText: You saw the meteors approaching faster than anyone else. You guided me
+      to use those swords against them. But most importantly...
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 5e0ce73ce3085bc4ca4541202f1e12f2, type: 3}
+    isLeftPortrait: 1
+    myText: You lost your father to the Taneshima Insurrection. You watched as a blade
+      cut through the only family you ever had.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: '...'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: '...And now Taneshima is gone. Decimated by a sudden wave of meteors.'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 9401a67fa2e382a48ac36dc0fdb38102, type: 3}
+    isLeftPortrait: 1
+    myText: Countless people died for the sake of your vengeance.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 01c9c8d5dfdd91e41bc8ba3793fe941c, type: 3}
+    isLeftPortrait: 0
+    myText: You have it all wrong, Master.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 01c9c8d5dfdd91e41bc8ba3793fe941c, type: 3}
+    isLeftPortrait: 0
+    myText: Vengeance isn't important to me at all. Especially since I found an even
+      greater family in you.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: '...?'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: I know you tried to hide it, Master, but I know. I know why my father
+      died.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: Before he ran off to embrace that spear, he told me something.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    isLeftPortrait: 0
+    myText: '"This is for the sake of our future! We will be oppressed by these entitled
+      frauds no more!"'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
+    isLeftPortrait: 0
+    myText: '...Laughable, isn''t it?'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
+    isLeftPortrait: 0
+    myText: What future was he talking about? A future where he dies before his young
+      child, babbling nonsense over an oppression that didn't even exist?
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: They may not have acted on it, but the nobility knew we were going through
+      tough times. Why else would they have secured their riches more tightly?
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 5e0ce73ce3085bc4ca4541202f1e12f2, type: 3}
+    isLeftPortrait: 1
+    myText: Hide...
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: Master, I agree with your philosophies. Conflict is endless. Humans constantly
+      seek reasons to be venerable blades of justice.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: And a blade's only purpose is to cut people down, right?
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 4b1279f47c1c23a41a49a5164daadd7d, type: 3}
+    isLeftPortrait: 1
+    myText: '...!'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: Then let's just get rid of them all. All those blades, and all the people
+      they cut.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    isLeftPortrait: 0
+    myText: Our species is worthless! Meaningless! I will have the wrath of heaven
+      end our ludicrous cycle!

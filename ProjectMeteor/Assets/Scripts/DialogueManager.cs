@@ -43,9 +43,11 @@ public class DialogueManager : MonoBehaviour
     public DialogueBase script1ED;
     public Sprite background1ED;
     public AudioClip bgm1ED;
+    public AudioClip bgm1ED_2;
     public DialogueBase script2OP;
     public Sprite background2OP;
     public AudioClip bgm2OP;
+    public AudioClip bgm2OP_2;
     public DialogueBase script2ED;
     public Sprite background2ED;
     public AudioClip bgm2ED;
@@ -55,6 +57,7 @@ public class DialogueManager : MonoBehaviour
     public DialogueBase script3ED;
     public Sprite background3ED;
     public AudioClip bgm3ED;
+    public AudioClip bgm3ED_2;
 
     private void Awake()
     {
@@ -159,6 +162,41 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
+        Debug.Log(dialogueInfo.Count + " events remaining");
+        if (GameManager.sceneIndex == GameManager.LEVEL_1_ED)
+        {
+            if (dialogueInfo.Count == 24)
+            {
+                bgm.FadeOutMusic(2.0f);
+            }
+            if (dialogueInfo.Count == 21)
+            {
+                bgm.FadeInMusic(bgm1ED_2, 0.0f);
+            }
+        }
+        if (GameManager.sceneIndex == GameManager.LEVEL_2_OP)
+        {
+            if (dialogueInfo.Count == 12)
+            {
+                bgm.FadeOutMusic(2.0f);
+            }
+            if (dialogueInfo.Count == 9)
+            {
+                bgm.FadeInMusic(bgm2OP_2, 0.0f);
+            }
+        }
+        if (GameManager.sceneIndex == GameManager.LEVEL_3_ED)
+        {
+            if (dialogueInfo.Count == 58)
+            {
+                bgm.FadeOutMusic(2.0f);
+            }
+            if (dialogueInfo.Count == 52)
+            {
+                bgm.FadeInMusic(bgm3ED_2, 0.0f);
+            }
+        }
+
         DialogueBase.Info info = dialogueInfo.Dequeue();
         completeText = info.myText;
 
@@ -185,6 +223,11 @@ public class DialogueManager : MonoBehaviour
                 fadeCoroutine = FadeBlackScreen(0.0f, 1.0f); // create an IEnumerator object
                 bgm.FadeInMusic(selectedBGM, 0.0f);
             }
+        }
+        else
+        {
+            leftPortrait.color = inactiveShade;
+            rightPortrait.color = inactiveShade;
         }
         
         StartCoroutine(TypeText(info));

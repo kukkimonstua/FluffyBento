@@ -14,10 +14,277 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueInfo:
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 7b133ca0cae42b54ca1c27810c278168, type: 3}
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
     isLeftPortrait: 0
     myText: No...
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 7b133ca0cae42b54ca1c27810c278168, type: 3}
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
     isLeftPortrait: 0
     myText: No, no, no, no, NO!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    isLeftPortrait: 0
+    myText: This isn't where it ends! I can't give up! I need to bring an end to this
+      eternal tragedy!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 0b9edf43245c2404d9436e30ecabf8ce, type: 3}
+    isLeftPortrait: 1
+    myText: Hide!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    isLeftPortrait: 0
+    myText: GET AWAY!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 9401a67fa2e382a48ac36dc0fdb38102, type: 3}
+    isLeftPortrait: 1
+    myText: Tch!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    isLeftPortrait: 0
+    myText: AGH!
+  - myName: 
+    portrait: {fileID: 0}
+    isLeftPortrait: 0
+    myText: '*snap*'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    isLeftPortrait: 0
+    myText: Wha... The...the relic...
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 9401a67fa2e382a48ac36dc0fdb38102, type: 3}
+    isLeftPortrait: 1
+    myText: Hide. Your ambition ends here.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    isLeftPortrait: 0
+    myText: Am...bition...?
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    isLeftPortrait: 0
+    myText: You think this was an ambition?! I--
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 92b77d79b643c184d809fede4e4b9cf0, type: 3}
+    isLeftPortrait: 1
+    myText: I understand!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
+    isLeftPortrait: 0
+    myText: '...!'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 0b9edf43245c2404d9436e30ecabf8ce, type: 3}
+    isLeftPortrait: 1
+    myText: I understand what you want! I feel it! I crave it myself!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 0b9edf43245c2404d9436e30ecabf8ce, type: 3}
+    isLeftPortrait: 1
+    myText: But wiping out humanity is ultimately your own perception of true justice!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 0b9edf43245c2404d9436e30ecabf8ce, type: 3}
+    isLeftPortrait: 1
+    myText: No one can say if it's the right call or not!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    isLeftPortrait: 0
+    myText: That's what I'm saying! I don't want anyone deciding that something is
+      right or wrong!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    isLeftPortrait: 0
+    myText: NEVER AGAIN!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 9401a67fa2e382a48ac36dc0fdb38102, type: 3}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: I... I lost everything to the ideals of others... The nobility that cut
+      my father down under the pretense of duty...
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: My father who foolishly tossed aside his son to die for a worthless cause...
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    isLeftPortrait: 0
+    myText: I don't care who was good or evil! I don't care who was in the right or
+      in the wrong!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: I just...wanted the senseless bloodshed to end...
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: '...Master. What do I do now?'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: There's blood on my hands. Blood spilled over the pursuit of my own ideals.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: Or...was it simply vengeance, as you say...?
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: '...It doesn''t matter what it was for.'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: You and I both have Taneshima's blood on our hands now.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: And yet it is you who will suffer punishment. That is the way of this
+      twisted world.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: '...Then...at least let it be by your--'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: Go.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: '...!'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
+    isLeftPortrait: 0
+    myText: '...Wh-what?'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: The world is vast. Leave this land, and start anew.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    isLeftPortrait: 0
+    myText: How could you expect me to do that?!
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    isLeftPortrait: 0
+    myText: There's no place for me in this world anymore!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: Hide. It appears I did not teach you well enough.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: It is true the world is in an endless cycle of self-destruction.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: But how can destruction happen over and over again without rebirth?
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    isLeftPortrait: 0
+    myText: '...'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: We destroy each other and ourselves. But then we rise up again and see
+      what it was that destroyed us.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: We take a step back. We repeat the events in our heads. We each decide
+      for ourselves what was right or wrong, and enter conflict yet again.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: Perhaps that's what it means...to move towards the future.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: What's in that future? There's no way to know if it will be good or bad.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: No way to predict if humanity will have grown or not.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: But something will have changed by then. Something worth seeing with our
+      own eyes.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: '...'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: I...don't think I understand.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 8fa5fe775e314df4d98d988da2cc3062, type: 3}
+    isLeftPortrait: 1
+    myText: That's all right. I don't understand it either.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: That's why...I have nothing left to teach you.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: Find your own path, Hide. You are my apprentice no more.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: Master...
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: '...No. Yashiro.'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: I won't forget about everything you've done for me.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: You gave me a home. Taught me swordsmanship. Showed me the truths of this
+      world.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    isLeftPortrait: 0
+    myText: I wish...you could have been my real father.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
+    isLeftPortrait: 0
+    myText: I'll keep your final lesson in my heart. I'll stay alive, and move towards
+      the future.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: And someday... I'll make up for what I did. I don't know how long it will
+      take but...
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 01c9c8d5dfdd91e41bc8ba3793fe941c, type: 3}
+    isLeftPortrait: 0
+    myText: It will be me who decides when I have paid my dues.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: '...That is how it should be.'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    isLeftPortrait: 0
+    myText: Good-bye, my teacher.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: Farewell, Hide.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 8fa5fe775e314df4d98d988da2cc3062, type: 3}
+    isLeftPortrait: 1
+    myText: Forgive yourself, and move forward with courage.

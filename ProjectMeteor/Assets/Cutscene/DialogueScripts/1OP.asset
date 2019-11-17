@@ -23,7 +23,7 @@ MonoBehaviour:
     myText: '...ngh...'
   - myName: Yashiro
     portrait: {fileID: 0}
-    isLeftPortrait: 0
+    isLeftPortrait: 1
     myText: '...Why is that memory suddenly coming back now?'
   - myName: Yashiro
     portrait: {fileID: 0}
@@ -32,29 +32,96 @@ MonoBehaviour:
       been."
   - myName: Yashiro
     portrait: {fileID: 0}
-    isLeftPortrait: 0
+    isLeftPortrait: 1
     myText: '...Five years, huh...'
   - myName: 
     portrait: {fileID: 0}
     isLeftPortrait: 0
     myText: '*SLAM*'
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 7b133ca0cae42b54ca1c27810c278168, type: 3}
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
     isLeftPortrait: 0
     myText: MASTER YASHIRO! ARE YOU HERE?!
   - myName: Yashiro
-    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    portrait: {fileID: 21300000, guid: 9401a67fa2e382a48ac36dc0fdb38102, type: 3}
     isLeftPortrait: 1
     myText: "Keep it down, Hide. I\u2019m trying to take a nap right now."
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 7b133ca0cae42b54ca1c27810c278168, type: 3}
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
     isLeftPortrait: 0
     myText: "Huh? Oh, I\u2019m so sorry. I\u2019ll leave you in peace."
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 7b133ca0cae42b54ca1c27810c278168, type: 3}
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
     isLeftPortrait: 0
     myText: "...Wait, NO, I can\u2019t do that!"
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 7b133ca0cae42b54ca1c27810c278168, type: 3}
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
     isLeftPortrait: 0
     myText: "Master, you gotta come out! It\u2019s an emergency!"
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: Emergency? What, did you drop one of your wooden swords in the river again?
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    isLeftPortrait: 0
+    myText: No, the town is in danger!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: Sounds unlikely. This town is deep in the middle of nowhere. How could
+      it--
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    isLeftPortrait: 0
+    myText: A wave of meteors is coming down on top of us!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: '...'
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: '...Come again?'
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    isLeftPortrait: 0
+    myText: A wave of meteors is--
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: No, I heard you the first time.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: "I think you\u2019ve been working too hard, Hide. You only just finished
+      that delivery to the neighbouring town, right?"
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    isLeftPortrait: 0
+    myText: "I\u2019m not hallucinating! They're really there in the sky!"
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 450fce62da659884bb164f60d3ce5c3a, type: 3}
+    isLeftPortrait: 1
+    myText: Oh, then you must have seen the shooting stars. Now that I think about
+      it, you were always away whenever they showed up.
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: e45275e681eca14439e6133a7ad8c481, type: 3}
+    isLeftPortrait: 1
+    myText: "They look oddly big, yes, but I wouldn\u2019t call them meteors."
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    isLeftPortrait: 0
+    myText: No, these are DEFINITELY meteors! Just come outside, Master!
+  - myName: Yashiro
+    portrait: {fileID: 21300000, guid: 432a84f1ae89d1c4b9cab13cb2a8c212, type: 3}
+    isLeftPortrait: 1
+    myText: I already know how pretty they are. Just let me nap.
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    isLeftPortrait: 0
+    myText: "Seriously, Master! Come on! If we don\u2019t do anything..."
+  - myName: Hide
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    isLeftPortrait: 0
+    myText: "IT\u2019S THE END OF THE WORLD!"

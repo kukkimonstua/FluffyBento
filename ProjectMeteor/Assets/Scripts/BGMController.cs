@@ -40,7 +40,6 @@ public class BGMController : MonoBehaviour
         {
             StopCoroutine(fadeCoroutine);
         }
-        audioSource.clip = clip;
         fadeCoroutine = SwitchClipAfterFade(clip, duration);
         StartCoroutine(fadeCoroutine);
     }
