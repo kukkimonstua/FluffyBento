@@ -14,10 +14,13 @@ public class PlayerController : MonoBehaviour
     public TutorialManager tutorialManager;
     public MeteorManager meteorManager;
     public SwordManager swordManager;
-    [Header("LINKS TO GUI")]
     public GUIController gui;
     public GameObject timingWindow;
     [HideInInspector] public int timingGrade;
+    public BGMController bgm;
+    public AudioClip bgmLvl1;
+    public AudioClip bgmLvl2;
+    public AudioClip bgmLvl3;
 
     public static float worldRadius; //Accessed by a LOT of different scripts
     public static float worldHeight;
@@ -119,7 +122,11 @@ public class PlayerController : MonoBehaviour
                 break;
 
             default:
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(KeyCode.B))
+                {
+                    ResetBreakables();
+                }
+                if (Input.GetKeyDown(KeyCode.H))
                 {
                     TakeDamage(1); //USE THIS TO TEST DAMAGE TAKING
                 }
@@ -389,6 +396,18 @@ public class PlayerController : MonoBehaviour
         prone = false;
 
         initialDeathDelay = 1.0f;
+        if (currentLevel == 1)
+        {
+            bgm.FadeInMusic(bgmLvl1, 0.0f);
+        }
+        if (currentLevel == 2)
+        {
+            bgm.FadeInMusic(bgmLvl2, 0.0f);
+        }
+        if (currentLevel == 3)
+        {
+            bgm.FadeInMusic(bgmLvl3, 0.0f);
+        }
     }
     private void ResetBreakables()
     {
