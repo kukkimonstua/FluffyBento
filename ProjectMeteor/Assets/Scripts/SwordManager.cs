@@ -112,7 +112,6 @@ public class SwordManager : MonoBehaviour
         {
             Destroy(sword);
         }
-        Debug.Log("Swords Cleared!");
     }
 
 }
