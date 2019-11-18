@@ -1,0 +1,144 @@
+ProjectMeteor/Assets/Allegorithmic/Plugins.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/engine_build_info.txt
+ProjectMeteor/Assets/Allegorithmic/Plugins/engine_build_info.txt.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/EULA.txt
+ProjectMeteor/Assets/Allegorithmic/Plugins/EULA.txt.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/libsubstance_sse2_blend.bundle
+ProjectMeteor/Assets/Allegorithmic/Plugins/libsubstance_sse2_blend.bundle.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Engine.bundle.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Engine.dll
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Engine.dll.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Game.dll
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Game.dll.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Platform.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/substance_sse2_blend.dll
+ProjectMeteor/Assets/Allegorithmic/Plugins/substance_sse2_blend.dll.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Linux.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Engine.bundle/Contents.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Engine.bundle/Contents/Info.plist
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Engine.bundle/Contents/Info.plist.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Engine.bundle/Contents/MacOS.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Engine.bundle/Contents/MacOS/Substance.Engine
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Engine.bundle/Contents/MacOS/Substance.Engine.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Platform/NativeFunctions.cs
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Platform/NativeFunctions.cs.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Platform/Substance.Platform.asmdef
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance.Platform/Substance.Platform.asmdef.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libalgcompression.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libalgcompression.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libpfxlinkercommon.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libpfxlinkercommon.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libSubstance.Engine.Mobile.so
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libSubstance.Engine.Mobile.so.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libsubstance_framework.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libsubstance_framework.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libsubstance_linker.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libsubstance_linker.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libsubstance_neon_blend.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libsubstance_neon_blend.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libtinyxml.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Arm64/libtinyxml.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libalgcompression.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libalgcompression.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libpfxlinkercommon.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libpfxlinkercommon.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libSubstance.Engine.Mobile.so
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libSubstance.Engine.Mobile.so.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libsubstance_framework.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libsubstance_framework.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libsubstance_linker.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libsubstance_linker.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libsubstance_neon_blend.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libsubstance_neon_blend.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libtinyxml.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Armv7/libtinyxml.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libalgcompression.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libalgcompression.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libpfxlinkercommon.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libpfxlinkercommon.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libSubstance.Engine.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libSubstance.Engine.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libsubstance_framework.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libsubstance_framework.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libsubstance_linker.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libsubstance_linker.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libsubstance_neon_blend.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libsubstance_neon_blend.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libtinyxml.a
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/iOS/libtinyxml.a.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Linux/libSubstance.Engine.so
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Linux/libSubstance.Engine.so.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Linux/libsubstance_sse2_blend.so
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Linux/libsubstance_sse2_blend.so.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/MainObject.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/MainObject.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/Substance.Editor.dll
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/Substance.Editor.dll.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/Substance.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/Substance.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/SubstanceGraph.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/SubstanceGraph.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/SubstanceGraph-32.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Engine/Editor/SubstanceGraph-32.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/libSourceInterfacex64.dylib
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/libSourceInterfacex64.dylib.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/SourceInterfacex64.dll
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/SourceInterfacex64.dll.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/SourceUnityLib.dll
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/SourceUnityLib.dll.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/-1122897235-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/-1149584710-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/1528093038-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/-1745279249-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/1824313254-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/-2123714085-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/-2142242683-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/262483303-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/-866150871-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/.SourceCache/-912825028-756894925
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/AssetDownload.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/AssetDownload.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/AvailableDownloads.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/AvailableDownloads.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/DetailExitButton.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/DetailExitButton.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/download.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/download.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/free.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/free.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/leftarrow.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/leftarrow.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/library.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/library.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/LoginButton.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/LoginButton.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/logo-substance.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/logo-substance.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/LogoutButton.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/LogoutButton.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/logo-white.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/logo-white.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/MagnifyingGlass.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/MagnifyingGlass.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/MyAssetsButton.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/MyAssetsButton.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/new.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/new.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/rightarrow.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/rightarrow.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/Source.Icon.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/Source.Icon.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/spinner.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/spinner.png.meta
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/SubstanceSourceLoading.png
+ProjectMeteor/Assets/Allegorithmic/Plugins/Substance/Substance Source/Editor/Images/SubstanceSourceLoading.png.meta
+ProjectMeteor/Assets/Allegorithmic.meta
