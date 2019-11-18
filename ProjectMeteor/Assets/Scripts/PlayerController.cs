@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -58,6 +59,7 @@ public class PlayerController : MonoBehaviour
     public int playerMaxHealth = 3;
     private int playerHealth;
     private int playerScore;
+    public static int runningScore;
     private int meteorsDestroyed;
     public static int maxMeteorsForLevel = 0;
     public static float lowestMeteorPosition;
@@ -86,7 +88,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip attackSound;
 
     private AudioSource audioSource;
-
+    public GameObject successPrefab;
 
     void Awake()
     {
@@ -132,7 +134,9 @@ public class PlayerController : MonoBehaviour
                 }
                 if (Input.GetKeyDown(KeyCode.G))
                 {
-                    AddScore(transform.position, 10); //USE THIS TO TEST DAMAGE TAKING
+                    AddScore(transform.position, 10);
+                    //successPrefab.SetActive(true);
+                    //CameraController.cameraState = 4;
                 }
 
                 TrackLowestMeteor();
@@ -276,12 +280,63 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+    public void GoToNextLevel()
+    {
+        StartCoroutine(FadeToNextLevel(1.0f));
+    }
+    private IEnumerator FadeToNextLevel(float duration)
+    {
+        bgm.FadeOutMusic(duration);
+        gui.FadeIntoBlack(1.0f, duration);
+        yield return new WaitForSeconds(duration);
+
+        Debug.Log("go to next level because current level is " + currentLevel);
+        if (currentLevel == 3)
+        {
+            GameManager.sceneIndex = GameManager.LEVEL_3_ED;
+            SceneManager.LoadScene(5);
+        }
+        else if (currentLevel == 2)
+        {
+            GameManager.sceneIndex = GameManager.LEVEL_2_ED;
+            SceneManager.LoadScene(5);
+        }
+        else
+        {
+            GameManager.sceneIndex = GameManager.LEVEL_1_ED;
+            SceneManager.LoadScene(5);
+        }
+    }
     public void RestartLevel()
     {
+        StartCoroutine(FadeToRestart(1.0f));
+    }
+    private IEnumerator FadeToRestart(float duration)
+    {
+        Time.timeScale = 1f;
+        bgm.FadeOutMusic(duration);
+        gui.FadeIntoBlack(1.0f, duration);
+        yield return new WaitForSeconds(duration);
+        PauseMenu.GameIsPaused = false;
+
         meteorManager.ResetMeteors();
         swordManager.ResetSwords();
         ResetLevel();
         tutorialManager.ResetTutorial();
+    }
+    public void QuitGame()
+    {
+        StartCoroutine(FadeToQuit(1.0f));
+    }
+    private IEnumerator FadeToQuit(float duration)
+    {
+        Time.timeScale = 1f;
+        gui.FadeIntoBlack(1.0f, duration);
+        bgm.FadeOutMusic(duration);
+        yield return new WaitForSeconds(duration);
+        PauseMenu.GameIsPaused = false;
+
+        SceneManager.LoadScene(GameManager.MAIN_MENU_INDEX);
     }
 
     private float CheckAboveForMeteor()
@@ -468,7 +523,7 @@ public class PlayerController : MonoBehaviour
                     {
                         meteor.GetComponent<MeteorController>().isLowest = false; //All other meteors is made false
                     }
-                    gui.UpdateMeteorLandingUI(lowestMeteorPosition, meteorDeathThreshold, worldHeight - meteorDeathThreshold);
+                    gui.UpdateMeteorLandingUI(lowestMeteorPosition, meteorDeathThreshold);
 
                     if (initialDeathDelay > 0)
                     {
@@ -733,13 +788,13 @@ public class PlayerController : MonoBehaviour
             if (meteorsDestroyed >= maxMeteorsForLevel)
             {
                 //Debug.Log("YOU WIN!");
+                gui.UpdateMeteorLandingUI(worldHeight, meteorDeathThreshold);
                 GameClear();
             }
 
             ResetBreakables();
             if (timingGrade >= 3)
             {
-                //ResetBreakables(); //Reset only if timing grade was EXCELLENT
                 AddScore(transform.position, 500);
             }
             else
@@ -836,14 +891,14 @@ public class PlayerController : MonoBehaviour
         CameraController.SwitchToEndingCamera();
         gui.HidePlayerActionText();
         gui.TogglePrompt(false, "");
-        gui.ShowResults(resultType, 3.0f, 2.0f); //This ends with unlocking the menu
+        gui.ShowResults(playerScore, resultType, 3.0f, 2.0f); //This ends with unlocking the menu
     }
     private void GameClear()
     {
         playerState = 4;
         gui.HidePlayerActionText();
         gui.TogglePrompt(false, "");
-        gui.ShowResults(ResultsMenu.VICTORY, 3.0f, 2.0f); //This ends with unlocking the menu        
+        gui.ShowResults(playerScore, ResultsMenu.VICTORY, 3.0f, 2.0f); //This ends with unlocking the menu        
     }
 
     private void UpdateAnimations()

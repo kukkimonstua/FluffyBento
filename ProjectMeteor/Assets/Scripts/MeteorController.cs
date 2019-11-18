@@ -47,7 +47,7 @@ public class MeteorController : MonoBehaviour
                 fallMarkerInstance.GetComponentInChildren<Light>().intensity = 4.0f + (Mathf.Sin(Time.time * 3.0f) * 2.5f + 2.5f);
             }
         }
-        if (PlayerController.playerState == 1)
+        if (PlayerController.playerState == 1 && !PauseMenu.GameIsPaused)
         {
             transform.Translate(Vector3.up * fallMultiplier * MeteorManager.fallSpeed * Time.deltaTime);
         }

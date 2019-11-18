@@ -108,7 +108,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isBroken: 0
-  testmat: {fileID: 2100000, guid: dfa41cc4fac7e764f9dbffcb8c916d82, type: 2}
   crateAnim: {fileID: 6287399193420499044}
   breakingSound: {fileID: 8300000, guid: 3fe6fb7708aff6145a3d60f2ffacf0cb, type: 3}
 --- !u!82 &8607961664441512369
@@ -132,9 +131,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 50
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -167,7 +166,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5683882563542047630}
   - component: {fileID: 5683882563542047631}
   m_Layer: 0
-  m_Name: TargetMeteorTextClamp
+  m_Name: TargetMeteorClamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

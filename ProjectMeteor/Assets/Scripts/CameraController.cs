@@ -22,6 +22,7 @@ public class CameraController : MonoBehaviour
     public Transform endingCameraPosition;
     private static float endingZoom;
     private static float endingZoomTarget;
+    public Transform successCameraPosition;
 
     void Start()
     {
@@ -34,10 +35,14 @@ public class CameraController : MonoBehaviour
     {
         switch (cameraState)
         {
+            case 4:
+                transform.position = successCameraPosition.position;
+                transform.rotation = successCameraPosition.rotation;
+                break;
             case 3: //Victory or defeat.
                 if (endingZoom < endingZoomTarget * 0.95f)
                 {
-                    endingZoom += (endingZoomTarget - endingZoom) / 3 * Time.deltaTime;
+                    endingZoom += (endingZoomTarget - endingZoom) * Time.deltaTime;
                 }
                 transform.position = endingCameraPosition.position + (transform.forward * endingZoom);
                 transform.rotation = endingCameraPosition.rotation;
