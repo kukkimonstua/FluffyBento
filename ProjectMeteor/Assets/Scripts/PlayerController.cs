@@ -663,7 +663,8 @@ public class PlayerController : MonoBehaviour
         }
 
         playerState = 2;
-        gui.ScaleBlackBars(70.0f, 0.5f);
+        gui.ToggleNonTimingWindowGUI(false);
+        gui.ScaleBlackBars(75.0f, 0.5f);
         
         //Get the current position of the object to be moved
         Vector3 startPos = fromPosition.position;
@@ -684,6 +685,7 @@ public class PlayerController : MonoBehaviour
         playerState = 1;
         CameraController.SwitchToMainCamera();
         gui.ScaleBlackBars(0.0f, 0.5f);
+        gui.ToggleNonTimingWindowGUI(true);
 
         if (timingGrade > 0)
         {

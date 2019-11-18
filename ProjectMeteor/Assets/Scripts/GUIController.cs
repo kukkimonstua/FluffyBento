@@ -286,6 +286,21 @@ public class GUIController : MonoBehaviour
     {
         StartCoroutine(BlackBarsCoroutine(heightTarget, duration));
     }
+    public void ToggleNonTimingWindowGUI(bool state)
+    {
+        subtitles.gameObject.SetActive(state);
+        minimap.SetActive(state);
+        meteorDirectionMarker.gameObject.SetActive(state);
+        healthDisplay.gameObject.SetActive(state);
+        scoreText.gameObject.SetActive(state);
+        
+        if (PlayerController.currentLevel == 0) //i.e. only in survival mode
+        {
+            meteorCounterText.gameObject.SetActive(state);
+            timerText.gameObject.SetActive(state);
+        }
+    }
+
     private IEnumerator BlackBarsCoroutine(float heightTarget, float duration)
     {
         float tHeight = topBlackBar.GetComponent<RectTransform>().sizeDelta.y;
@@ -296,6 +311,8 @@ public class GUIController : MonoBehaviour
             bottomBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, Mathf.Lerp(bHeight, heightTarget, t));
             yield return null;
         }
+        topBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, heightTarget);
+        bottomBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, heightTarget);
     }
     public void ShowResults(int resultType, float duration, float delay)
     {
@@ -317,7 +334,8 @@ public class GUIController : MonoBehaviour
     }
     public void UpdatePlayerMarker(Vector3 playerPosition)
     {
-        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 3.0f, playerPosition.z / 3.0f);
+        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 4.0f, playerPosition.z / 4.0f);
+        playerMarker.GetComponent<RectTransform>().localScale = new Vector3((Mathf.Sin(Time.time * 8) / 5) + 0.9f, 1.0f, 1.0f);
     }
     public void AddMinimapMeteor(GameObject meteor, int type)
     {
@@ -328,7 +346,7 @@ public class GUIController : MonoBehaviour
         }
         newMarker.transform.SetParent(minimap.transform, false);
         //Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
-        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 3.0f, meteor.transform.position.z / 3.0f);
+        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 4.0f, meteor.transform.position.z / 4.0f);
 
 
         minimapMeteors.Add(newMarker);
