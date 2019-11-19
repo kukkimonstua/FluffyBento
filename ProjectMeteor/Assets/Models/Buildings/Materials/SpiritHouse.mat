@@ -166,7 +166,7 @@ Material:
     - _OutlineTextureColorRate: 0.05
     - _OutlineUseColorShift: 0
     - _OutlineValueFromBase: 1
-    - _OutlineWidth: 0.1
+    - _OutlineWidth: 5.16
     - _Parallax: 0.02
     - _PointAddIntensity: 1
     - _PointShadowSteps: 2
@@ -201,10 +201,10 @@ Material:
     - _ShadowPlanBUsePlanB: 0
     - _ShadowPlanBValueFromBase: 1
     - _ShadowSteps: 4
-    - _ShadowStrength: 0.5
+    - _ShadowStrength: 0.441
     - _ShadowUseStep: 0
-    - _Shadowborder: 0.6
-    - _ShadowborderBlur: 0.05
+    - _Shadowborder: 0.69
+    - _ShadowborderBlur: 0.192
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -212,7 +212,7 @@ Material:
     - _UseDoubleSided: 0
     - _UseEmissionParallax: 0
     - _UseGloss: 0
-    - _UseOutline: 0
+    - _UseOutline: 1
     - _UsePositionRelatedCalc: 0
     - _UseReflection: 0
     - _UseReflectionProbe: 1
