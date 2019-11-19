@@ -14,7 +14,7 @@ public class GUIController : MonoBehaviour
     private IEnumerator animatedScore;
     public Transform actionTextClamp;
     public Transform scoreTextClamp;
-    public Transform meteorTestClamp;
+    public Transform meteorReticleClamp;
     public Image lowestMeteorMarker;
 
     public HealthDisplay healthDisplay;
@@ -27,6 +27,7 @@ public class GUIController : MonoBehaviour
     public Image blaze;
     public GameObject fullScreenBlack;
     public GameObject fullScreenRed;
+    public GameObject fullScreenWhite;
 
     public ResultsMenu resultsMenu;
 
@@ -49,7 +50,8 @@ public class GUIController : MonoBehaviour
     public PlayerMinimapMarker playerMarker;
     public GameObject minimapMeteorMarker;
 
-    
+    private IEnumerator fadeCoroutine;
+
 
     void ResetTimer()
     {
@@ -163,18 +165,28 @@ public class GUIController : MonoBehaviour
         playerActionText.gameObject.SetActive(false);
         playerActionText.text = "";
     }
-
+    public void FadeIntoBlack(float target, float duration)
+    {
+        if (fadeCoroutine != null)
+        {
+            StopCoroutine(fadeCoroutine);
+        }
+        fadeCoroutine = FadeUI(fullScreenBlack, target, duration);
+        StartCoroutine(fadeCoroutine);
+    }
     public void ResetGUI()
     {
         TogglePrompt(false, "");
         meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
 
         resultsMenu.HideResultsMenu();
+        fullScreenWhite.SetActive(true); //May be redundant in the future
+        fullScreenWhite.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         fullScreenRed.SetActive(true); //May be redundant in the future
         fullScreenRed.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         fullScreenBlack.SetActive(true); //May be redundant in the future
         fullScreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
-        StartCoroutine(FadeUI(fullScreenBlack, 0.0f, 3.0f));
+        FadeIntoBlack(0.0f, 3.0f);
 
         swordEquipIcon.UpdateCurrentlyEquipped(0);
         ResetTimer();
@@ -204,6 +216,15 @@ public class GUIController : MonoBehaviour
         fullScreenRed.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
     }
 
+    private IEnumerator StartFlashWhiteToDeath(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        yield return StartCoroutine(FadeUI(fullScreenWhite, 1.0f, 0.2f));
+        fullScreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+        yield return StartCoroutine(FadeUI(fullScreenWhite, 0.0f, 0.8f));
+        fullScreenWhite.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+    }
+
     public void UpdateHealthUI(int newValue)
     {
         healthDisplay.UpdateDisplay(newValue);
@@ -226,8 +247,8 @@ public class GUIController : MonoBehaviour
         meteorDirectionMarker.direction = direction;
         meteorDirectionMarker.distance = distance;
 
-        meteorTestClamp.position = meteorPosition + new Vector3(0.0f, 75.0f, 0.0f); //75 is current radius of meteor
-
+        meteorReticleClamp.position = meteorPosition + new Vector3(0.0f, 50.0f, 0.0f); //50 is current radius of meteor
+        lowestMeteorMarker.GetComponent<RectTransform>().Rotate(new Vector3(0, 0, 60.0f * Time.deltaTime));
         //Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 5.0f, 0.0f);
         //meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
 
@@ -248,16 +269,16 @@ public class GUIController : MonoBehaviour
             }
         }
     }
-    public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold, float sliderRange)
+    public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold)
     {
         //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
-        //Debug.Log((lowestMeteorPosition - meteorDeathThreshold) / sliderRange);
+        //Debug.Log(1.0f - (lowestMeteorPosition - meteorDeathThreshold) / ((PlayerController.worldHeight - meteorDeathThreshold) / 3));
 
         if (PlayerController.playerState == 1)
         {
-            if (lowestMeteorPosition < meteorDeathThreshold + (sliderRange / 3))
+            if (lowestMeteorPosition < meteorDeathThreshold + ((PlayerController.worldHeight - meteorDeathThreshold) / 3))
             {
-                blaze.GetComponent<CanvasRenderer>().SetAlpha(1.0f - (lowestMeteorPosition - meteorDeathThreshold) / (meteorDeathThreshold + (sliderRange / 3)));
+                blaze.GetComponent<CanvasRenderer>().SetAlpha(1.0f - (lowestMeteorPosition - meteorDeathThreshold) / ((PlayerController.worldHeight - meteorDeathThreshold) / 3));
                 meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
                 meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
                 meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "";
@@ -286,6 +307,21 @@ public class GUIController : MonoBehaviour
     {
         StartCoroutine(BlackBarsCoroutine(heightTarget, duration));
     }
+    public void ToggleNonTimingWindowGUI(bool state)
+    {
+        subtitles.gameObject.SetActive(state);
+        minimap.SetActive(state);
+        meteorDirectionMarker.gameObject.SetActive(state);
+        healthDisplay.gameObject.SetActive(state);
+        scoreText.gameObject.SetActive(state);
+        
+        if (PlayerController.currentLevel == 0) //i.e. only in survival mode
+        {
+            meteorCounterText.gameObject.SetActive(state);
+            timerText.gameObject.SetActive(state);
+        }
+    }
+
     private IEnumerator BlackBarsCoroutine(float heightTarget, float duration)
     {
         float tHeight = topBlackBar.GetComponent<RectTransform>().sizeDelta.y;
@@ -296,10 +332,16 @@ public class GUIController : MonoBehaviour
             bottomBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, Mathf.Lerp(bHeight, heightTarget, t));
             yield return null;
         }
+        topBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, heightTarget);
+        bottomBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, heightTarget);
     }
-    public void ShowResults(int resultType, float duration, float delay)
+    public void ShowResults(int currentScore, int resultType, float duration, float delay)
     {
-        resultsMenu.ShowResultsMenu(resultType, duration, delay);
+        if (resultType == ResultsMenu.METEOR_DEATH)
+        {
+            StartCoroutine(StartFlashWhiteToDeath(delay));
+        }
+        resultsMenu.ShowResultsMenu(currentScore, resultType, duration, delay);
         //StartCoroutine(FadeInGameOver(duration, delay));
     }
 
@@ -317,7 +359,8 @@ public class GUIController : MonoBehaviour
     }
     public void UpdatePlayerMarker(Vector3 playerPosition)
     {
-        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 3.0f, playerPosition.z / 3.0f);
+        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 4.0f, playerPosition.z / 4.0f);
+        playerMarker.GetComponent<RectTransform>().localScale = new Vector3((Mathf.Sin(Time.time * 8) / 5) + 0.9f, 1.0f, 1.0f);
     }
     public void AddMinimapMeteor(GameObject meteor, int type)
     {
@@ -328,7 +371,7 @@ public class GUIController : MonoBehaviour
         }
         newMarker.transform.SetParent(minimap.transform, false);
         //Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
-        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 3.0f, meteor.transform.position.z / 3.0f);
+        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 4.0f, meteor.transform.position.z / 4.0f);
 
 
         minimapMeteors.Add(newMarker);

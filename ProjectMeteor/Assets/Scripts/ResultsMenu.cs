@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
 public class ResultsMenu : MonoBehaviour
 {
@@ -13,19 +12,28 @@ public class ResultsMenu : MonoBehaviour
 
     //public static bool GameIsPaused = false;
     public GameObject resultsMenuUI;
+    public Image decal;
     //public GameObject controls;
 
     public Text header;
     public Text explanation;
     public Text advice;
+    public Text finalScore;
 
     public Button initialButton;
     public Button altInitialButton;
     public PlayerController player;
     public EventSystem eventSystem;
 
-    public void ShowResultsMenu(int resultType, float duration, float delay)
+    public void Update()
     {
+        decal.GetComponent<RectTransform>().Rotate(new Vector3(0, 0, -30.0f * Time.deltaTime));
+    }
+
+    public void ShowResultsMenu(int currentScore, int resultType, float duration, float delay)
+    {
+        finalScore.text = currentScore.ToString("000000");
+
         resultsMenuUI.GetComponent<CanvasGroup>().alpha = 0.0f;
         resultsMenuUI.SetActive(true);
 
@@ -48,7 +56,7 @@ public class ResultsMenu : MonoBehaviour
                 if (resultType == HEALTH_DEATH)
                 {
                     explanation.text = "You passed out, and the meteors wiped out the land...";
-                    advice.text = "If you're not confident with your timing, play it safe and press the button a little sooner. You lose some style, but you will definitely destroy the meteor!";
+                    advice.text = "If you're not confident with your timing, press the button a little sooner. You lose some style, but you will definitely destroy the meteor!";
                 }
                 else
                 {
@@ -84,22 +92,7 @@ public class ResultsMenu : MonoBehaviour
 
     public void Continue()
     {
-        Debug.Log("go to next level because current level is " + PlayerController.currentLevel);
-        if (PlayerController.currentLevel == 3)
-        {
-            GameManager.sceneIndex = GameManager.LEVEL_3_ED;
-            SceneManager.LoadScene(5);
-        }
-        else if (PlayerController.currentLevel == 2)
-        {
-            GameManager.sceneIndex = GameManager.LEVEL_2_ED;
-            SceneManager.LoadScene(5);
-        }
-        else
-        {
-            GameManager.sceneIndex = GameManager.LEVEL_1_ED;
-            SceneManager.LoadScene(5);
-        }
+        player.GoToNextLevel();
     }
 
     public void RestartGame()
@@ -108,7 +101,7 @@ public class ResultsMenu : MonoBehaviour
     }
     public void QuitGame()
     {
-        SceneManager.LoadScene("MainMenu");
+        player.QuitGame();
     }
 
 }

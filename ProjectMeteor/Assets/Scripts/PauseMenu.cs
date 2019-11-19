@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -35,29 +34,40 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume()
     {
-        eventSystem.SetSelectedGameObject(null); //Deselect all menu options
-        controls.SetActive(false); //If they're open
-        pauseMenuUI.SetActive(false);
+        ToggleMenuUI(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+    }
+    public void ToggleMenuUI(bool state)
+    {
+        if (state)
+        {
+            pauseMenuUI.SetActive(true);
+            eventSystem.SetSelectedGameObject(initialButton.gameObject); //Select initial menu option
+        }
+        else
+        {
+            eventSystem.SetSelectedGameObject(null); //Deselect all menu options
+            controls.SetActive(false); //If they're open
+            pauseMenuUI.SetActive(false);
+        }
     }
 
     public void Pause()
     {
         GameIsPaused = true;
         Time.timeScale = 0f;
-        pauseMenuUI.SetActive(true);
-        eventSystem.SetSelectedGameObject(initialButton.gameObject); //Select initial menu option
+        ToggleMenuUI(true);
     }
     public void RestartGame()
     {
-        Resume();
+        ToggleMenuUI(false);
         player.RestartLevel();
     }
     public void QuitGame()
     {
-        Resume();
-        SceneManager.LoadScene("MainMenu");
+        ToggleMenuUI(false);
+        player.QuitGame();
     }
 
     public void ShowControls()
