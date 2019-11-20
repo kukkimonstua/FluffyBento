@@ -74,7 +74,7 @@ public class PlayerController : MonoBehaviour
     public GameObject avatarModel;
     private float avatarModelRotation;
     public Animator anim;
-    private bool running, dashing;
+    private bool running, dashing, wallJumping;
 
     public GameObject equippedZanbato;
     public GameObject equippedBroadsword;
@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        Debug.Log(wallJumping);
         switch (playerState)
         {
             case 3:
@@ -195,7 +196,7 @@ public class PlayerController : MonoBehaviour
                 if (!prone && !PauseMenu.GameIsPaused) {
 
                     targetedMeteorDistance = CheckAboveForMeteor();
-
+                    wallJumping = false;
                     if (Input.GetButtonDown("Jump"))
                     {
                         if (!isGrounded)
@@ -644,6 +645,7 @@ public class PlayerController : MonoBehaviour
     }
     private void WallJump(float wallDirection)
     {
+        wallJumping = true;
         float jumpMultiplier = 0.8f;
         if (wallDirection > 0)
         {
@@ -920,7 +922,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("dashing", dashing);
         anim.SetBool("attacking", isAttacking);
         anim.SetBool("doublejumping", !canDoubleJump);
-        anim.SetBool("jumping", isGrounded);
-
+        anim.SetBool("jumping", !isGrounded);
+        anim.SetBool("wallJumping", wallJumping);
     }
 }
