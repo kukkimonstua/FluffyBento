@@ -112,7 +112,7 @@ public class MenuButtonController : MonoBehaviour {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
 
         Debug.Log("start the story!");
-        StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.LEVEL_1_OP));
+        StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.START_CUTSCENE));
         bgm.FadeOutMusic(3.0f);
 
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //Load itself, lol
@@ -163,9 +163,9 @@ public class MenuButtonController : MonoBehaviour {
         {
             //use the scene target value to pick the scene to load
             GameManager.sceneIndex = sceneTarget;
-            if (GameManager.sceneIndex >= 5)
+            if (GameManager.sceneIndex >= GameManager.START_CUTSCENE)
             {
-                SceneManager.LoadScene(5); //The cutscene scene
+                SceneManager.LoadScene(GameManager.START_CUTSCENE); //The cutscene scene
             }
             else
             {

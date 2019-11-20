@@ -150,13 +150,11 @@ public class PlayerController : MonoBehaviour
                 {
                     moveDrag /= 4;
                 }
+                moveSpeed = defaultMoveSpeed;
+
                 if (holdingSword == 0)
                 {
-                    moveSpeed = defaultMoveSpeed * 1.25f;
-                }
-                else
-                {
-                    moveSpeed = defaultMoveSpeed;
+                    //moveSpeed = defaultMoveSpeed * 1.25f; PERHAPS THIS CAUSES CONFUSION
                 }
 
                 if (touchedWallDirection != 0 || isDashing) circularVelocity -= transform.right * Input.GetAxisRaw("Horizontal") * moveSpeed / 40;
@@ -288,23 +286,23 @@ public class PlayerController : MonoBehaviour
     {
         bgm.FadeOutMusic(duration);
         gui.FadeIntoBlack(1.0f, duration);
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(duration * 1.1f);
 
         Debug.Log("go to next level because current level is " + currentLevel);
         if (currentLevel == 3)
         {
             GameManager.sceneIndex = GameManager.LEVEL_3_ED;
-            SceneManager.LoadScene(5);
+            SceneManager.LoadScene(GameManager.START_CUTSCENE);
         }
         else if (currentLevel == 2)
         {
             GameManager.sceneIndex = GameManager.LEVEL_2_ED;
-            SceneManager.LoadScene(5);
+            SceneManager.LoadScene(GameManager.START_CUTSCENE);
         }
         else
         {
             GameManager.sceneIndex = GameManager.LEVEL_1_ED;
-            SceneManager.LoadScene(5);
+            SceneManager.LoadScene(GameManager.START_CUTSCENE);
         }
     }
     public void RestartLevel()
@@ -316,7 +314,7 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 1f;
         bgm.FadeOutMusic(duration);
         gui.FadeIntoBlack(1.0f, duration);
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(duration * 1.1f);
         PauseMenu.GameIsPaused = false;
 
         meteorManager.ResetMeteors();
@@ -333,7 +331,7 @@ public class PlayerController : MonoBehaviour
         Time.timeScale = 1f;
         gui.FadeIntoBlack(1.0f, duration);
         bgm.FadeOutMusic(duration);
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(duration * 1.1f);
         PauseMenu.GameIsPaused = false;
 
         SceneManager.LoadScene(GameManager.MAIN_MENU_INDEX);
@@ -784,7 +782,7 @@ public class PlayerController : MonoBehaviour
             holdingSword = 0;
             EquipSword(0);
 
-            //Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
+            Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
             if (meteorsDestroyed >= maxMeteorsForLevel)
             {
                 //Debug.Log("YOU WIN!");

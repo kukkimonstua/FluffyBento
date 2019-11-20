@@ -39,7 +39,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: Tch!
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
     isLeftPortrait: 0
     myText: AGH!
   - myName: 
@@ -47,7 +47,7 @@ MonoBehaviour:
     isLeftPortrait: 0
     myText: '*snap*'
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
     isLeftPortrait: 0
     myText: Wha... The...the relic...
   - myName: Yashiro
@@ -55,7 +55,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: Hide. Your ambition ends here.
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
     isLeftPortrait: 0
     myText: Am...bition...?
   - myName: Hide
@@ -183,7 +183,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: But how can destruction happen over and over again without rebirth?
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
     isLeftPortrait: 0
     myText: '...'
   - myName: Yashiro

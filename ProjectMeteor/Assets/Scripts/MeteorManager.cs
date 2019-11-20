@@ -42,11 +42,8 @@ public class MeteorManager : MonoBehaviour
 
     void Start()
     {
-        meteorSpawnTimer = 0.0f;
-        flyingMeteorSpawnTimer = 0.0f;
-        PlayerController.maxMeteorsForLevel = maxMeteorsForLevel;
-        numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
         CreateSpawnPoints(6);
+        ResetMeteors();
     }
 
     void Update()
@@ -171,8 +168,12 @@ public class MeteorManager : MonoBehaviour
 
     public void ResetMeteors()
     {
+
+        PlayerController.maxMeteorsForLevel = maxMeteorsForLevel;
+
         ResetSpawnPointPool(-1);
         meteorSpawnTimer = 0.0f;
+        flyingMeteorSpawnTimer = 0.0f;
         if (currentMeteors.Length > 0)
         {
             currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
@@ -185,5 +186,6 @@ public class MeteorManager : MonoBehaviour
             }
         }
         numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
+        Debug.Log(GameObject.FindGameObjectsWithTag("Meteor").Length + " were found");
     }
 }

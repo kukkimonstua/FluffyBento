@@ -21,7 +21,7 @@ public class BGMController : MonoBehaviour
             audioSource.clip = clip;
             audioSource.Play();
         }
-        fadeCoroutine = FadeVolume(1.0f, duration);
+        fadeCoroutine = FadeVolume(0.5f, duration);
         StartCoroutine(fadeCoroutine);
     }
     public void FadeOutMusic(float duration)

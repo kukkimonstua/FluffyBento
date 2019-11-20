@@ -68,7 +68,7 @@ MonoBehaviour:
     isLeftPortrait: 0
     myText: Wha-- M-Master Yashiro?!
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
     isLeftPortrait: 0
     myText: You're already back! I thought you would be gone much longer!
   - myName: Yashiro
@@ -76,7 +76,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: Yes... You did, didn't you?
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
     isLeftPortrait: 0
     myText: Huh?
   - myName: Yashiro
@@ -110,11 +110,11 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: Countless people died for the sake of your vengeance.
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 01c9c8d5dfdd91e41bc8ba3793fe941c, type: 3}
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
     isLeftPortrait: 0
     myText: You have it all wrong, Master.
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 01c9c8d5dfdd91e41bc8ba3793fe941c, type: 3}
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
     isLeftPortrait: 0
     myText: Vengeance isn't important to me at all. Especially since I found an even
       greater family in you.

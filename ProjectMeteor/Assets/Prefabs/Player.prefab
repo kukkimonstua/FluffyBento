@@ -199,9 +199,9 @@ MonoBehaviour:
   timingWindow: {fileID: 0}
   timingGrade: 0
   bgm: {fileID: 3173430116606325623}
-  bgmLvl1: {fileID: 8300000, guid: 2a9efe0a6dbbc4048b67e0fc4a2591c8, type: 3}
-  bgmLvl2: {fileID: 8300000, guid: c73741b2f4c8ed545991db33306893bc, type: 3}
-  bgmLvl3: {fileID: 8300000, guid: 87ab889f60b7de3449f335d65a24901e, type: 3}
+  bgmLvl1: {fileID: 8300000, guid: 3d87b74b65329d24187ea8599109bf3b, type: 3}
+  bgmLvl2: {fileID: 8300000, guid: 23fc1d262cd01614ab16e6018e6922b0, type: 3}
+  bgmLvl3: {fileID: 8300000, guid: ead66f952b0b3d84788d71219f65d311, type: 3}
   moveSpeed: 40
   horizontalDrag: 0.8
   jumpForce: 14
@@ -229,6 +229,7 @@ MonoBehaviour:
   swordEquipSound: {fileID: 8300000, guid: 084e549f538d66846a66a92e43f90187, type: 3}
   explosionSound: {fileID: 8300000, guid: bcb02f5130c83fa4e914d6b86d0f6ea5, type: 3}
   attackSound: {fileID: 8300000, guid: 775f9143792851a45b008c810038f2fb, type: 3}
+  successPrefab: {fileID: 0}
 --- !u!82 &1660102038325301908
 AudioSource:
   m_ObjectHideFlags: 0

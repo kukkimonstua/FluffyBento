@@ -47,15 +47,15 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: "Keep it down, Hide. I\u2019m trying to take a nap right now."
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
     isLeftPortrait: 0
     myText: "Huh? Oh, I\u2019m so sorry. I\u2019ll leave you in peace."
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
     isLeftPortrait: 0
     myText: "...Wait, NO, I can\u2019t do that!"
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
     isLeftPortrait: 0
     myText: "Master, you gotta come out! It\u2019s an emergency!"
   - myName: Yashiro
@@ -63,7 +63,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: Emergency? What, did you drop one of your wooden swords in the river again?
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
     isLeftPortrait: 0
     myText: No, the town is in danger!
   - myName: Yashiro
@@ -110,7 +110,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: "They look oddly big, yes, but I wouldn\u2019t call them meteors."
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
     isLeftPortrait: 0
     myText: No, these are DEFINITELY meteors! Just come outside, Master!
   - myName: Yashiro
@@ -118,7 +118,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: I already know how pretty they are. Just let me nap.
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 6c883d7a6fedb8c4dbb0ec875f5fec02, type: 3}
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
     isLeftPortrait: 0
     myText: "Seriously, Master! Come on! If we don\u2019t do anything..."
   - myName: Hide

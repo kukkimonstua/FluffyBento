@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public const int LEVEL_3 = 3;
     public const int SURVIVAL_MODE = 4;
 
-    public const int LEVEL_1_OP = 5;
+    public const int START_CUTSCENE = 5;
     public const int LEVEL_1_ED = 6;
     public const int LEVEL_2_OP = 7;
     public const int LEVEL_2_ED = 8;

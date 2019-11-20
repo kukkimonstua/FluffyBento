@@ -8,6 +8,9 @@ using UnityEngine.SceneManagement;
 public class DialogueManager : MonoBehaviour
 {
     public BGMController bgm;
+    public AudioSource sfx;
+    public AudioClip advanceText;
+    public AudioClip skipText;
 
     public Image fullscreenBlack;
     private IEnumerator fadeCoroutine;
@@ -161,7 +164,6 @@ public class DialogueManager : MonoBehaviour
             EndOfDialogue(1.0f);
             return;
         }
-
         Debug.Log(dialogueInfo.Count + " events remaining");
         if (GameManager.sceneIndex == GameManager.LEVEL_1_ED)
         {
@@ -229,7 +231,8 @@ public class DialogueManager : MonoBehaviour
             leftPortrait.color = inactiveShade;
             rightPortrait.color = inactiveShade;
         }
-        
+
+        sfx.PlayOneShot(advanceText);
         StartCoroutine(TypeText(info));
     }
 
@@ -272,6 +275,7 @@ public class DialogueManager : MonoBehaviour
         if (!cutsceneEnded)
         {
             Debug.Log("End this cutscene!"); //Replace with audio feedback
+            sfx.PlayOneShot(skipText);
             fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
             CompleteText();
             EndOfDialogue(0.0f);

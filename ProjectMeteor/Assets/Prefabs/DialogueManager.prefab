@@ -239,6 +239,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgm: {fileID: 1292378638119394616}
+  sfx: {fileID: 2282851557268872575}
+  advanceText: {fileID: 8300000, guid: 83e424c347e059d4f9d47c5cb95481a8, type: 3}
+  skipText: {fileID: 8300000, guid: cc6d213d0b5be194687c0dba04f969ad, type: 3}
   fullscreenBlack: {fileID: 501052475462796629}
   backgroundImage: {fileID: 6359903693348552408}
   dialogueBackground: {fileID: 3682470743986692862}
@@ -284,7 +287,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
