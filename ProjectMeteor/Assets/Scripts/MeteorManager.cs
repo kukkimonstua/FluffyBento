@@ -185,7 +185,8 @@ public class MeteorManager : MonoBehaviour
                 }
             }
         }
-        numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
+        numOfMeteorsSpawned = 1; //Temp solution: assume this will ALWAYS be 1...
+        //numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
         Debug.Log(GameObject.FindGameObjectsWithTag("Meteor").Length + " were found");
     }
 }
