@@ -104,7 +104,6 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        Debug.Log(wallJumping);
         switch (playerState)
         {
             case 3:
