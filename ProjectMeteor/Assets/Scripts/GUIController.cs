@@ -5,53 +5,56 @@ using UnityEngine.UI;
 
 public class GUIController : MonoBehaviour
 {
-    public Sprite buttonX;
-    public Sprite buttonsXA;
-    // Start is called before the first frame update
-    public Text promptText;
-    public Text playerActionText;
-    public Text scoreAdditionText;
-    private IEnumerator animatedScore;
+    [Header("LINKS TO 3D GUI")]
     public Transform actionTextClamp;
     public Transform scoreTextClamp;
     public Transform meteorReticleClamp;
+
+    [Header("CLAMPS TO 3D GUI")]
+    public Text playerActionText;
+    public Text scoreAdditionText;
+    private IEnumerator animatedScore;
     public Image lowestMeteorMarker;
 
-    public HealthDisplay healthDisplay;
-    public Text scoreText;
-    public Text meteorCounterText;
-    public Text timerText;
+    [Header("MINIMAP")]
+    public GameObject minimap;
+    public PlayerMinimapMarker playerMarker;
+    public List<GameObject> currentMeteors;
+    private List<GameObject> minimapMeteors;
+    public GameObject minimapMeteorMarker;
     public Text meteorLandingDanger;
     public Text meteorLandingTimer;
 
-    public Image blaze;
+    [Header("OTHER GUI")]
+    public HealthDisplay healthDisplay;
+    public Text scoreText;
+    public SwordEquipIcon swordEquipIcon;
+    public MeteorDirectionMarker meteorDirectionMarker;
+    public Text meteorHeightMarker;
+    public Text timerText;
+    public Text meteorCounterText;
+
+    [Header("SCREEN EFFECTS")]
     public GameObject fullScreenBlack;
     public GameObject fullScreenRed;
     public GameObject fullScreenWhite;
-
-    public ResultsMenu resultsMenu;
-
+    private IEnumerator fadeCoroutine;
+    public Image blaze;
     public GameObject topBlackBar;
     public GameObject bottomBlackBar;
 
-    public MeteorDirectionMarker meteorDirectionMarker;
-    public Text meteorHeightMarker; //Text for now
-
+    [Header("ALERTS")]
+    public Text promptText;
     public Text subtitles;
-    public SwordEquipIcon swordEquipIcon; //Replace with icon eventually
+    public ResultsMenu resultsMenu;
+
+    [Header("SPRITES")]
+    public Sprite buttonX;
+    public Sprite buttonsXA;
 
     float minutes;
     float seconds;
     float milliseconds;
-
-    public List<GameObject> currentMeteors;
-    private List<GameObject> minimapMeteors;
-    public GameObject minimap;
-    public PlayerMinimapMarker playerMarker;
-    public GameObject minimapMeteorMarker;
-
-    private IEnumerator fadeCoroutine;
-
 
     void ResetTimer()
     {
@@ -59,54 +62,93 @@ public class GUIController : MonoBehaviour
         seconds = 0;
         milliseconds = 0;
     }
+    private void UpdateTimer()
+    {
+        milliseconds += Time.deltaTime * 100;
+        if (milliseconds >= 100)
+        {
+            seconds++;
+            if (seconds >= 60)
+            {
+                minutes++;
+                seconds = 0;
+            }
+            milliseconds = 0;
+        }
+        timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, (int)milliseconds);
+    }
     void Update()
     {
-        if(PlayerController.playerState == 1)
+        if (PlayerController.playerState == PlayerController.ACTIVELY_PLAYING)
         {
-            if (currentMeteors.Count > 0)
-            {
-                foreach (GameObject m in currentMeteors)
-                {
-                    GameObject relatedMarker = minimapMeteors[currentMeteors.IndexOf(m)];
-                    if (m.GetComponent<MeteorController>() != null && relatedMarker.GetComponent<MeteorMinimapMarker>() != null)
-                    {
-                        relatedMarker.GetComponent<MeteorMinimapMarker>().isLowest = m.GetComponent<MeteorController>().isLowest;
-                    }
-                    //Debug.Log(m.transform.position.x + ", " + m.transform.position.z);
-                }
-                //Debug.Log("There are " + currentMeteors.Count);
-            }
-
+            UpdateMinimap();
+            //Track time if the timer is even visible (AKA Survival Mode)
             if (timerText.gameObject.activeSelf)
             {
-                milliseconds += Time.deltaTime * 100;
-                if (milliseconds >= 100)
-                {
-                    seconds++;
-                    if (seconds >= 60)
-                    {
-                        minutes++;
-                        seconds = 0;
-                    }
-                    milliseconds = 0;
-                }
-                timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, (int)milliseconds);
+                UpdateTimer();
             }
         }
     }
-    public void AnimateScore(Vector3 floatPosition, int scoreToAdd)
+    #region MINIMAP
+    private void UpdateMinimap()
     {
-        scoreTextClamp.position = floatPosition;
-        scoreAdditionText.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
-        scoreAdditionText.text = "+" + scoreToAdd;
-
-        //Vector2 originalPosition = scoreAdditionText.GetComponent<RectTransform>().position;
-        //scoreAdditionText.GetComponent<RectTransform>().position -= new Vector3(0.0f, 1.0f, 0.0f);
-
-        StopCoroutine(animatedScore);
-        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 1.0f); // create an IEnumerator object
-        StartCoroutine(animatedScore);
+        if (currentMeteors.Count > 0)
+        {
+            foreach (GameObject m in currentMeteors)
+            {
+                GameObject relatedMarker = minimapMeteors[currentMeteors.IndexOf(m)];
+                if (m.GetComponent<MeteorController>() != null && relatedMarker.GetComponent<MeteorMinimapMarker>() != null)
+                {
+                    relatedMarker.GetComponent<MeteorMinimapMarker>().isLowest = m.GetComponent<MeteorController>().isLowest;
+                }
+                //Debug.Log(m.transform.position.x + ", " + m.transform.position.z);
+            }
+            //Debug.Log("There are " + currentMeteors.Count);
+        }
     }
+    public void ResetMinimap()
+    {
+        minimapMeteors = new List<GameObject>();
+        currentMeteors = new List<GameObject>();
+        foreach (Transform marker in minimap.gameObject.transform)
+        {
+            if (marker.GetComponent<MeteorMinimapMarker>() != null)
+            {
+                Destroy(marker.gameObject);
+            }
+        }
+    }
+    public void UpdatePlayerMarker(Vector3 playerPosition)
+    {
+        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 4.0f, playerPosition.z / 4.0f);
+        playerMarker.GetComponent<RectTransform>().localScale = new Vector3((Mathf.Sin(Time.time * 8) / 5) + 0.9f, 1.0f, 1.0f);
+    }
+    public void AddMinimapMeteor(GameObject meteor, int type)
+    {
+        GameObject newMarker = Instantiate(minimapMeteorMarker);
+        if (newMarker.GetComponent<MeteorMinimapMarker>() != null)
+        {
+            newMarker.GetComponent<MeteorMinimapMarker>().type = type;
+        }
+        newMarker.transform.SetParent(minimap.transform, false);
+        //Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
+        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 4.0f, meteor.transform.position.z / 4.0f);
+
+        minimapMeteors.Add(newMarker);
+        currentMeteors.Add(meteor);
+    }
+    public void RemoveMinimapMeteor(GameObject meteor)
+    {
+        int meteorIndex = currentMeteors.IndexOf(meteor);
+        //Debug.Log(minimapMeteors.Count);
+        //Debug.Log(currentMeteors.Count);
+
+        currentMeteors.Remove(meteor);
+        GameObject relatedMarker = minimapMeteors[meteorIndex];
+        Destroy(relatedMarker);
+        minimapMeteors.Remove(minimapMeteors[meteorIndex]);
+    }
+    #endregion
 
     public void TogglePrompt(bool toggle, string text)
     {
@@ -135,6 +177,20 @@ public class GUIController : MonoBehaviour
         }
     }
 
+    #region CLAMPED UI FUNCTIONS
+    public void AnimateScore(Vector3 floatPosition, int scoreToAdd)
+    {
+        scoreTextClamp.position = floatPosition;
+        scoreAdditionText.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+        scoreAdditionText.text = "+" + scoreToAdd;
+
+        //Vector2 originalPosition = scoreAdditionText.GetComponent<RectTransform>().position;
+        //scoreAdditionText.GetComponent<RectTransform>().position -= new Vector3(0.0f, 1.0f, 0.0f);
+
+        StopCoroutine(animatedScore);
+        animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 1.0f); // create an IEnumerator object
+        StartCoroutine(animatedScore);
+    }
     public void TogglePlayerActionText(GameObject targetedSword, int holdingSword)
     {
         if (targetedSword != null)
@@ -165,15 +221,8 @@ public class GUIController : MonoBehaviour
         playerActionText.gameObject.SetActive(false);
         playerActionText.text = "";
     }
-    public void FadeIntoBlack(float target, float duration)
-    {
-        if (fadeCoroutine != null)
-        {
-            StopCoroutine(fadeCoroutine);
-        }
-        fadeCoroutine = FadeUI(fullScreenBlack, target, duration);
-        StartCoroutine(fadeCoroutine);
-    }
+    #endregion
+
     public void ResetGUI()
     {
         TogglePrompt(false, "");
@@ -205,6 +254,8 @@ public class GUIController : MonoBehaviour
             meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         }
     }
+
+    #region FULLSCREEN EFFECTS
     public void FlashRed()
     {
         StartCoroutine(StartFlashRed());
@@ -215,7 +266,15 @@ public class GUIController : MonoBehaviour
         yield return StartCoroutine(FadeUI(fullScreenRed, 0.0f, 0.15f));
         fullScreenRed.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
     }
-
+    public void FadeIntoBlack(float target, float duration)
+    {
+        if (fadeCoroutine != null)
+        {
+            StopCoroutine(fadeCoroutine);
+        }
+        fadeCoroutine = FadeUI(fullScreenBlack, target, duration);
+        StartCoroutine(fadeCoroutine);
+    }
     private IEnumerator StartFlashWhiteToDeath(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -224,7 +283,40 @@ public class GUIController : MonoBehaviour
         yield return StartCoroutine(FadeUI(fullScreenWhite, 0.0f, 0.8f));
         fullScreenWhite.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
     }
+    public void ScaleBlackBars(float heightTarget, float duration)
+    {
+        StartCoroutine(BlackBarsCoroutine(heightTarget, duration));
+    }
+    private IEnumerator BlackBarsCoroutine(float heightTarget, float duration)
+    {
+        float tHeight = topBlackBar.GetComponent<RectTransform>().sizeDelta.y;
+        float bHeight = bottomBlackBar.GetComponent<RectTransform>().sizeDelta.y;
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / duration)
+        {
+            topBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, Mathf.Lerp(tHeight, heightTarget, t));
+            bottomBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, Mathf.Lerp(bHeight, heightTarget, t));
+            yield return null;
+        }
+        topBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, heightTarget);
+        bottomBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, heightTarget);
+    }
+    public void ToggleNonTimingWindowGUI(bool state)
+    {
+        subtitles.gameObject.SetActive(state);
+        minimap.SetActive(state);
+        meteorDirectionMarker.gameObject.SetActive(state);
+        healthDisplay.gameObject.SetActive(state);
+        scoreText.gameObject.SetActive(state);
 
+        if (PlayerController.currentLevel == 0) //i.e. only in survival mode
+        {
+            meteorCounterText.gameObject.SetActive(state);
+            timerText.gameObject.SetActive(state);
+        }
+    }
+    #endregion
+
+    #region GUI UPDATE ON EVENT
     public void UpdateHealthUI(int newValue)
     {
         healthDisplay.UpdateDisplay(newValue);
@@ -237,11 +329,17 @@ public class GUIController : MonoBehaviour
     {
         swordEquipIcon.UpdateCurrentlyEquipped(swordType);
     }
-
     public void UpdateMeteorsDestroyed(int newValue)
     {
         meteorCounterText.text = "×" + newValue;
     }
+    public void UpdateSubtitles(string dialogue)
+    {
+        subtitles.text = dialogue;
+    }
+    #endregion
+
+    #region GUI UPDATE PER FRAME
     public void UpdateMeteorDirectionUI(int direction, float distance, Vector3 meteorPosition)
     {
         meteorDirectionMarker.direction = direction;
@@ -249,9 +347,6 @@ public class GUIController : MonoBehaviour
 
         meteorReticleClamp.position = meteorPosition + new Vector3(0.0f, 50.0f, 0.0f); //50 is current radius of meteor
         lowestMeteorMarker.GetComponent<RectTransform>().Rotate(new Vector3(0, 0, 60.0f * Time.deltaTime));
-        //Vector2 drift = new Vector2(Mathf.Sin(Time.time * 5.0f) * 5.0f, 0.0f);
-        //meteorDirectionMarker.GetComponent<RectTransform>().anchoredPosition = meteorDirectionMarkerOriginalPosition + drift;
-
     }
     public void UpdateMeteorHeightUI(float distance, int holdingSword)
     {
@@ -291,6 +386,7 @@ public class GUIController : MonoBehaviour
             }
         }
     }
+    #endregion
 
     private IEnumerator FadeUI(GameObject uiElement, float alphaTarget, float duration)
     {
@@ -303,38 +399,6 @@ public class GUIController : MonoBehaviour
         uiElement.GetComponent<CanvasRenderer>().SetAlpha(alphaTarget);
     }
 
-    public void ScaleBlackBars(float heightTarget, float duration)
-    {
-        StartCoroutine(BlackBarsCoroutine(heightTarget, duration));
-    }
-    public void ToggleNonTimingWindowGUI(bool state)
-    {
-        subtitles.gameObject.SetActive(state);
-        minimap.SetActive(state);
-        meteorDirectionMarker.gameObject.SetActive(state);
-        healthDisplay.gameObject.SetActive(state);
-        scoreText.gameObject.SetActive(state);
-        
-        if (PlayerController.currentLevel == 0) //i.e. only in survival mode
-        {
-            meteorCounterText.gameObject.SetActive(state);
-            timerText.gameObject.SetActive(state);
-        }
-    }
-
-    private IEnumerator BlackBarsCoroutine(float heightTarget, float duration)
-    {
-        float tHeight = topBlackBar.GetComponent<RectTransform>().sizeDelta.y;
-        float bHeight = bottomBlackBar.GetComponent<RectTransform>().sizeDelta.y;
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / duration)
-        {
-            topBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, Mathf.Lerp(tHeight, heightTarget, t));
-            bottomBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, Mathf.Lerp(bHeight, heightTarget, t));
-            yield return null;
-        }
-        topBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, heightTarget);
-        bottomBlackBar.GetComponent<RectTransform>().sizeDelta = new Vector2(0.0f, heightTarget);
-    }
     public void ShowResults(int currentScore, int resultType, float duration, float delay)
     {
         if (resultType == ResultsMenu.METEOR_DEATH)
@@ -342,59 +406,5 @@ public class GUIController : MonoBehaviour
             StartCoroutine(StartFlashWhiteToDeath(delay));
         }
         resultsMenu.ShowResultsMenu(currentScore, resultType, duration, delay);
-        //StartCoroutine(FadeInGameOver(duration, delay));
-    }
-
-    public void ResetMinimap()
-    {
-        minimapMeteors = new List<GameObject>();
-        currentMeteors = new List<GameObject>();
-        foreach (Transform marker in minimap.gameObject.transform)
-        {
-            if (marker.GetComponent<MeteorMinimapMarker>() != null)
-            {
-                Destroy(marker.gameObject);
-            }
-        }
-    }
-    public void UpdatePlayerMarker(Vector3 playerPosition)
-    {
-        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 4.0f, playerPosition.z / 4.0f);
-        playerMarker.GetComponent<RectTransform>().localScale = new Vector3((Mathf.Sin(Time.time * 8) / 5) + 0.9f, 1.0f, 1.0f);
-    }
-    public void AddMinimapMeteor(GameObject meteor, int type)
-    {
-        GameObject newMarker = Instantiate(minimapMeteorMarker);
-        if (newMarker.GetComponent<MeteorMinimapMarker>() != null)
-        {
-            newMarker.GetComponent<MeteorMinimapMarker>().type = type;
-        }
-        newMarker.transform.SetParent(minimap.transform, false);
-        //Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
-        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 4.0f, meteor.transform.position.z / 4.0f);
-
-
-        minimapMeteors.Add(newMarker);
-        currentMeteors.Add(meteor);
-        //Debug.Log(minimapMeteors.IndexOf(newMarker));
-        //Debug.Log(currentMeteors.IndexOf(meteor));
-        //Debug.Log(minimapMeteors.Count);
-        //Debug.Log(currentMeteors.Count);
-    }
-    public void RemoveMinimapMeteor(GameObject meteor)
-    {
-        int meteorIndex = currentMeteors.IndexOf(meteor);
-        //Debug.Log(minimapMeteors.Count);
-        //Debug.Log(currentMeteors.Count);
-
-        currentMeteors.Remove(meteor);
-        GameObject relatedMarker = minimapMeteors[meteorIndex];
-        Destroy(relatedMarker);
-        minimapMeteors.Remove(minimapMeteors[meteorIndex]);
-    }
-
-    public void UpdateSubtitles(string dialogue)
-    {
-        subtitles.text = dialogue;
     }
 }

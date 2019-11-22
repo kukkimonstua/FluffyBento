@@ -42,7 +42,6 @@ public class TutorialManager : MonoBehaviour
             CameraController.tutorialCameraTimer = 3.0f;
             StartCoroutine(StartTutorialSequence());
         }
-        
     }
     public void EndTutorial()
     {
@@ -80,7 +79,6 @@ public class TutorialManager : MonoBehaviour
         tutorialInstance = TutorialSequencePart3();
         StartCoroutine(tutorialInstance);
     }
-
     private IEnumerator SayDialogue(string dialogue)
     {
         gui.UpdateSubtitles(dialogue);
@@ -89,14 +87,14 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator TutorialSequencePart1()
     {
         switch (PlayerController.currentLevel) {
-            case 3:
+            case GameManager.LEVEL_3:
                 yield return SayDialogue("I suppose it's not surprising that you would choose to fight.");
                 yield return SayDialogue("Even though you taught me everything I know, your ideas of justice are probably still different than mine.");
                 yield return SayDialogue("Well, it won't matter soon enough. Once all of us are gone, ideals in constant conflict will be a thing of the past!");
                 yield return SayDialogue("So Master, hurry and get out of here! Or else my swarm of meteors will end you before everyone else!");
                 gui.UpdateSubtitles("");
                 break;
-            case 2:
+            case GameManager.LEVEL_2:
                 yield return SayDialogue("Yashiro! What in the world are you doing up here?!");
                 yield return SayDialogue("...Wait. Are you trying to get to those swords?");
                 yield return SayDialogue("I see. It appears safe to assume that you have encountered meteors like these before, and repelled them using your swordplay prowess.");
@@ -107,19 +105,18 @@ public class TutorialManager : MonoBehaviour
                 yield return SayDialogue("Master Yashiro, up there! Do you see that meteor falling from the sky?");
                 yield return SayDialogue("If we let it hit the ground, that’s it for us! We’re all done for!");
                 yield return SayDialogue("We have to do something about it... If only we had some way to destroy it before it lands...");
-                yield return SayDialogue("...Huh? Master, over there! Something fell! It looks like...a sword?");
+                yield return SayDialogue("...Huh? Master, over there! That thing shining a pillar of light! It looks like...a sword?");
                 yield return SayDialogue("It looks pretty unusual for a sword... Maybe... Maybe that sword could do something about the meteor?");
                 yield return SayDialogue("Master, go get that sword! I’m sure someone with your awesome sword skills could do something with it!");
                 gui.UpdateSubtitles("");
                 break;
         }
     }
-
     private IEnumerator TutorialSequencePart2()
     {
         switch (PlayerController.currentLevel)
         {
-            case 3:
+            case GameManager.LEVEL_3:
                 yield return SayDialogue("Master Yashiro, you know I couldn't have done this without you, right?");
                 yield return SayDialogue("Ten no Ikari... This relic requires a mysterious energy supplied only by the rocks it summons.");
                 yield return SayDialogue("I started small, and kept a cycle going until I could make them nice and big.");
@@ -128,7 +125,7 @@ public class TutorialManager : MonoBehaviour
                 yield return SayDialogue("But it wasn't enough. There was barely any energy left when they hit the ground.");
                 gui.UpdateSubtitles("");
                 break;
-            case 2:
+            case GameManager.LEVEL_2:
                 yield return SayDialogue("Yashiro. That meteor over there seems to be different from the others.");
                 yield return SayDialogue("It appears to be much more durable. And it’s glowing a rather unnatural colour. Hmm...");
                 yield return SayDialogue("Some of the swords scattered around here seem to glowing the same colour as that meteor.");
@@ -141,13 +138,12 @@ public class TutorialManager : MonoBehaviour
                 gui.UpdateSubtitles("");
                 break;
         }
-        
     }
     private IEnumerator TutorialSequencePart3()
     {
         switch (PlayerController.currentLevel)
         {
-            case 3:
+            case GameManager.LEVEL_3:
                 yield return SayDialogue("Then I realized. I need to destroy them before they land. But there's no way I accomplish something so superhuman.");
                 yield return SayDialogue("But you, Master. I knew you would be able to do it. All I did was make some small, thin meteors appear, and you used them like swords, just as I had hoped.");
                 yield return SayDialogue("You blew up the meteors and produced so much energy, the town was covered by it as though it were mist!");
@@ -155,7 +151,7 @@ public class TutorialManager : MonoBehaviour
                 yield return SayDialogue("Not even YOU can stop it, Master!");
                 gui.UpdateSubtitles("");
                 break;
-            case 2:
+            case GameManager.LEVEL_2:
                 yield return SayDialogue("Yes, I’m sure of it now. Those unusual meteors require a sword glowing the same colour in order for you to destroy it.");
                 yield return SayDialogue("Be sure to take a good look at the meteor and the sword you have equipped before going in for the attack.");
                 yield return SayDialogue("Attacking those special meteors with the wrong sword will do nothing, regardless of your swordsmanship.");
@@ -173,5 +169,4 @@ public class TutorialManager : MonoBehaviour
                 break;
         }
     }
-
 }
