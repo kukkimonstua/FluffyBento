@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    #region VARIABLES
     public int sceneLevel = 0;
     public static int currentLevel;
     public Transform worldOrigin;
@@ -18,10 +19,6 @@ public class PlayerController : MonoBehaviour
     public GUIController gui;
     public GameObject timingWindow;
     [HideInInspector] public int timingGrade;
-    public BGMController bgm;
-    public AudioClip bgmLvl1;
-    public AudioClip bgmLvl2;
-    public AudioClip bgmLvl3;
 
     public static float worldRadius; //Accessed by a LOT of different scripts
     public static float worldHeight;
@@ -50,11 +47,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject targetedMeteor;
     [SerializeField] private GameObject targetedSword;
 
-    [Header("PREFABS")]
-    public GameObject zanbato;
-    public GameObject broadsword;
-    public GameObject katana;
-
     [Header("GAME SETTINGS")]
     public int playerMaxHealth = 3;
     private int playerHealth;
@@ -69,6 +61,11 @@ public class PlayerController : MonoBehaviour
     public float meteorDeathThreshold = 100.0f;
     public static int playerState; //1 = running, 2 = attacking, 3 = game over
     private Vector3 startingPosition;
+
+    [Header("PREFABS")]
+    public GameObject zanbato;
+    public GameObject broadsword;
+    public GameObject katana;
 
     [Header("LINKS TO MODEL AND ANIMATIONS")]
     public GameObject avatarModel;
@@ -86,9 +83,21 @@ public class PlayerController : MonoBehaviour
     public AudioClip swordEquipSound;
     public AudioClip explosionSound;
     public AudioClip attackSound;
-
     private AudioSource audioSource;
+
+    [Header("MUSIC")]
+    public BGMController bgm;
+    public AudioClip bgmLvl1;
+    public AudioClip bgmLvl2;
+    public AudioClip bgmLvl3;
+
     public GameObject successPrefab;
+
+    public const int ACTIVELY_PLAYING = 1;
+    public const int ATTACKING_METEOR = 2;
+    public const int GAME_OVER = 3;
+    public const int VICTORY = 4;
+    #endregion
 
     void Awake()
     {
@@ -106,10 +115,10 @@ public class PlayerController : MonoBehaviour
     {
         switch (playerState)
         {
-            case 3:
+            case GAME_OVER:
                 rb.velocity = new Vector3(0.0f, rb.velocity.y, 0.0f);
                 break; //No fall multiplier for a floaty death is totally intentional
-            case 2:
+            case ATTACKING_METEOR:
                 avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + 180.0f, transform.eulerAngles.z);
                 rb.velocity = Vector3.up * 0;
                 touchedWallDirection = 0;
@@ -123,23 +132,9 @@ public class PlayerController : MonoBehaviour
                 gui.HidePlayerActionText();
                 break;
 
-            default:
-                if (Input.GetKeyDown(KeyCode.B))
-                {
-                    ResetBreakables();
-                }
-                if (Input.GetKeyDown(KeyCode.H))
-                {
-                    TakeDamage(1); //USE THIS TO TEST DAMAGE TAKING
-                }
-                if (Input.GetKeyDown(KeyCode.G))
-                {
-                    AddScore(transform.position, 10);
-                    //successPrefab.SetActive(true);
-                    //CameraController.cameraState = 4;
-                }
-
+            default: //usually "ACTIVELY_PLAYING"
                 TrackLowestMeteor();
+
                 worldOrigin.LookAt(new Vector3(transform.position.x, worldOrigin.position.y, transform.position.z));
                 transform.rotation = playerOrigin.rotation = worldOrigin.rotation;
                 playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * worldRadius);
@@ -191,289 +186,110 @@ public class PlayerController : MonoBehaviour
                 }
 
 
-                //Button controls work when NOT prone.
-                if (!prone && !PauseMenu.GameIsPaused) {
-
-                    targetedMeteorDistance = CheckAboveForMeteor();
-                    wallJumping = false;
-                    if (Input.GetButtonDown("Jump"))
+                if (!PauseMenu.GameIsPaused)
+                {
+                    //Button controls work when NOT prone.
+                    if (!prone)
                     {
-                        if (!isGrounded)
+                        targetedMeteorDistance = CheckAboveForMeteor();
+                        wallJumping = false;
+                        if (Input.GetButtonDown("Jump"))
                         {
-                            if (touchedWallDirection != 0)
+                            if (!isGrounded)
                             {
-                                WallJump(touchedWallDirection);
-                            }
-                            else if (canDoubleJump)
-                            {
-                                canDoubleJump = false;
-                                rb.velocity = Vector3.up * jumpForce;
-                                audioSource.PlayOneShot(jumpSound);
-                            }
-                        }
-                        else
-                        {
-                            isGrounded = false;
-                            rb.velocity = Vector3.up * jumpForce;
-                            //audioSource.PlayOneShot(jumpSound);
-                        }
-                    }
-                    if(Input.GetButtonDown("buttonB"))
-                    {
-                        if (!isDashing && Input.GetAxisRaw("Horizontal") != 0)
-                        {
-                            StartCoroutine(StartDashing(0.4f));
-                        }
-                    }
-                    if (Input.GetButtonDown("buttonY"))
-                    {
-                        if (targetedSword != null) //if you're near a sword
-                        {
-                            if (holdingSword == 0)
-                            {
-                                PickUpSword(targetedSword);
+                                if (touchedWallDirection != 0)
+                                {
+                                    WallJump(touchedWallDirection);
+                                }
+                                else if (canDoubleJump)
+                                {
+                                    canDoubleJump = false;
+                                    rb.velocity = Vector3.up * jumpForce;
+                                    audioSource.PlayOneShot(jumpSound);
+                                }
                             }
                             else
                             {
-                                SwitchSwords(targetedSword);
+                                isGrounded = false;
+                                rb.velocity = Vector3.up * jumpForce;
+                                //audioSource.PlayOneShot(jumpSound);
                             }
-                            audioSource.PlayOneShot(swordEquipSound);
                         }
-                        else if (holdingSword != 0)
+                        if (Input.GetButtonDown("buttonB"))
                         {
-                            DropSword();
+                            if (!isDashing && Input.GetAxisRaw("Horizontal") != 0)
+                            {
+                                StartCoroutine(StartDashing(0.4f));
+                            }
                         }
-                    }
-                    
-                    if (Input.GetButtonDown("buttonX"))
-                    {
-                        if (holdingSword != 0 && !isAttacking)
+                        if (Input.GetButtonDown("buttonY"))
                         {
-                            StartCoroutine(Attack(0.5f));
+                            if (targetedSword != null) //if you're near a sword
+                            {
+                                if (holdingSword == 0)
+                                {
+                                    PickUpSword(targetedSword);
+                                }
+                                else
+                                {
+                                    SwitchSwords(targetedSword);
+                                }
+                                audioSource.PlayOneShot(swordEquipSound);
+                            }
+                            else if (holdingSword != 0)
+                            {
+                                DropSword();
+                            }
                         }
-                    }
-                    if (Input.GetButton("buttonX") && Input.GetButton("Jump"))
-                    {
-                        if (holdingSword != 0 && targetedMeteor != null && targetedMeteorDistance < meteorAttackRange)
-                        {
-                            StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
-                        }
-                    }
-                }
 
-                if (!PauseMenu.GameIsPaused)
-                {
+                        if (Input.GetButtonDown("buttonX"))
+                        {
+                            if (holdingSword != 0 && !isAttacking)
+                            {
+                                StartCoroutine(Attack(0.5f));
+                            }
+                        }
+                        if (Input.GetButton("buttonX") && Input.GetButton("Jump"))
+                        {
+                            if (holdingSword != 0 && targetedMeteor != null && targetedMeteorDistance < meteorAttackRange)
+                            {
+                                StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
+                            }
+                        }
+                    }
+
                     gui.UpdatePlayerMarker(transform.position);
                     UpdateAnimations();
-                }
-
-                if (playerState == 4)
-                {
-                    /*if (Input.GetButtonDown("buttonX") && GUIController.menuUnlocked)
-                    {
-                        RestartLevel();
-                    }*/
+                    QuickDebugging(); //REMOVE WHEN DONE
                 }
                 break;
         }
         
     }
-    public void GoToNextLevel()
+
+    private void QuickDebugging()
     {
-        StartCoroutine(FadeToNextLevel(1.0f));
-    }
-    private IEnumerator FadeToNextLevel(float duration)
-    {
-        bgm.FadeOutMusic(duration);
-        gui.FadeIntoBlack(1.0f, duration);
-        yield return new WaitForSeconds(duration * 1.1f);
-
-        Debug.Log("go to next level because current level is " + currentLevel);
-        if (currentLevel == 3)
+#if (UNITY_EDITOR)
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            GameManager.sceneIndex = GameManager.LEVEL_3_ED;
-            SceneManager.LoadScene(GameManager.START_CUTSCENE);
+            ResetBreakables();
         }
-        else if (currentLevel == 2)
+        if (Input.GetKeyDown(KeyCode.H))
         {
-            GameManager.sceneIndex = GameManager.LEVEL_2_ED;
-            SceneManager.LoadScene(GameManager.START_CUTSCENE);
+            TakeDamage(1); //USE THIS TO TEST DAMAGE TAKING
         }
-        else
+        if (Input.GetKeyDown(KeyCode.G))
         {
-            GameManager.sceneIndex = GameManager.LEVEL_1_ED;
-            SceneManager.LoadScene(GameManager.START_CUTSCENE);
+            AddScore(transform.position, 10);
+            //successPrefab.SetActive(true);
+            //CameraController.cameraState = 4;
         }
-    }
-    public void RestartLevel()
-    {
-        StartCoroutine(FadeToRestart(1.0f));
-    }
-    private IEnumerator FadeToRestart(float duration)
-    {
-        Time.timeScale = 1f;
-        bgm.FadeOutMusic(duration);
-        gui.FadeIntoBlack(1.0f, duration);
-        yield return new WaitForSeconds(duration * 1.1f);
-        PauseMenu.GameIsPaused = false;
-
-        meteorManager.ResetMeteors();
-        swordManager.ResetSwords();
-        ResetLevel();
-        tutorialManager.ResetTutorial();
-    }
-    public void QuitGame()
-    {
-        StartCoroutine(FadeToQuit(1.0f));
-    }
-    private IEnumerator FadeToQuit(float duration)
-    {
-        Time.timeScale = 1f;
-        gui.FadeIntoBlack(1.0f, duration);
-        bgm.FadeOutMusic(duration);
-        yield return new WaitForSeconds(duration * 1.1f);
-        PauseMenu.GameIsPaused = false;
-
-        SceneManager.LoadScene(GameManager.MAIN_MENU_INDEX);
-    }
-
-    private float CheckAboveForMeteor()
-    {
-        if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, worldHeight))
-        {
-            if (hit.transform.gameObject.CompareTag("Meteor"))
-            {
-
-                targetedMeteor = hit.transform.gameObject;
-                //Debug.Log("meteor is " + hit.distance + " away");
-
-                if (hit.distance > meteorAttackRange)
-                {
-                    //don't use targetedMeteorDistance BEFORE you set it...
-                    gui.UpdateMeteorHeightUI(hit.distance - meteorAttackRange, holdingSword);
-                    //gui.TogglePrompt(true, "It's still too far!");
-                    //also indicate that it's the lowest one or NOT.
-                }
-                else
-                {
-                    if (holdingSword == 0)
-                    {
-                        gui.UpdateMeteorHeightUI(0.0f, holdingSword);
-                        gui.TogglePrompt(true, "You need a sword!");
-                    }
-                    else
-                    {
-                        gui.UpdateMeteorHeightUI(0.0f, holdingSword);
-                        gui.TogglePrompt(true, "Attack Meteor", "buttonsXA");
-                    }
-                }
-
-                return hit.distance;
-            }
-            else
-            {
-                gui.UpdateMeteorHeightUI(0.0f, holdingSword);
-                //Debug.Log("something is " + hit.distance + " away");
-
-                targetedMeteor = null;
-                gui.TogglePrompt(false, "");
-                gui.UpdateMeteorHeightUI(0.0f, holdingSword);
-
-                return worldHeight;
-            }
-        }
-        else
-        {
-            //nothing was spotted...
-            gui.UpdateMeteorHeightUI(0.0f, holdingSword);
-
-            targetedMeteor = null;
-            gui.TogglePrompt(false, "");
-            gui.UpdateMeteorHeightUI(0.0f, holdingSword);
-
-            return worldHeight;
-        }
-    }
-
-
-    private void EquipSword(int swordID)
-    {
-        switch (swordID)
-        {
-            case 0: //NO SWORD
-                equippedZanbato.SetActive(false);
-                equippedBroadsword.SetActive(false);
-                equippedKatana.SetActive(false);
-                break;
-            case 1:
-                equippedZanbato.SetActive(true);
-                equippedBroadsword.SetActive(false);
-                equippedKatana.SetActive(false);
-                break;
-            case 2:
-                equippedZanbato.SetActive(false);
-                equippedBroadsword.SetActive(true);
-                equippedKatana.SetActive(false);
-                break;
-            case 3:
-                equippedZanbato.SetActive(false);
-                equippedBroadsword.SetActive(false);
-                equippedKatana.SetActive(true);
-                break;
-        }
-        gui.UpdateEquipmentUI(swordID);
-    }
-
-    private void ResetLevel()
-    {
-        playerHealth = playerMaxHealth;
-        playerScore = 0;
-        meteorsDestroyed = 0;
-        gui.HidePlayerActionText();
-        gui.ResetGUI();
-        gui.UpdateHealthUI(playerHealth);
-        gui.UpdateScoreUI(playerScore);
-        gui.UpdateMeteorsDestroyed(meteorsDestroyed);
-        ResetBreakables();
-
-        transform.position = startingPosition;
-        avatarModelRotation = 0.0f;
-        CameraController.SwitchToMainCamera();
-
-        playerState = 1;
-        holdingSword = 0;
-        EquipSword(0);
-        isGrounded = false;
-        canDoubleJump = false;
-        touchedWallDirection = 0;
-        prone = false;
-
-        initialDeathDelay = 1.0f;
-        if (currentLevel == 1)
-        {
-            bgm.FadeInMusic(bgmLvl1, 0.0f);
-        }
-        if (currentLevel == 2)
-        {
-            bgm.FadeInMusic(bgmLvl2, 0.0f);
-        }
-        if (currentLevel == 3)
-        {
-            bgm.FadeInMusic(bgmLvl3, 0.0f);
-        }
-    }
-    private void ResetBreakables()
-    {
-        GameObject[] breakables = GameObject.FindGameObjectsWithTag("Breakable");
-        foreach (GameObject b in breakables)
-        {
-            b.GetComponent<BreakableController>().GetRestored();
-        }
+#endif
     }
     private void TrackLowestMeteor()
     {
         meteorManager.currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
-        
+
         if (meteorManager.currentMeteors.Length <= 0)
         {
             gui.lowestMeteorMarker.gameObject.SetActive(false);
@@ -538,10 +354,79 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
-            
+
+        }
+    }
+    private float CheckAboveForMeteor()
+    {
+        if (Physics.Raycast(transform.position, transform.up, out RaycastHit hit, worldHeight))
+        {
+            if (hit.transform.gameObject.CompareTag("Meteor"))
+            {
+
+                targetedMeteor = hit.transform.gameObject;
+                //Debug.Log("meteor is " + hit.distance + " away");
+
+                if (hit.distance > meteorAttackRange)
+                {
+                    //don't use targetedMeteorDistance BEFORE you set it...
+                    gui.UpdateMeteorHeightUI(hit.distance - meteorAttackRange, holdingSword);
+                    //gui.TogglePrompt(true, "It's still too far!");
+                    //also indicate that it's the lowest one or NOT.
+                }
+                else
+                {
+                    if (holdingSword == 0)
+                    {
+                        gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+                        gui.TogglePrompt(true, "You need a sword!");
+                    }
+                    else
+                    {
+                        gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+                        gui.TogglePrompt(true, "Attack Meteor", "buttonsXA");
+                    }
+                }
+
+                return hit.distance;
+            }
+            else
+            {
+                gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+                //Debug.Log("something is " + hit.distance + " away");
+
+                targetedMeteor = null;
+                gui.TogglePrompt(false, "");
+                gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+
+                return worldHeight;
+            }
+        }
+        else
+        {
+            //nothing was spotted...
+            gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+
+            targetedMeteor = null;
+            gui.TogglePrompt(false, "");
+            gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+
+            return worldHeight;
         }
     }
 
+
+
+    private void ResetBreakables()
+    {
+        GameObject[] breakables = GameObject.FindGameObjectsWithTag("Breakable");
+        foreach (GameObject b in breakables)
+        {
+            b.GetComponent<BreakableController>().GetRestored();
+        }
+    }
+
+    #region COLLISIONS AND TRIGGERS
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.GetComponent<FlyingMeteorController>() != null)
@@ -611,6 +496,8 @@ public class PlayerController : MonoBehaviour
             }
         }        
     }
+    #endregion
+    #region PLAYER ACTIONS
     private IEnumerator StartDashing(float duration)
     {
         isDashing = true;
@@ -707,108 +594,6 @@ public class PlayerController : MonoBehaviour
         }
         isAttacking = false;
     }
-
-    private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
-    {
-        //Make sure there is only one instance of this function running
-        if (playerState == 2)
-        {
-            yield break; ///exit if this is still running
-        }
-
-        playerState = 2;
-        gui.ToggleNonTimingWindowGUI(false);
-        gui.ScaleBlackBars(75.0f, 0.5f);
-        
-        //Get the current position of the object to be moved
-        Vector3 startPos = fromPosition.position;
-        Vector3 toPosition = meteor.transform.position;
-        CameraController.SwitchToAttackCamera();
-
-        float counter = 0;
-        timingGrade = 0;
-        timingWindow.GetComponent<TimingWindow>().StartTimingWindow(duration, holdingSword);
-
-        while (counter < duration)
-        {
-            counter += Time.deltaTime;
-            fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
-            yield return null;
-        }
-        avatarModelRotation = 0.0f;
-        playerState = 1;
-        CameraController.SwitchToMainCamera();
-        gui.ScaleBlackBars(0.0f, 0.5f);
-        gui.ToggleNonTimingWindowGUI(true);
-
-        if (timingGrade > 0)
-        {
-            if (meteor.GetComponent<MeteorController>().meteorID == 0 || holdingSword == meteor.GetComponent<MeteorController>().meteorID)
-            {
-                gui.RemoveMinimapMeteor(meteor);
-                Destroy(meteor);
-                
-                meteorsDestroyed++;
-                gui.UpdateMeteorsDestroyed(meteorsDestroyed);
-                audioSource.PlayOneShot(explosionSound);
-
-                if (TutorialManager.tutorialActive)
-                {
-                    if (currentLevel == 2 || currentLevel == 3)
-                    {
-                        if (!tutorialManager.firstActionCleared)
-                        {
-                            tutorialManager.firstActionCleared = true;
-                            meteorManager.SpawnSpecialMeteor();
-                        }
-                        else if (!tutorialManager.secondActionCleared)
-                        {
-                            tutorialManager.secondActionCleared = true;
-                            meteorManager.SpawnMeteor();
-                        }
-                    }
-                    else
-                    {
-                        tutorialManager.secondActionCleared = true;
-                        meteorManager.SpawnMeteor();
-                    }
-                }
-            }
-            else
-            {
-                prone = true;
-                gui.TogglePrompt(true, "What?! It didn't work!");
-            }
-            
-            holdingSword = 0;
-            EquipSword(0);
-
-            Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
-            if (meteorsDestroyed >= maxMeteorsForLevel)
-            {
-                //Debug.Log("YOU WIN!");
-                gui.UpdateMeteorLandingUI(worldHeight, meteorDeathThreshold);
-                GameClear();
-            }
-
-            ResetBreakables();
-            if (timingGrade >= 3)
-            {
-                AddScore(transform.position, 500);
-            }
-            else
-            {
-                AddScore(transform.position, timingGrade * 100);
-            }
-        }
-        else
-        {
-            TakeDamage(1);
-            prone = true;
-
-        }
-    }
-
     private void PickUpSword(GameObject pickedUpSword)
     {
         gui.HidePlayerActionText();
@@ -843,7 +628,6 @@ public class PlayerController : MonoBehaviour
         Destroy(pickedUpSword);
         Instantiate(swordToSpawn, transform.position, transform.rotation);
     }
-
     private void DropSword()
     {
         GameObject swordToSpawn = new GameObject();
@@ -865,7 +649,137 @@ public class PlayerController : MonoBehaviour
         
         Instantiate(swordToSpawn, transform.position, transform.rotation);
     }
+    private void EquipSword(int swordID)
+    {
+        switch (swordID)
+        {
+            case 0: //NO SWORD
+                equippedZanbato.SetActive(false);
+                equippedBroadsword.SetActive(false);
+                equippedKatana.SetActive(false);
+                break;
+            case 1:
+                equippedZanbato.SetActive(true);
+                equippedBroadsword.SetActive(false);
+                equippedKatana.SetActive(false);
+                break;
+            case 2:
+                equippedZanbato.SetActive(false);
+                equippedBroadsword.SetActive(true);
+                equippedKatana.SetActive(false);
+                break;
+            case 3:
+                equippedZanbato.SetActive(false);
+                equippedBroadsword.SetActive(false);
+                equippedKatana.SetActive(true);
+                break;
+        }
+        gui.UpdateEquipmentUI(swordID);
+    }
+    #endregion
 
+    private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
+    {
+        //Make sure there is only one instance of this function running
+        if (playerState == 2)
+        {
+            yield break; ///exit if this is still running
+        }
+
+        playerState = 2;
+        gui.ToggleNonTimingWindowGUI(false);
+        gui.ScaleBlackBars(75.0f, 0.5f);
+
+        //Get the current position of the object to be moved
+        Vector3 startPos = fromPosition.position;
+        Vector3 toPosition = meteor.transform.position;
+        CameraController.SwitchToAttackCamera();
+
+        float counter = 0;
+        timingGrade = 0;
+        timingWindow.GetComponent<TimingWindow>().StartTimingWindow(duration, holdingSword);
+
+        while (counter < duration)
+        {
+            counter += Time.deltaTime;
+            fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
+            yield return null;
+        }
+        avatarModelRotation = 0.0f;
+        playerState = 1;
+        CameraController.SwitchToMainCamera();
+        gui.ScaleBlackBars(0.0f, 0.5f);
+        gui.ToggleNonTimingWindowGUI(true);
+
+        if (timingGrade > 0)
+        {
+            if (meteor.GetComponent<MeteorController>().meteorID == 0 || holdingSword == meteor.GetComponent<MeteorController>().meteorID)
+            {
+                gui.RemoveMinimapMeteor(meteor);
+                Destroy(meteor);
+
+                meteorsDestroyed++;
+                gui.UpdateMeteorsDestroyed(meteorsDestroyed);
+                audioSource.PlayOneShot(explosionSound);
+
+                if (TutorialManager.tutorialActive)
+                {
+                    if (currentLevel == 2 || currentLevel == 3)
+                    {
+                        if (!tutorialManager.firstActionCleared)
+                        {
+                            tutorialManager.firstActionCleared = true;
+                            meteorManager.SpawnSpecialMeteor();
+                        }
+                        else if (!tutorialManager.secondActionCleared)
+                        {
+                            tutorialManager.secondActionCleared = true;
+                            meteorManager.SpawnMeteor();
+                        }
+                    }
+                    else
+                    {
+                        tutorialManager.secondActionCleared = true;
+                        meteorManager.SpawnMeteor();
+                    }
+                }
+            }
+            else
+            {
+                prone = true;
+                gui.TogglePrompt(true, "What?! It didn't work!");
+            }
+
+            holdingSword = 0;
+            EquipSword(0);
+
+            Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
+            if (meteorsDestroyed >= maxMeteorsForLevel)
+            {
+                //Debug.Log("YOU WIN!");
+                gui.UpdateMeteorLandingUI(worldHeight, meteorDeathThreshold);
+                GameClear();
+            }
+
+            ResetBreakables();
+            if (timingGrade >= 3)
+            {
+                AddScore(transform.position, 500);
+            }
+            else
+            {
+                AddScore(transform.position, timingGrade * 100);
+            }
+        }
+        else
+        {
+            TakeDamage(1);
+            prone = true;
+
+        }
+    }
+
+    #region GAME EVENTS
     public void TakeDamage(int amount)
     {
         playerHealth -= amount;
@@ -883,10 +797,9 @@ public class PlayerController : MonoBehaviour
         gui.AnimateScore(floatPosition, amount);
         gui.UpdateScoreUI(playerScore);
     }
-
     private void GameOver(int resultType)
     {
-        playerState = 3;
+        playerState = GAME_OVER;
         CameraController.SwitchToEndingCamera();
         gui.HidePlayerActionText();
         gui.TogglePrompt(false, "");
@@ -894,12 +807,12 @@ public class PlayerController : MonoBehaviour
     }
     private void GameClear()
     {
-        playerState = 4;
+        playerState = VICTORY;
         gui.HidePlayerActionText();
         gui.TogglePrompt(false, "");
         gui.ShowResults(playerScore, ResultsMenu.VICTORY, 3.0f, 2.0f); //This ends with unlocking the menu        
     }
-
+    #endregion
     private void UpdateAnimations()
     {
         avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
@@ -924,4 +837,104 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("jumping", !isGrounded);
         anim.SetBool("wallJumping", wallJumping);
     }
+
+    #region SCENE MANAGEMENT FUNCTIONS
+    private void ResetLevel()
+    {
+        playerHealth = playerMaxHealth;
+        playerScore = 0;
+        meteorsDestroyed = 0;
+        gui.HidePlayerActionText();
+        gui.ResetGUI();
+        gui.UpdateHealthUI(playerHealth);
+        gui.UpdateScoreUI(playerScore);
+        gui.UpdateMeteorsDestroyed(meteorsDestroyed);
+        ResetBreakables();
+
+        transform.position = startingPosition;
+        avatarModelRotation = 0.0f;
+        CameraController.SwitchToMainCamera();
+
+        playerState = 1;
+        holdingSword = 0;
+        EquipSword(0);
+        isGrounded = false;
+        canDoubleJump = false;
+        touchedWallDirection = 0;
+        prone = false;
+
+        initialDeathDelay = 1.0f;
+        if (currentLevel == 1)
+        {
+            bgm.FadeInMusic(bgmLvl1, 0.0f);
+        }
+        if (currentLevel == 2)
+        {
+            bgm.FadeInMusic(bgmLvl2, 0.0f);
+        }
+        if (currentLevel == 3)
+        {
+            bgm.FadeInMusic(bgmLvl3, 0.0f);
+        }
+    }
+    public void GoToNextLevel()
+    {
+        StartCoroutine(FadeToNextLevel(1.0f));
+    }
+    private IEnumerator FadeToNextLevel(float duration)
+    {
+        bgm.FadeOutMusic(duration);
+        gui.FadeIntoBlack(1.0f, duration);
+        yield return new WaitForSeconds(duration * 1.1f);
+
+        Debug.Log("go to next level because current level is " + currentLevel);
+        if (currentLevel == 3)
+        {
+            GameManager.sceneIndex = GameManager.LEVEL_3_ED;
+            SceneManager.LoadScene(GameManager.START_CUTSCENE);
+        }
+        else if (currentLevel == 2)
+        {
+            GameManager.sceneIndex = GameManager.LEVEL_2_ED;
+            SceneManager.LoadScene(GameManager.START_CUTSCENE);
+        }
+        else
+        {
+            GameManager.sceneIndex = GameManager.LEVEL_1_ED;
+            SceneManager.LoadScene(GameManager.START_CUTSCENE);
+        }
+    }
+    public void RestartLevel()
+    {
+        StartCoroutine(FadeToRestart(1.0f));
+    }
+    private IEnumerator FadeToRestart(float duration)
+    {
+        Time.timeScale = 1f;
+        bgm.FadeOutMusic(duration);
+        gui.FadeIntoBlack(1.0f, duration);
+        yield return new WaitForSeconds(duration * 1.1f);
+        PauseMenu.GameIsPaused = false;
+
+        meteorManager.ResetMeteors();
+        swordManager.ResetSwords();
+        ResetLevel();
+        tutorialManager.ResetTutorial();
+    }
+    public void QuitGame()
+    {
+        StartCoroutine(FadeToQuit(1.0f));
+    }
+    private IEnumerator FadeToQuit(float duration)
+    {
+        Time.timeScale = 1f;
+        gui.FadeIntoBlack(1.0f, duration);
+        bgm.FadeOutMusic(duration);
+        yield return new WaitForSeconds(duration * 1.1f);
+        PauseMenu.GameIsPaused = false;
+
+        SceneManager.LoadScene(GameManager.MAIN_MENU_INDEX);
+    }
+    #endregion
+
 }
