@@ -23,6 +23,7 @@ public class TimingWindow : MonoBehaviour
 
     public static bool gotPressed;
     private bool pressable;
+    public static bool eventOver;
 
     public Sprite buttonsNone;
     public Sprite buttonX;
@@ -30,7 +31,29 @@ public class TimingWindow : MonoBehaviour
     public Sprite buttonB;
     public Sprite buttonY;
 
+    public Image cutinWindow;
+    //public Sprite[] cutinFrames;
+
     private AudioSource audioSource;
+
+    /*
+    private IEnumerator AnimateCutin(float duration)
+    {
+        int index;
+        float counter = 0.0f;
+        while (counter < duration)
+        {
+            index = Mathf.RoundToInt(counter / duration * cutinFrames.Length);
+            if (index >= cutinFrames.Length) index = cutinFrames.Length - 1;
+
+            Debug.Log("show image at index " + index);
+
+            cutinWindow.sprite = cutinFrames[index];
+            counter += Time.deltaTime;
+            yield return null;
+        }
+    }
+    */
 
     void Start()
     {
@@ -54,6 +77,7 @@ public class TimingWindow : MonoBehaviour
 
     private IEnumerator TimingWindowCoroutine(float duration) //Currently, 3.0 secs for whole sequence
     {
+        eventOver = false;
         float counter = 0.0f;
         float counterOffset = Random.Range(duration * 0.33f, duration * 0.66f);
         shrinkerDiameter = maxShrinkerDiameter;
@@ -133,42 +157,16 @@ public class TimingWindow : MonoBehaviour
                     }                    
                 }
             }
-            else
-            {
-                /*
-                buttonRouletteTimer += Time.deltaTime;
-                if (buttonRouletteTimer > 0.1f) {
-                    buttonRouletteTimer = 0.0f;
-                    buttonRouletteIndex++;
-                }
-                if (buttonRouletteIndex > 3)
-                {
-                    buttonRouletteIndex = 0;
-                }
-                switch(buttonRouletteIndex)
-                {
-                    case 0:
-                        button.sprite = buttonX;
-                        break;
-                    case 1:
-                        button.sprite = buttonA;
-                        break;
-                    case 2:
-                        button.sprite = buttonB;
-                        break;
-                    case 3:
-                        button.sprite = buttonY;
-                        break;
-                }
-                */
-            }
             counter += Time.deltaTime;
             yield return null;
         }
+
+
         //Debug.Log(feedbackText + ": " + shrinkerDiameter);
 
         FadeTimingWindowUI(0.0f);
         StartCoroutine(ShowFeedbackText(false, 1.0f));
+        eventOver = true;
     }
 
     public void StartTimingWindow(float duration, int swordID)

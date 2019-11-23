@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+
         switch (playerState)
         {
             case GAME_OVER:
@@ -681,12 +682,12 @@ public class PlayerController : MonoBehaviour
     private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
     {
         //Make sure there is only one instance of this function running
-        if (playerState == 2)
+        if (playerState == ATTACKING_METEOR)
         {
             yield break; ///exit if this is still running
         }
 
-        playerState = 2;
+        playerState = ATTACKING_METEOR;
         gui.ToggleNonTimingWindowGUI(false);
         gui.ScaleBlackBars(75.0f, 0.5f);
 
@@ -705,6 +706,12 @@ public class PlayerController : MonoBehaviour
             fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
             yield return null;
         }
+        while (!TimingWindow.eventOver)
+        {
+            yield return null;
+        }
+
+        //Everything after this point is one frame, setting everything to the result
         avatarModelRotation = 0.0f;
         playerState = 1;
         CameraController.SwitchToMainCamera();
@@ -786,6 +793,7 @@ public class PlayerController : MonoBehaviour
         gui.FlashRed();
         gui.UpdateHealthUI(playerHealth);
 
+        CameraController.cameraShakeTimer = 0.5f;
         if (playerHealth <= 0)
         {
             GameOver(ResultsMenu.HEALTH_DEATH); //From health loss

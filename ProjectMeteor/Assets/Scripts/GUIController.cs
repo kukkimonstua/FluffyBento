@@ -56,6 +56,9 @@ public class GUIController : MonoBehaviour
     float seconds;
     float milliseconds;
 
+    private float minFogValue;
+    private float maxFogValue;
+
     void ResetTimer()
     {
         minutes = 0;
@@ -76,6 +79,13 @@ public class GUIController : MonoBehaviour
             milliseconds = 0;
         }
         timerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, (int)milliseconds);
+    }
+
+    void Start()
+    {
+        RenderSettings.fog = true;
+        minFogValue = RenderSettings.fogDensity;
+        maxFogValue = minFogValue + 0.01f;
     }
     void Update()
     {
@@ -367,22 +377,28 @@ public class GUIController : MonoBehaviour
     public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold)
     {
         //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
-        //Debug.Log(1.0f - (lowestMeteorPosition - meteorDeathThreshold) / ((PlayerController.worldHeight - meteorDeathThreshold) / 3));
+        float lerpValue = 1.0f - (lowestMeteorPosition - meteorDeathThreshold) / ((PlayerController.worldHeight - meteorDeathThreshold) / 3);
 
-        if (PlayerController.playerState == 1)
+        if (PlayerController.playerState == PlayerController.ACTIVELY_PLAYING)
         {
             if (lowestMeteorPosition < meteorDeathThreshold + ((PlayerController.worldHeight - meteorDeathThreshold) / 3))
             {
-                blaze.GetComponent<CanvasRenderer>().SetAlpha(1.0f - (lowestMeteorPosition - meteorDeathThreshold) / ((PlayerController.worldHeight - meteorDeathThreshold) / 3));
                 meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
                 meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
                 meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "";
+
+                blaze.GetComponent<CanvasRenderer>().SetAlpha(lerpValue/2 + Mathf.Sin(Time.time * 4.0f) * (lerpValue/4));
+                RenderSettings.fogDensity = Mathf.Lerp(minFogValue, maxFogValue, lerpValue);
+                //audio source volume uses lerpValue too
             }
             else
             {
-                blaze.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
                 meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
                 meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+
+                blaze.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+                RenderSettings.fogDensity = minFogValue;
+
             }
         }
     }
@@ -401,6 +417,7 @@ public class GUIController : MonoBehaviour
 
     public void ShowResults(int currentScore, int resultType, float duration, float delay)
     {
+        blaze.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         if (resultType == ResultsMenu.METEOR_DEATH)
         {
             StartCoroutine(StartFlashWhiteToDeath(delay));

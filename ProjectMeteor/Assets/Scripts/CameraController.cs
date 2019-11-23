@@ -24,11 +24,13 @@ public class CameraController : MonoBehaviour
     private static float endingZoomTarget;
     public Transform successCameraPosition;
 
+    public static float cameraShakeTimer;
+
     void Start()
     {
         defaultZoomLevel = zoomLevel;
         tiltCameraValue = 0.0f;
-        cameraState = 1;
+        cameraState = PlayerController.ACTIVELY_PLAYING;
     }
     
     void LateUpdate()
@@ -47,7 +49,7 @@ public class CameraController : MonoBehaviour
                 transform.position = endingCameraPosition.position + (transform.forward * endingZoom);
                 transform.rotation = endingCameraPosition.rotation;
                 break;
-            case 2: //Attacking a meteor.
+            case PlayerController.ATTACKING_METEOR: //Attacking a meteor.
                 //if (moving)
                 //{
                 //StartCoroutine(MoveToPosition(transform, attackCameraPosition, 0.5f));
@@ -58,7 +60,7 @@ public class CameraController : MonoBehaviour
                 transform.rotation = attackCameraPosition.rotation;
                 break;
 
-            default: //or 1
+            default: //or PlayerController.ACTIVELY_PLAYING
                 if (Input.GetButton("buttonL"))
                 {
                     ChangeZoomLevel(zoomLevel, -20.0f);
@@ -95,28 +97,37 @@ public class CameraController : MonoBehaviour
                     }
                     tiltCameraValue = Mathf.Clamp(tiltCameraValue, -40.0f, 40.0f);
                     tiltCameraValue *= 0.9f;
+
+                    if (tiltCameraValue > 0) transform.Translate(0.0f, tiltCameraValue / 3.0f, 0.0f);
+                    transform.Rotate(5.0f - zoom / 5 + tiltCameraValue, 180.0f, 0, Space.Self);
+                    //Put the above back outside of pause if they don't like it
                 }
 
-                if (tiltCameraValue > 0) transform.Translate(0.0f, tiltCameraValue / 3.0f, 0.0f);
-                transform.Rotate(5.0f - zoom / 5 + tiltCameraValue, 180.0f, 0, Space.Self);
+
                 break;
         }
-        
+        if (cameraShakeTimer > 0)
+        {
+            transform.Rotate(Mathf.Sin(cameraShakeTimer * 50.0f) * 1.3f, 0.0f, 0, Space.Self);
+            Debug.Log(cameraShakeTimer);
+            cameraShakeTimer -= Time.deltaTime;
+        }
+
     }
 
     public static void SwitchToMainCamera()
     {
-        cameraState = 1;
+        cameraState = PlayerController.ACTIVELY_PLAYING;
     }
     public static void SwitchToAttackCamera()
     {
-        cameraState = 2;
+        cameraState = PlayerController.ATTACKING_METEOR;
     }
     public static void SwitchToEndingCamera()
     {
         endingZoom = 0.0f;
         endingZoomTarget = 5.0f;
-        cameraState = 3;
+        cameraState = PlayerController.GAME_OVER;
     }
 
     private void ChangeZoomLevel(float currentLevel, float direction)
@@ -131,39 +142,7 @@ public class CameraController : MonoBehaviour
             currentLevel = defaultZoomLevel * 0.5f;
         }
         zoomLevel = currentLevel;
-
-        /*
-        if (!zooming && 0 == 1)
-        {
-            if (direction < 0 && currentLevel > defaultZoomLevel * 0.5)
-            {
-                zooming = true;
-                StartCoroutine(ZoomToNewLevel(defaultZoomLevel / -2, 0.3f));
-            }
-            if (direction > 0 && currentLevel < defaultZoomLevel * 1.5)
-            {
-                zooming = true;
-                StartCoroutine(ZoomToNewLevel(defaultZoomLevel / 2, 0.3f));
-            }
-        }
-        */
     }
-    /*
-    private IEnumerator ZoomToNewLevel(float amount, float duration)
-    {
-        float counter = 0;
-        float startingZoomLevel = zoomLevel;
-        float targetZoomLevel = zoomLevel + amount;
-
-        while (counter < duration)
-        {
-            counter += Time.deltaTime;
-            zoomLevel = Mathf.Lerp(startingZoomLevel, targetZoomLevel, counter / duration);
-            yield return null;
-        }
-        zooming = false;
-    }
-    */
 
     //THIS ISN'T WORKING YET
     private IEnumerator MoveToPosition(Transform fromPosition, Transform toPosition, float duration)
