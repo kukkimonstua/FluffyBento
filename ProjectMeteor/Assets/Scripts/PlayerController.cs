@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip swordEquipSound;
     public AudioClip explosionSound;
     public AudioClip attackSound;
+    public AudioClip damageSound;
     private AudioSource audioSource;
 
     [Header("MUSIC")]
@@ -792,7 +793,7 @@ public class PlayerController : MonoBehaviour
         playerHealth -= amount;
         gui.FlashRed();
         gui.UpdateHealthUI(playerHealth);
-
+        audioSource.PlayOneShot(damageSound);
         CameraController.cameraShakeTimer = 0.5f;
         if (playerHealth <= 0)
         {

@@ -31,8 +31,7 @@ public class TimingWindow : MonoBehaviour
     public Sprite buttonB;
     public Sprite buttonY;
 
-    public Image cutinWindow;
-    //public Sprite[] cutinFrames;
+    public Animator eventCutin;
 
     private AudioSource audioSource;
 
@@ -154,7 +153,11 @@ public class TimingWindow : MonoBehaviour
                     {
                         player.timingGrade = 0;
                         feedbackText = "Miss...";
-                    }                    
+                    }
+                    if (player.timingGrade > 0)
+                    {
+                        eventCutin.SetTrigger("cutin");
+                    }
                 }
             }
             counter += Time.deltaTime;
