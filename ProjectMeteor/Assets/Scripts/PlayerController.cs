@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
@@ -24,20 +21,30 @@ public class PlayerController : MonoBehaviour
     public static float worldHeight;
 
     [Header("PLAYER MOVEMENT SETTINGS")]
-    public float moveSpeed = 40.0f;
-    private float defaultMoveSpeed;
-    public float horizontalDrag = 0.8f;
-    public float jumpForce = 10.0f;
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2.0f;
+    public float moveSpeed = 20.0f;
+    private float speed = 0.0f;
+    public float acceleration = 10.0f;
+    public float horizontalDrag = 0.5f;
+    private float lastDirectionPressed = 1.0f;
+    public int maxAirDashes = 2;
+    private int airDashCounter;
+
+    public float jumpForce = 16.0f;
+    public float fallMultiplier = 4.0f;
+    public float lowJumpMultiplier = 6.0f;
     private Rigidbody rb;
     private CapsuleCollider myCollider;
 
     private Vector3 circularVelocity;
     private int previousWallJumpDirection;
     private int holdingSword; //0 is nothing, 1 - 3 are the different types
+    private const int NO_SWORD_EQUIPPED = 0;
+    private const int ZANBATO_EQUIPPED = 1;
+    private const int BROADSWORD_EQUIPPED = 2;
+    private const int KATANA_EQUIPPED = 3;
     private bool isAttacking;
     private bool isDashing;
+    private bool isWallJumping;
     private bool prone;
 
     [Header("DEBUGGING TOOLS")]
@@ -71,7 +78,7 @@ public class PlayerController : MonoBehaviour
     public GameObject avatarModel;
     private float avatarModelRotation;
     public Animator anim;
-    private bool running, dashing, wallJumping;
+    private bool running, wallJumping;
 
     public GameObject equippedZanbato;
     public GameObject equippedBroadsword;
@@ -83,6 +90,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip swordEquipSound;
     public AudioClip explosionSound;
     public AudioClip attackSound;
+    public AudioClip damageSound;
     private AudioSource audioSource;
 
     [Header("MUSIC")]
@@ -108,11 +116,11 @@ public class PlayerController : MonoBehaviour
         myCollider = GetComponent<CapsuleCollider>();
         audioSource = GetComponent<AudioSource>();
         startingPosition = transform.position;
-        defaultMoveSpeed = moveSpeed;
         ResetLevel();
     }
     void Update()
     {
+
         switch (playerState)
         {
             case GAME_OVER:
@@ -140,21 +148,36 @@ public class PlayerController : MonoBehaviour
                 playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * worldRadius);
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
-                var moveDrag = horizontalDrag;
-                if(isGrounded && Input.GetAxisRaw("Horizontal") == 0 && !dashing)
-                {
-                    moveDrag /= 4;
-                }
-                moveSpeed = defaultMoveSpeed;
 
-                if (holdingSword == 0)
+
+                //BEGIN NEW
+                if (Input.GetAxisRaw("Horizontal") > 0 || Input.GetAxisRaw("Horizontal") < 0)
+                    lastDirectionPressed = Input.GetAxisRaw("Horizontal"); //Used only for dash
+
+                speed += Input.GetAxisRaw("Horizontal") * acceleration * 0.6f * Time.deltaTime;
+                speed = Mathf.Clamp(speed, -acceleration, acceleration);
+
+                if (Input.GetAxisRaw("Horizontal") == 0 && !isDashing)
                 {
-                    //moveSpeed = defaultMoveSpeed * 1.25f; PERHAPS THIS CAUSES CONFUSION
+                    circularVelocity *= horizontalDrag;
+                    if (isGrounded) //Less slow-down in the air, important for wall jumping
+                    {
+                        speed *= horizontalDrag;
+                    }
+                }
+                //Debug.Log(speed + " from adding " + Input.GetAxisRaw("Horizontal"));
+                if (Input.GetAxisRaw("Horizontal") > 0.0f && speed < 0.0f
+                    || Input.GetAxisRaw("Horizontal") < 0.0f && speed > 0.0f)
+                {
+                    ResetMomentum();
                 }
 
-                if (touchedWallDirection != 0 || isDashing) circularVelocity -= transform.right * Input.GetAxisRaw("Horizontal") * moveSpeed / 40;
-                else circularVelocity -= transform.right * Input.GetAxisRaw("Horizontal") * moveSpeed / 8;
-                circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed * 2) * moveDrag;
+                circularVelocity -= transform.right * speed;
+                circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed);
+                //END NEW
+
+                Debug.Log(speed);
+
 
                 if (prone) circularVelocity = new Vector3(0.0f, circularVelocity.y, 0.0f);
 
@@ -177,29 +200,20 @@ public class PlayerController : MonoBehaviour
                     isGrounded = false;
                 }
 
-                var lowestPos = transform.position;
-                lowestPos.y = -0.8f;
-
-                if (rb.position.y < -1f) //Emily 9/16
-                {
-                    transform.position = lowestPos;
-                }
-
-
                 if (!PauseMenu.GameIsPaused)
                 {
                     //Button controls work when NOT prone.
                     if (!prone)
                     {
                         targetedMeteorDistance = CheckAboveForMeteor();
-                        wallJumping = false;
+                        
                         if (Input.GetButtonDown("Jump"))
                         {
                             if (!isGrounded)
                             {
-                                if (touchedWallDirection != 0)
+                                if (touchedWallDirection != 0 && !isWallJumping)
                                 {
-                                    WallJump(touchedWallDirection);
+                                    StartCoroutine(StartWallJumping(0.2f, touchedWallDirection));
                                 }
                                 else if (canDoubleJump)
                                 {
@@ -217,16 +231,25 @@ public class PlayerController : MonoBehaviour
                         }
                         if (Input.GetButtonDown("buttonB"))
                         {
-                            if (!isDashing && Input.GetAxisRaw("Horizontal") != 0)
+                            if (!isDashing)
                             {
-                                StartCoroutine(StartDashing(0.4f));
+                                if (isGrounded)
+                                {
+                                    StartCoroutine(StartDashing(0.4f, lastDirectionPressed));
+                                }
+                                else if (airDashCounter > 0)
+                                {
+                                    airDashCounter--;
+                                    StartCoroutine(StartDashing(0.4f, lastDirectionPressed));
+                                }
+                                Debug.Log(airDashCounter + " dashes left");
                             }
                         }
                         if (Input.GetButtonDown("buttonY"))
                         {
                             if (targetedSword != null) //if you're near a sword
                             {
-                                if (holdingSword == 0)
+                                if (holdingSword == NO_SWORD_EQUIPPED)
                                 {
                                     PickUpSword(targetedSword);
                                 }
@@ -236,7 +259,7 @@ public class PlayerController : MonoBehaviour
                                 }
                                 audioSource.PlayOneShot(swordEquipSound);
                             }
-                            else if (holdingSword != 0)
+                            else if (holdingSword != NO_SWORD_EQUIPPED)
                             {
                                 DropSword();
                             }
@@ -244,14 +267,14 @@ public class PlayerController : MonoBehaviour
 
                         if (Input.GetButtonDown("buttonX"))
                         {
-                            if (holdingSword != 0 && !isAttacking)
+                            if (holdingSword != NO_SWORD_EQUIPPED && !isAttacking)
                             {
                                 StartCoroutine(Attack(0.5f));
                             }
                         }
                         if (Input.GetButton("buttonX") && Input.GetButton("Jump"))
                         {
-                            if (holdingSword != 0 && targetedMeteor != null && targetedMeteorDistance < meteorAttackRange)
+                            if (holdingSword != NO_SWORD_EQUIPPED && targetedMeteor != null && targetedMeteorDistance < meteorAttackRange)
                             {
                                 StartCoroutine(AttackOnMeteor(transform, targetedMeteor, 3.0f));
                             }
@@ -266,7 +289,11 @@ public class PlayerController : MonoBehaviour
         }
         
     }
-
+    private void ResetMomentum()
+    {
+        speed = 0.0f;
+        circularVelocity = new Vector3(0.0f, circularVelocity.y, 0.0f);
+    }
     private void QuickDebugging()
     {
 #if (UNITY_EDITOR)
@@ -376,9 +403,9 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    if (holdingSword == 0)
+                    if (holdingSword == NO_SWORD_EQUIPPED)
                     {
-                        gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+                        gui.UpdateMeteorHeightUI(0.0f, NO_SWORD_EQUIPPED);
                         gui.TogglePrompt(true, "You need a sword!");
                     }
                     else
@@ -414,9 +441,6 @@ public class PlayerController : MonoBehaviour
             return worldHeight;
         }
     }
-
-
-
     private void ResetBreakables()
     {
         GameObject[] breakables = GameObject.FindGameObjectsWithTag("Breakable");
@@ -433,18 +457,20 @@ public class PlayerController : MonoBehaviour
         {
             TakeDamage(1);
         }
-        else if(collision.GetContact(0).normal.y > 0.5f)
+        else if(collision.GetContact(0).normal.y > 0.5f) //Touched the ground!
         {
             prone = false;
             isGrounded = true;
             canDoubleJump = true;
             touchedWallDirection = 0;
             previousWallJumpDirection = 0;
+            airDashCounter = maxAirDashes;
         }
-        else if(collision.GetContact(0).normal.x + collision.GetContact(0).normal.z != 0)
+        else if(collision.GetContact(0).normal.x + collision.GetContact(0).normal.z != 0) //Touched a wall!
         {
             touchedWallDirection = collision.GetContact(0).normal.x + collision.GetContact(0).normal.z;
-            if (rb.velocity.y < 0)
+            ResetMomentum();
+            if (rb.velocity.y < 0) //Clings to wall!
             {
                 rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
             }
@@ -457,18 +483,12 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (playerState == 1)
+        if (playerState == ACTIVELY_PLAYING)
         {
-            if (other.gameObject.CompareTag("Meteor"))
-            {
-                //targetedMeteor = other.gameObject;
-                //targetedMeteor.GetComponent<MeteorController>().withinAttackRange = true;                
-            }
-
             if (other.gameObject.CompareTag("Sword"))
             {
                 targetedSword = other.gameObject;
-                if(holdingSword == 0)
+                if(holdingSword == NO_SWORD_EQUIPPED)
                 {
                     gui.TogglePlayerActionText(targetedSword, holdingSword);
                 }
@@ -481,7 +501,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        if (playerState == 1)
+        if (playerState == ACTIVELY_PLAYING)
         {
             if (other.gameObject.CompareTag("Meteor"))
             {
@@ -498,39 +518,39 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
     #region PLAYER ACTIONS
-    private IEnumerator StartDashing(float duration)
+    private IEnumerator StartDashing(float duration, float direction)
     {
         isDashing = true;
+        anim.SetBool("dashing", isDashing);
         myCollider.height /= 2;
         myCollider.center = new Vector3(myCollider.center.x, myCollider.center.y - (myCollider.height / 2), myCollider.center.z);
 
-        circularVelocity = Vector3.ClampMagnitude(circularVelocity * 5.0f, moveSpeed * 1.5f);
-        float currentDrag = horizontalDrag;
-        dashing = true;        
+        moveSpeed *= 2;
         float counter = 0;
         while (counter < duration)
         {
-            horizontalDrag = 0.9f;
-            counter += Time.deltaTime;
+            circularVelocity = transform.right * -direction * moveSpeed * (1.0f - (counter / duration));
 
-            if (counter * 2.0f > duration && horizontalDrag >= 0.9f)
+            if (Mathf.Abs(rb.velocity.y) > 10.0f)
             {
-                horizontalDrag = currentDrag / 2;
-            }
-            if (Mathf.Abs(rb.velocity.y) > 10.0f) {
                 rb.velocity = new Vector3(rb.velocity.x, rb.velocity.y / 2.0f, rb.velocity.z);
             }
+
+            counter += Time.deltaTime;
             yield return null;
         }
-        dashing = false;
-        horizontalDrag = currentDrag;
+        moveSpeed /= 2;
 
+        ResetMomentum();
         myCollider.center = new Vector3(myCollider.center.x, myCollider.center.y + (myCollider.height / 2), myCollider.center.z);
         myCollider.height *= 2;
         isDashing = false;
+        anim.SetBool("dashing", isDashing);
+
     }
-    private void WallJump(float wallDirection)
+    private IEnumerator StartWallJumping(float duration, float wallDirection)
     {
+        isWallJumping = true;
         wallJumping = true;
         float jumpMultiplier = 0.8f;
         if (wallDirection > 0)
@@ -556,8 +576,17 @@ public class PlayerController : MonoBehaviour
             }
         }
         rb.velocity = Vector3.up * jumpForce * jumpMultiplier;
-        audioSource.PlayOneShot(wallJumpSound);
-        circularVelocity *= -2.0f;
+
+        speed = -lastDirectionPressed * moveSpeed / 4;
+        circularVelocity = transform.right * -speed;
+        lastDirectionPressed *= -1;
+        Debug.Log(circularVelocity + " JUMP");
+        audioSource.PlayOneShot(wallJumpSound);   
+        
+        yield return new WaitForSeconds(duration);
+        isWallJumping = false;
+        wallJumping = false;
+        //circularVelocity *= -2.0f;
     }
     private IEnumerator Attack(float duration)
     {
@@ -644,8 +673,8 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        holdingSword = 0;
-        EquipSword(0);
+        holdingSword = NO_SWORD_EQUIPPED;
+        EquipSword(NO_SWORD_EQUIPPED);
         
         Instantiate(swordToSpawn, transform.position, transform.rotation);
     }
@@ -681,12 +710,12 @@ public class PlayerController : MonoBehaviour
     private IEnumerator AttackOnMeteor(Transform fromPosition, GameObject meteor, float duration)
     {
         //Make sure there is only one instance of this function running
-        if (playerState == 2)
+        if (playerState == ATTACKING_METEOR)
         {
             yield break; ///exit if this is still running
         }
 
-        playerState = 2;
+        playerState = ATTACKING_METEOR;
         gui.ToggleNonTimingWindowGUI(false);
         gui.ScaleBlackBars(75.0f, 0.5f);
 
@@ -705,6 +734,12 @@ public class PlayerController : MonoBehaviour
             fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
             yield return null;
         }
+        while (!TimingWindow.eventOver)
+        {
+            yield return null;
+        }
+
+        //Everything after this point is one frame, setting everything to the result
         avatarModelRotation = 0.0f;
         playerState = 1;
         CameraController.SwitchToMainCamera();
@@ -750,8 +785,8 @@ public class PlayerController : MonoBehaviour
                 gui.TogglePrompt(true, "What?! It didn't work!");
             }
 
-            holdingSword = 0;
-            EquipSword(0);
+            holdingSword = NO_SWORD_EQUIPPED;
+            EquipSword(NO_SWORD_EQUIPPED);
 
             Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
             if (meteorsDestroyed >= maxMeteorsForLevel)
@@ -785,7 +820,8 @@ public class PlayerController : MonoBehaviour
         playerHealth -= amount;
         gui.FlashRed();
         gui.UpdateHealthUI(playerHealth);
-
+        audioSource.PlayOneShot(damageSound);
+        CameraController.cameraShakeTimer = 0.5f;
         if (playerHealth <= 0)
         {
             GameOver(ResultsMenu.HEALTH_DEATH); //From health loss
@@ -816,12 +852,12 @@ public class PlayerController : MonoBehaviour
     private void UpdateAnimations()
     {
         avatarModel.transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + avatarModelRotation, transform.eulerAngles.z);
-        if (Input.GetAxisRaw("Horizontal") < 0)
+        if (speed < -0.1f)
         {
             if (avatarModelRotation < 90.0f) avatarModelRotation += 30.0f;
             running = true;
         }
-        else if (Input.GetAxisRaw("Horizontal") > 0)
+        else if (speed > 0.1f)
         {
             if (avatarModelRotation > -90.0f) avatarModelRotation -= 30.0f;
             running = true;
@@ -831,7 +867,6 @@ public class PlayerController : MonoBehaviour
             running = false;
         }
         anim.SetBool("running", running);
-        anim.SetBool("dashing", dashing);
         anim.SetBool("attacking", isAttacking);
         anim.SetBool("doublejumping", !canDoubleJump);
         anim.SetBool("jumping", !isGrounded);
@@ -856,11 +891,12 @@ public class PlayerController : MonoBehaviour
         CameraController.SwitchToMainCamera();
 
         playerState = 1;
-        holdingSword = 0;
-        EquipSword(0);
+        holdingSword = NO_SWORD_EQUIPPED;
+        EquipSword(NO_SWORD_EQUIPPED);
         isGrounded = false;
         canDoubleJump = false;
         touchedWallDirection = 0;
+        airDashCounter = maxAirDashes;
         prone = false;
 
         initialDeathDelay = 1.0f;

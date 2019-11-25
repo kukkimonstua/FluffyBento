@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 520419b3360e5d644a2256ddd89e84d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneLevel: 1
+  sceneLevel: 0
   worldOrigin: {fileID: 0}
   meteorWorldOrigin: {fileID: 0}
   playerOrigin: {fileID: 0}
@@ -198,27 +198,25 @@ MonoBehaviour:
   gui: {fileID: 0}
   timingWindow: {fileID: 0}
   timingGrade: 0
-  bgm: {fileID: 3173430116606325623}
-  bgmLvl1: {fileID: 8300000, guid: 3d87b74b65329d24187ea8599109bf3b, type: 3}
-  bgmLvl2: {fileID: 8300000, guid: 23fc1d262cd01614ab16e6018e6922b0, type: 3}
-  bgmLvl3: {fileID: 8300000, guid: ead66f952b0b3d84788d71219f65d311, type: 3}
-  moveSpeed: 40
-  horizontalDrag: 0.8
-  jumpForce: 14
-  fallMultiplier: 3
-  lowJumpMultiplier: 4
+  moveSpeed: 20
+  acceleration: 10
+  horizontalDrag: 0.5
+  maxAirDashes: 2
+  jumpForce: 16
+  fallMultiplier: 4
+  lowJumpMultiplier: 6
   isGrounded: 0
   canDoubleJump: 0
   touchedWallDirection: 0
   targetedMeteor: {fileID: 0}
   targetedSword: {fileID: 0}
+  playerMaxHealth: 3
+  meteorAttackRange: 250
+  meteorDeathThreshold: 50
   zanbato: {fileID: 998694544303584942, guid: 1cb087e0b53550a4f93102376f93f740, type: 3}
   broadsword: {fileID: 998694544303584942, guid: 523215d3fa0b58542af34787f6a842b3,
     type: 3}
   katana: {fileID: 998694544303584942, guid: a8c318e6be1fcd2499c72f03bef21389, type: 3}
-  playerMaxHealth: 3
-  meteorAttackRange: 250
-  meteorDeathThreshold: 50
   avatarModel: {fileID: 1186575190478466613}
   anim: {fileID: 5235106637848572252}
   equippedZanbato: {fileID: 6772005499209362455}
@@ -229,6 +227,11 @@ MonoBehaviour:
   swordEquipSound: {fileID: 8300000, guid: 084e549f538d66846a66a92e43f90187, type: 3}
   explosionSound: {fileID: 8300000, guid: bcb02f5130c83fa4e914d6b86d0f6ea5, type: 3}
   attackSound: {fileID: 8300000, guid: 775f9143792851a45b008c810038f2fb, type: 3}
+  damageSound: {fileID: 8300000, guid: 0247e9b427825ae4b967a15a47fa5902, type: 3}
+  bgm: {fileID: 3173430116606325623}
+  bgmLvl1: {fileID: 8300000, guid: 3d87b74b65329d24187ea8599109bf3b, type: 3}
+  bgmLvl2: {fileID: 8300000, guid: 23fc1d262cd01614ab16e6018e6922b0, type: 3}
+  bgmLvl3: {fileID: 8300000, guid: ead66f952b0b3d84788d71219f65d311, type: 3}
   successPrefab: {fileID: 0}
 --- !u!82 &1660102038325301908
 AudioSource:

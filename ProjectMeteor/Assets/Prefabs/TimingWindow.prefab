@@ -215,6 +215,11 @@ MonoBehaviour:
     type: 3}
   buttonY: {fileID: -7173023993303075856, guid: dfd6acc656e07a5458a22f8fe102ae29,
     type: 3}
+  cutinFrames:
+  - {fileID: 21300000, guid: 75507f895bb6ce84f8c84ee5dcc2a65e, type: 3}
+  - {fileID: 21300000, guid: 2edf3809770d99041bc1adb02fab00b2, type: 3}
+  - {fileID: 21300000, guid: e684d67d7d8df634e8200f5a95e6c323, type: 3}
+  - {fileID: 21300000, guid: a3e3e6d98db0ba54aad07cf18234b30b, type: 3}
 --- !u!1 &1829793303817803646
 GameObject:
   m_ObjectHideFlags: 0
