@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class TimingWindow : MonoBehaviour
 {
     public PlayerController player;
+    public GUIController gui;
     public Image button;
     public RectTransform shrinker;
     private float shrinkerDiameter;
@@ -21,9 +22,9 @@ public class TimingWindow : MonoBehaviour
     public Text displayText;
     private static string feedbackText;
 
-    public static bool gotPressed;
+    public bool gotPressed;
     private bool pressable;
-    public static bool eventOver;
+    public bool eventOver;
 
     public Sprite buttonsNone;
     public Sprite buttonX;
@@ -31,6 +32,7 @@ public class TimingWindow : MonoBehaviour
     public Sprite buttonB;
     public Sprite buttonY;
 
+    private bool coloursMatching;
     public Animator eventCutin;
 
     private AudioSource audioSource;
@@ -128,51 +130,59 @@ public class TimingWindow : MonoBehaviour
                     }
                     */
 
-                    if (shrinkerTrueValue < deadThreshold * 0.75) gotPressed = true;
+                    if (shrinkerTrueValue < deadThreshold * 0.75) TimedPress();
                 }
                 else
                 {
                     if (alphaValue > 0.0f) alphaValue -= 0.05f;
                     FadeTimingWindowUI(alphaValue);
-                    if (shrinkerTrueValue < perfectThreshold && shrinkerTrueValue > deadThreshold)
-                    {
-                        player.timingGrade = 3;
-                        feedbackText = "Perfect!";
-                    }
-                    else if(shrinkerTrueValue < greatThreshold && shrinkerTrueValue > deadThreshold)
-                    {
-                        player.timingGrade = 2;
-                        feedbackText = "Great!";
-                    }
-                    else if (shrinkerTrueValue < goodThreshold && shrinkerTrueValue > deadThreshold)
-                    {
-                        player.timingGrade = 1;
-                        feedbackText = "Good!";
-                    }
-                    else
-                    {
-                        player.timingGrade = 0;
-                        feedbackText = "Miss...";
-                    }
-                    if (player.timingGrade > 0)
-                    {
-                        eventCutin.SetTrigger("cutin");
-                    }
+                    
                 }
             }
             counter += Time.deltaTime;
             yield return null;
         }
-
-
-        //Debug.Log(feedbackText + ": " + shrinkerDiameter);
+        while(eventCutin.GetCurrentAnimatorStateInfo(0).IsName("Time_Strike"))
+        {
+            yield return null;
+        }
+        gui.FlashWhite();
+        yield return new WaitForSeconds(0.2f);
 
         FadeTimingWindowUI(0.0f);
         StartCoroutine(ShowFeedbackText(false, 1.0f));
         eventOver = true;
     }
+    public void TimedPress()
+    {
+        gotPressed = true;
+        if (shrinkerTrueValue < perfectThreshold && shrinkerTrueValue > deadThreshold)
+        {
+            player.timingGrade = 3;
+            feedbackText = "Perfect!";
+        }
+        else if (shrinkerTrueValue < greatThreshold && shrinkerTrueValue > deadThreshold)
+        {
+            player.timingGrade = 2;
+            feedbackText = "Great!";
+        }
+        else if (shrinkerTrueValue < goodThreshold && shrinkerTrueValue > deadThreshold)
+        {
+            player.timingGrade = 1;
+            feedbackText = "Good!";
+        }
+        else
+        {
+            player.timingGrade = 0;
+            feedbackText = "Miss...";
+        }
+        if (player.timingGrade > 0 && coloursMatching)
+        {
+            eventCutin.SetTrigger("cutin");
+        }
+    }
 
-    public void StartTimingWindow(float duration, int swordID)
+    public void StartTimingWindow(float duration, int swordID, int meteorID)
     {
         switch (swordID)
         {
@@ -185,6 +195,14 @@ public class TimingWindow : MonoBehaviour
             case 3:
                 shrinker.gameObject.GetComponent<RawImage>().color = new Color(145.0f / 255.0f, 242.0f / 255.0f, 255.0f / 255.0f);
                 break;
+        }
+        if (meteorID == 0 || swordID == meteorID)
+        {
+            coloursMatching = true;
+        }
+        else
+        {
+            coloursMatching = false;
         }
         FadeTimingWindowUI(1.0f);
         StartCoroutine(TimingWindowCoroutine(duration));
@@ -208,6 +226,7 @@ public class TimingWindow : MonoBehaviour
         }
         else
         {
+            yield return new WaitForSeconds(0.5f);
             float startAlpha = 1.0f;
             for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / duration)
             {

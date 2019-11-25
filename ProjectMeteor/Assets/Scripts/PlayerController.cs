@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public MeteorManager meteorManager;
     public SwordManager swordManager;
     public GUIController gui;
-    public GameObject timingWindow;
+    public TimingWindow timingWindow;
     [HideInInspector] public int timingGrade;
 
     public static float worldRadius; //Accessed by a LOT of different scripts
@@ -132,9 +132,9 @@ public class PlayerController : MonoBehaviour
                 touchedWallDirection = 0;
                 isGrounded = false;
                 canDoubleJump = false;
-                if (Input.GetButtonDown("buttonX") && !TimingWindow.gotPressed)
+                if (Input.GetButtonDown("buttonX") && !timingWindow.gotPressed)
                 {
-                    TimingWindow.gotPressed = true;
+                    timingWindow.TimedPress();
                 }
                 gui.TogglePrompt(false, "");
                 gui.HidePlayerActionText();
@@ -152,10 +152,14 @@ public class PlayerController : MonoBehaviour
 
                 //BEGIN NEW
                 if (Input.GetAxisRaw("Horizontal") > 0 || Input.GetAxisRaw("Horizontal") < 0)
-                    lastDirectionPressed = Input.GetAxisRaw("Horizontal"); //Used only for dash
-
-                speed += Input.GetAxisRaw("Horizontal") * acceleration * 0.6f * Time.deltaTime;
-                speed = Mathf.Clamp(speed, -acceleration, acceleration);
+                {
+                    lastDirectionPressed = Input.GetAxisRaw("Horizontal"); //Used for dash and wall jump
+                }
+                if (!isWallJumping)
+                {
+                    speed += Input.GetAxisRaw("Horizontal") * acceleration * 0.4f * Time.deltaTime;
+                    speed = Mathf.Clamp(speed, -acceleration, acceleration);
+                }
 
                 if (Input.GetAxisRaw("Horizontal") == 0 && !isDashing)
                 {
@@ -175,9 +179,6 @@ public class PlayerController : MonoBehaviour
                 circularVelocity -= transform.right * speed;
                 circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed);
                 //END NEW
-
-                Debug.Log(speed);
-
 
                 if (prone) circularVelocity = new Vector3(0.0f, circularVelocity.y, 0.0f);
 
@@ -242,7 +243,6 @@ public class PlayerController : MonoBehaviour
                                     airDashCounter--;
                                     StartCoroutine(StartDashing(0.4f, lastDirectionPressed));
                                 }
-                                Debug.Log(airDashCounter + " dashes left");
                             }
                         }
                         if (Input.GetButtonDown("buttonY"))
@@ -580,10 +580,10 @@ public class PlayerController : MonoBehaviour
         speed = -lastDirectionPressed * moveSpeed / 4;
         circularVelocity = transform.right * -speed;
         lastDirectionPressed *= -1;
-        Debug.Log(circularVelocity + " JUMP");
-        audioSource.PlayOneShot(wallJumpSound);   
-        
+
+        audioSource.PlayOneShot(wallJumpSound);
         yield return new WaitForSeconds(duration);
+
         isWallJumping = false;
         wallJumping = false;
         //circularVelocity *= -2.0f;
@@ -726,7 +726,7 @@ public class PlayerController : MonoBehaviour
 
         float counter = 0;
         timingGrade = 0;
-        timingWindow.GetComponent<TimingWindow>().StartTimingWindow(duration, holdingSword);
+        timingWindow.StartTimingWindow(duration, holdingSword, meteor.GetComponent<MeteorController>().meteorID);
 
         while (counter < duration)
         {
@@ -734,7 +734,7 @@ public class PlayerController : MonoBehaviour
             fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
             yield return null;
         }
-        while (!TimingWindow.eventOver)
+        while (!timingWindow.eventOver)
         {
             yield return null;
         }
@@ -810,7 +810,6 @@ public class PlayerController : MonoBehaviour
         {
             TakeDamage(1);
             prone = true;
-
         }
     }
 

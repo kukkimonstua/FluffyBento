@@ -5207,6 +5207,11 @@ PrefabInstance:
       propertyPath: eventCutin
       value: 
       objectReference: {fileID: 661173751442668984}
+    - target: {fileID: 1829793303647174576, guid: 02f9a300a24b84b4abb60058f9efecf9,
+        type: 3}
+      propertyPath: gui
+      value: 
+      objectReference: {fileID: 7988274233968390027}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02f9a300a24b84b4abb60058f9efecf9, type: 3}
 --- !u!224 &8631451587168114488 stripped

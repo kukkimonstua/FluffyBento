@@ -1341,12 +1341,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7975215423648970769}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &831719942 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8631451587168114487, guid: f4f7f762586e18e47be6f0f7b68f1408,
+--- !u!114 &831719944 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8631451587168114489, guid: f4f7f762586e18e47be6f0f7b68f1408,
     type: 3}
   m_PrefabInstance: {fileID: 7975215423648970769}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4747c9f93b83ef143ba04543dbd40c5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &869801680
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3239,7 +3245,7 @@ PrefabInstance:
         type: 3}
       propertyPath: timingWindow
       value: 
-      objectReference: {fileID: 831719942}
+      objectReference: {fileID: 831719944}
     - target: {fileID: 3376312176963667617, guid: 44b25c30ff1b3b84ab3c0356c0509782,
         type: 3}
       propertyPath: pauseMenu
@@ -3578,6 +3584,11 @@ PrefabInstance:
       propertyPath: eventSystem
       value: 
       objectReference: {fileID: 1034411520}
+    - target: {fileID: 4297844066991531334, guid: f4f7f762586e18e47be6f0f7b68f1408,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7836505746320499002, guid: f4f7f762586e18e47be6f0f7b68f1408,
         type: 3}
       propertyPath: m_IsActive
@@ -3624,11 +3635,6 @@ PrefabInstance:
       value: 0.000045776367
       objectReference: {fileID: 0}
     - target: {fileID: 7975215422590684370, guid: f4f7f762586e18e47be6f0f7b68f1408,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4297844066991531334, guid: f4f7f762586e18e47be6f0f7b68f1408,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0

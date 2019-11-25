@@ -6,6 +6,7 @@ public class MeteorController : MonoBehaviour
 {
     //public Material testColour;
     //private Material originalColour;
+    public Transform meteorMesh;
     public int meteorID;
     public bool withinAttackRange;
     public bool isLowest;
@@ -34,6 +35,7 @@ public class MeteorController : MonoBehaviour
     }
     void Update()
     {
+        meteorMesh.Rotate(Time.deltaTime * 5, Time.deltaTime * 5, Time.deltaTime * 5);
         if (fallMarkerInstance != null)
         {
             if (isLowest)

@@ -2161,12 +2161,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &625596222 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8631451587168114487, guid: f4f7f762586e18e47be6f0f7b68f1408,
-    type: 3}
-  m_PrefabInstance: {fileID: 630483125}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &630483125
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2386,6 +2380,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f4f7f762586e18e47be6f0f7b68f1408, type: 3}
+--- !u!114 &630483126 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8631451587168114489, guid: f4f7f762586e18e47be6f0f7b68f1408,
+    type: 3}
+  m_PrefabInstance: {fileID: 630483125}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4747c9f93b83ef143ba04543dbd40c5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &655242485 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3368383156136518416, guid: f4f7f762586e18e47be6f0f7b68f1408,
@@ -3303,7 +3309,7 @@ PrefabInstance:
         type: 3}
       propertyPath: timingWindow
       value: 
-      objectReference: {fileID: 625596222}
+      objectReference: {fileID: 630483126}
     - target: {fileID: 3376312176963667617, guid: 44b25c30ff1b3b84ab3c0356c0509782,
         type: 3}
       propertyPath: pauseMenu
