@@ -252,16 +252,14 @@ public class GUIController : MonoBehaviour
         ResetMinimap();
 
         animatedScore = FadeUI(scoreAdditionText.gameObject, 0.0f, 0.0f);
+        blaze.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+
         if (PlayerController.currentLevel != 0) //i.e. NOT in survival mode
         {
             meteorCounterText.gameObject.SetActive(false);
             timerText.gameObject.SetActive(false);
-        }
-        else
-        {
-            blaze.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
-            meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
-            meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         }
     }
 
