@@ -274,6 +274,16 @@ public class GUIController : MonoBehaviour
         yield return StartCoroutine(FadeUI(fullScreenRed, 0.0f, 0.15f));
         fullScreenRed.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
     }
+    public void FlashWhite()
+    {
+        StartCoroutine(StartFlashWhite());
+    }
+    private IEnumerator StartFlashWhite()
+    {
+        yield return StartCoroutine(FadeUI(fullScreenWhite, 1.0f, 0.2f));
+        yield return StartCoroutine(FadeUI(fullScreenWhite, 0.0f, 0.8f));
+        fullScreenWhite.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+    }
     public void FadeIntoBlack(float target, float duration)
     {
         if (fadeCoroutine != null)
