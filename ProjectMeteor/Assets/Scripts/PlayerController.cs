@@ -285,7 +285,7 @@ public class PlayerController : MonoBehaviour
                         }
                     }
 
-                    gui.UpdatePlayerMarker(transform);
+                    gui.UpdatePlayerMarker(avatarModel.transform);
                     UpdateAnimations();
                     QuickDebugging(); //REMOVE WHEN DONE
                 }
