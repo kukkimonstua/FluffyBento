@@ -153,12 +153,7 @@ public class PlayerController : MonoBehaviour
                 //BEGIN NEW
                 if (Input.GetAxisRaw("Horizontal") > 0 || Input.GetAxisRaw("Horizontal") < 0)
                 {
-                    lastDirectionPressed = Input.GetAxisRaw("Horizontal"); //Used for dash and wall jump
-                }
-                if (!isWallJumping)
-                {
-                    speed += Input.GetAxisRaw("Horizontal") * acceleration * 0.4f * Time.deltaTime;
-                    speed = Mathf.Clamp(speed, -acceleration, acceleration);
+                    lastDirectionPressed = Input.GetAxisRaw("Horizontal"); //Used for dash
                 }
 
                 if (Input.GetAxisRaw("Horizontal") == 0 && !isDashing)
@@ -169,12 +164,21 @@ public class PlayerController : MonoBehaviour
                         speed *= horizontalDrag;
                     }
                 }
-                //Debug.Log(speed + " from adding " + Input.GetAxisRaw("Horizontal"));
-                if (Input.GetAxisRaw("Horizontal") > 0.0f && speed < 0.0f
-                    || Input.GetAxisRaw("Horizontal") < 0.0f && speed > 0.0f)
+
+                Debug.Log(speed);
+                if (!isWallJumping)
                 {
-                    ResetMomentum();
+                    speed += Input.GetAxisRaw("Horizontal") * acceleration * 0.4f * Time.deltaTime;
+                    speed = Mathf.Clamp(speed, -acceleration, acceleration);
+
+                    //Debug.Log(speed + " from adding " + Input.GetAxisRaw("Horizontal"));
+                    if (Input.GetAxisRaw("Horizontal") > 0.0f && speed < 0.0f
+                        || Input.GetAxisRaw("Horizontal") < 0.0f && speed > 0.0f)
+                    {
+                        ResetMomentum();
+                    }
                 }
+                
 
                 circularVelocity -= transform.right * speed;
                 circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed);
@@ -281,7 +285,7 @@ public class PlayerController : MonoBehaviour
                         }
                     }
 
-                    gui.UpdatePlayerMarker(transform.position);
+                    gui.UpdatePlayerMarker(transform);
                     UpdateAnimations();
                     QuickDebugging(); //REMOVE WHEN DONE
                 }
@@ -577,12 +581,18 @@ public class PlayerController : MonoBehaviour
         }
         rb.velocity = Vector3.up * jumpForce * jumpMultiplier;
 
-        speed = -lastDirectionPressed * moveSpeed / 4;
-        circularVelocity = transform.right * -speed;
-        lastDirectionPressed *= -1;
-
+        ResetMomentum();
         audioSource.PlayOneShot(wallJumpSound);
-        yield return new WaitForSeconds(duration);
+
+        float counter = 0.0f;
+        while (counter < duration)
+        {
+            speed = wallDirection * moveSpeed / 3;
+            circularVelocity = transform.right * -speed;
+
+            counter += Time.deltaTime;
+            yield return null;
+        }
 
         isWallJumping = false;
         wallJumping = false;

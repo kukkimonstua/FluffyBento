@@ -128,9 +128,10 @@ public class GUIController : MonoBehaviour
             }
         }
     }
-    public void UpdatePlayerMarker(Vector3 playerPosition)
+    public void UpdatePlayerMarker(Transform playerTransform)
     {
-        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 4.0f, playerPosition.z / 4.0f);
+        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerTransform.position.x / 4.0f, playerTransform.position.z / 4.0f);
+        playerMarker.GetComponent<RectTransform>().rotation = new Quaternion(0.0f, 0.0f, playerTransform.rotation.y, 0.0f);
         playerMarker.GetComponent<RectTransform>().localScale = new Vector3((Mathf.Sin(Time.time * 8) / 5) + 0.9f, 1.0f, 1.0f);
     }
     public void AddMinimapMeteor(GameObject meteor, int type)
