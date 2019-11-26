@@ -8,10 +8,13 @@ public class MeteorMinimapMarker : MonoBehaviour
     // Start is called before the first frame update
     public bool isLowest;
     public int type = 0;
-
+    public Sprite[] sprites;
+    
     void Start()
     {
         isLowest = false;
+        GetComponent<Image>().sprite = sprites[type];
+        
         switch (type)
         {
             case 3:
@@ -27,9 +30,9 @@ public class MeteorMinimapMarker : MonoBehaviour
                 GetComponent<Image>().color = new Color(230.0f / 255.0f, 160.0f / 255.0f, 0.0f / 255.0f);
                 break;
         }
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isLowest)
