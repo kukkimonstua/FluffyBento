@@ -26,6 +26,7 @@ public class TutorialManager : MonoBehaviour
         if (gameObject.activeSelf)
         {
             tutorialActive = true;
+            gui.helpText.gameObject.SetActive(true);
             foreach (TutorialObject to in tutorialObjects)
             {
                 if (to.myObject.GetComponent<MeteorController>() != null)
@@ -45,6 +46,7 @@ public class TutorialManager : MonoBehaviour
     }
     public void EndTutorial()
     {
+        gui.helpText.gameObject.SetActive(false);
         tutorialActive = false;
         ToggleControlPrompts(false);
     }

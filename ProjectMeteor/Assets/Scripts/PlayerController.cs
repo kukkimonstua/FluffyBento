@@ -766,6 +766,7 @@ public class PlayerController : MonoBehaviour
 
                 meteorsDestroyed++;
                 gui.UpdateMeteorsDestroyed(meteorsDestroyed);
+                CameraController.cameraShakeTimer = 1.0f;
                 audioSource.PlayOneShot(explosionSound);
 
                 if (TutorialManager.tutorialActive)

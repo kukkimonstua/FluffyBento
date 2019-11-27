@@ -6,6 +6,8 @@ public class MeteorManager : MonoBehaviour
 {
     public GUIController gui;
     public Transform playerOrigin;
+    public SwordManager swordManager;
+
     public Transform meteorOrigin;
     public Transform spawnPoint;
     private Vector3[] spawnPoints;
@@ -122,14 +124,17 @@ public class MeteorManager : MonoBehaviour
                 {
                     default:
                         meteorToSpawn = meteorZanbato;
+                        swordManager.SpawnSpecificSword(1);
                         Debug.Log("red meteor appeared");
                         break;
                     case 2:
                         meteorToSpawn = meteorBroadsword;
+                        swordManager.SpawnSpecificSword(2);
                         Debug.Log("yellow meteor appeared");
                         break;
                     case 3:
                         meteorToSpawn = meteorKatana;
+                        swordManager.SpawnSpecificSword(3);
                         Debug.Log("blue meteor appeared");
                         break;
                 }
@@ -181,7 +186,7 @@ public class MeteorManager : MonoBehaviour
             {
                 if (meteor.GetComponent<MeteorController>() != null)
                 {
-                    Destroy(meteor); //THIS CAN DESTROY FILES, USE CAREFULLY
+                    Destroy(meteor);
                 }
             }
         }

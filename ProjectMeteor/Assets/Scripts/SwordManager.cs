@@ -20,7 +20,6 @@ public class SwordManager : MonoBehaviour
     public float spawnDelay = 5.0f;
     private static float swordSpawnTimer;
 
-
     void Start()
     {
         swordSpawnTimer = 0.0f;
@@ -30,7 +29,7 @@ public class SwordManager : MonoBehaviour
     void Update()
     {
         if (!TutorialManager.tutorialActive
-            && PlayerController.playerState == 1)
+            && PlayerController.playerState == PlayerController.ACTIVELY_PLAYING)
         {
             swordSpawnTimer += Time.deltaTime;
             if (swordSpawnTimer > spawnDelay)
@@ -76,6 +75,37 @@ public class SwordManager : MonoBehaviour
     {
         GameObject swordToSpawn; //DON'T SET TO NEW GAMEOBJECT
         int swordID = Random.Range(0, 3) + 1;
+        switch (swordID)
+        {
+            default:
+                swordToSpawn = sword1;
+                break;
+            case 2:
+                swordToSpawn = sword2;
+                break;
+            case 3:
+                swordToSpawn = sword3;
+                break;
+        }
+
+        int randomizedSpawnPoint = 0;
+        if (spawnPointPool.Count > 0)
+        {
+            randomizedSpawnPoint = spawnPointPool[Random.Range(0, spawnPointPool.Count)];
+            spawnPointPool.Remove(randomizedSpawnPoint);
+            if (spawnPointPool.Count <= 0)
+            {
+                ResetSpawnPointPool(randomizedSpawnPoint);
+            }
+        }
+        spawnPoint.position = spawnPoints[randomizedSpawnPoint];
+
+        Instantiate(swordToSpawn, spawnPoint.position, spawnPoint.rotation);
+        swordSpawnTimer = 0.0f;
+    }
+    public void SpawnSpecificSword(int swordID)
+    {
+        GameObject swordToSpawn; //DON'T SET TO NEW GAMEOBJECT
         switch (swordID)
         {
             default:
