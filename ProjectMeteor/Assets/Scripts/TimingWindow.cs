@@ -142,7 +142,8 @@ public class TimingWindow : MonoBehaviour
             counter += Time.deltaTime;
             yield return null;
         }
-        while(eventCutin.GetCurrentAnimatorStateInfo(0).IsName("Time_Strike"))
+        yield return new WaitForSeconds(0.1f); //Delays the one frame setting to ensure the animation starts before it
+        while (eventCutin.GetCurrentAnimatorStateInfo(0).IsName("Time_Strike"))
         {
             yield return null;
         }

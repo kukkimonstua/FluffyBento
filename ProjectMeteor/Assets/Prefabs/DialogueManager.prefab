@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2027266277}
   - component: {fileID: 2027266276}
   - component: {fileID: 2027266278}
+  - component: {fileID: 9111599647387259085}
   m_Layer: 5
   m_Name: SkipPrompt
   m_TagString: Untagged
@@ -95,6 +96,21 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &9111599647387259085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027266274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b8bf5e9f39d3434cbe217a0be9b82ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 4
+  range: 0.5
+  offset: 0.5
 --- !u!1 &3682470743986692862
 GameObject:
   m_ObjectHideFlags: 0

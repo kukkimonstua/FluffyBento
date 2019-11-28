@@ -78,12 +78,11 @@ public class MeteorManager : MonoBehaviour
     }
     private void CreateSpawnPoints(int points)
     {
-        int numOfPoints = points;
-        spawnPoints = new Vector3[numOfPoints];
+        spawnPoints = new Vector3[points];
         spawnPointPool = new List<int>();
-        for (int i = 0; i < numOfPoints; i++)
+        for (int i = 0; i < points; i++)
         {
-            meteorOrigin.Rotate(0.0f, 360.0f / numOfPoints, 0.0f);
+            meteorOrigin.Rotate(0.0f, 360.0f / points, 0.0f);
             GameObject newSpawnPoint = new GameObject("MeteorSpawnPoint" + i);
             newSpawnPoint.transform.SetParent(transform);
             newSpawnPoint.transform.position = meteorOrigin.position + (meteorOrigin.transform.forward * PlayerController.worldRadius) + (playerOrigin.transform.up * PlayerController.worldHeight);

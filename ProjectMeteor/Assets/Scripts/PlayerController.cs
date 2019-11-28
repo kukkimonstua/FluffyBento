@@ -745,6 +745,7 @@ public class PlayerController : MonoBehaviour
             fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
             yield return null;
         }
+
         while (!timingWindow.eventOver)
         {
             yield return null;
