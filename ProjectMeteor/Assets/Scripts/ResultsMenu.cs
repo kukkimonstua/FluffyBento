@@ -10,10 +10,10 @@ public class ResultsMenu : MonoBehaviour
     public const int METEOR_DEATH = 2;
     public const int HEALTH_DEATH = 3;
 
-    //public static bool GameIsPaused = false;
     public GameObject resultsMenuUI;
     public Image decal;
-    //public GameObject controls;
+    public PlayerController player;
+    public EventSystem eventSystem;
 
     public Text header;
     public Text explanation;
@@ -22,12 +22,31 @@ public class ResultsMenu : MonoBehaviour
 
     public Button initialButton;
     public Button altInitialButton;
-    public PlayerController player;
-    public EventSystem eventSystem;
+    private GameObject previousSelection;
+    private bool resultsMenuUnlocked;
 
-    public void Update()
+    void Start()
     {
-        decal.GetComponent<RectTransform>().Rotate(new Vector3(0, 0, -30.0f * Time.deltaTime));
+        previousSelection = initialButton.gameObject;
+    }
+
+    void Update()
+    {
+        //decal.GetComponent<RectTransform>().Rotate(new Vector3(0, 0, -30.0f * Time.deltaTime));
+        if (resultsMenuUnlocked)
+        {
+            if (eventSystem.currentSelectedGameObject != null)
+            {
+                if (eventSystem.currentSelectedGameObject != previousSelection)
+                {
+                    previousSelection = eventSystem.currentSelectedGameObject;
+                }
+            }
+            else
+            {
+                eventSystem.SetSelectedGameObject(previousSelection.gameObject);
+            }
+        }
     }
 
     public void ShowResultsMenu(int currentScore, int resultType, float duration, float delay)
@@ -70,7 +89,6 @@ public class ResultsMenu : MonoBehaviour
     }
     public void HideResultsMenu()
     {
-        eventSystem.SetSelectedGameObject(null); //Deselect all menu options
         resultsMenuUI.SetActive(false);
     }
 
@@ -88,19 +106,26 @@ public class ResultsMenu : MonoBehaviour
 
         resultsMenuUI.GetComponent<CanvasGroup>().alpha = 1.0f;
         eventSystem.SetSelectedGameObject(buttonToSet); //Select initial menu option
+        resultsMenuUnlocked = true;
     }
 
     public void Continue()
     {
+        resultsMenuUnlocked = false;
+        eventSystem.SetSelectedGameObject(null); //Deselect all menu options
         player.GoToNextLevel();
     }
 
     public void RestartGame()
     {
+        resultsMenuUnlocked = false;
+        eventSystem.SetSelectedGameObject(null); //Deselect all menu options
         player.RestartLevel();
     }
     public void QuitGame()
     {
+        resultsMenuUnlocked = false;
+        eventSystem.SetSelectedGameObject(null); //Deselect all menu options
         player.QuitGame();
     }
 

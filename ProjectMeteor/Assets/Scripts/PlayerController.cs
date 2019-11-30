@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip bgmLvl3;
 
     public GameObject successPrefab;
-
+    public const int DISABLED = 0;
     public const int ACTIVELY_PLAYING = 1;
     public const int ATTACKING_METEOR = 2;
     public const int GAME_OVER = 3;
@@ -902,7 +902,7 @@ public class PlayerController : MonoBehaviour
         avatarModelRotation = 0.0f;
         CameraController.SwitchToMainCamera();
 
-        playerState = 1;
+        playerState = ACTIVELY_PLAYING;
         holdingSword = NO_SWORD_EQUIPPED;
         EquipSword(NO_SWORD_EQUIPPED);
         isGrounded = false;
@@ -927,6 +927,7 @@ public class PlayerController : MonoBehaviour
     }
     public void GoToNextLevel()
     {
+        playerState = DISABLED;
         StartCoroutine(FadeToNextLevel(1.0f));
     }
     private IEnumerator FadeToNextLevel(float duration)
@@ -954,6 +955,7 @@ public class PlayerController : MonoBehaviour
     }
     public void RestartLevel()
     {
+        playerState = DISABLED;
         StartCoroutine(FadeToRestart(1.0f));
     }
     private IEnumerator FadeToRestart(float duration)
@@ -971,6 +973,7 @@ public class PlayerController : MonoBehaviour
     }
     public void QuitGame()
     {
+        playerState = DISABLED;
         StartCoroutine(FadeToQuit(1.0f));
     }
     private IEnumerator FadeToQuit(float duration)
