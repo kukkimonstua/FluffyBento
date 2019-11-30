@@ -200,7 +200,7 @@ Material:
     - _OutlineTextureColorRate: 0.191
     - _OutlineUseColorShift: 0
     - _OutlineValueFromBase: 1
-    - _OutlineWidth: 3.54
+    - _OutlineWidth: 7.8
     - _OutlineWidthMode: 2
     - _Parallax: 0.02
     - _PointAddIntensity: 1
