@@ -18,11 +18,11 @@ public class MenuButton : MonoBehaviour
 
     public void IsSelected(bool state)
     {
-        anim.SetBool("selected", state);
+        if (anim != null) anim.SetBool("selected", state);
     }
 
     public void IsPressed(bool state)
     {
-        anim.SetBool("pressed", state);
+        if (anim != null) anim.SetBool("pressed", state);
     }
 }

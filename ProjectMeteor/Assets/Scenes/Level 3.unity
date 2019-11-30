@@ -3147,6 +3147,11 @@ PrefabInstance:
       propertyPath: flyingMeteorSpeed
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
+        type: 3}
+      propertyPath: swordManager
+      value: 
+      objectReference: {fileID: 691160522}
     - target: {fileID: 944358063281928567, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: m_LocalPosition.x

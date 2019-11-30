@@ -151,10 +151,7 @@ public class PlayerController : MonoBehaviour
 
 
                 //BEGIN NEW
-                if (Input.GetAxisRaw("Horizontal") > 0 || Input.GetAxisRaw("Horizontal") < 0)
-                {
-                    lastDirectionPressed = Input.GetAxisRaw("Horizontal"); //Used for dash
-                }
+                
 
                 if (Input.GetAxisRaw("Horizontal") == 0 && !isDashing)
                 {
@@ -165,9 +162,12 @@ public class PlayerController : MonoBehaviour
                     }
                 }
 
-                Debug.Log(speed);
                 if (!isWallJumping)
                 {
+                    if (Input.GetAxisRaw("Horizontal") > 0 || Input.GetAxisRaw("Horizontal") < 0)
+                    {
+                        lastDirectionPressed = Input.GetAxisRaw("Horizontal"); //Used for dash and wall jump
+                    }
                     speed += Input.GetAxisRaw("Horizontal") * acceleration * 0.4f * Time.deltaTime;
                     speed = Mathf.Clamp(speed, -acceleration, acceleration);
 
@@ -533,7 +533,7 @@ public class PlayerController : MonoBehaviour
         float counter = 0;
         while (counter < duration)
         {
-            circularVelocity = transform.right * -direction * moveSpeed * (1.0f - (counter / duration));
+            circularVelocity = transform.right * -direction * moveSpeed * Mathf.Clamp(0.9f - (counter / duration), 0.0f, 1.0f);
 
             if (Mathf.Abs(rb.velocity.y) > 10.0f)
             {
@@ -587,12 +587,13 @@ public class PlayerController : MonoBehaviour
         float counter = 0.0f;
         while (counter < duration)
         {
-            speed = wallDirection * moveSpeed / 3;
+            speed = -lastDirectionPressed * moveSpeed / 3;
             circularVelocity = transform.right * -speed;
 
             counter += Time.deltaTime;
             yield return null;
         }
+        lastDirectionPressed *= -1;
 
         isWallJumping = false;
         wallJumping = false;
@@ -765,6 +766,7 @@ public class PlayerController : MonoBehaviour
 
                 meteorsDestroyed++;
                 gui.UpdateMeteorsDestroyed(meteorsDestroyed);
+                CameraController.cameraShakeTimer = 1.0f;
                 audioSource.PlayOneShot(explosionSound);
 
                 if (TutorialManager.tutorialActive)

@@ -31,6 +31,7 @@ public class GUIController : MonoBehaviour
     public SwordEquipIcon swordEquipIcon;
     public MeteorDirectionMarker meteorDirectionMarker;
     public Text meteorHeightMarker;
+    public Text helpText;
     public Text timerText;
     public Text meteorCounterText;
 
@@ -327,6 +328,7 @@ public class GUIController : MonoBehaviour
         meteorDirectionMarker.gameObject.SetActive(state);
         healthDisplay.gameObject.SetActive(state);
         scoreText.gameObject.SetActive(state);
+        swordEquipIcon.holdText.gameObject.SetActive(state);
 
         if (PlayerController.currentLevel == 0) //i.e. only in survival mode
         {
