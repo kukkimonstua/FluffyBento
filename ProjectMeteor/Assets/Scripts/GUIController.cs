@@ -302,7 +302,8 @@ public class GUIController : MonoBehaviour
         yield return StartCoroutine(FadeUI(fullScreenWhite, 1.0f, 0.2f));
         fullScreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
         yield return StartCoroutine(FadeUI(fullScreenWhite, 0.0f, 0.8f));
-        fullScreenWhite.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        yield return new WaitForSeconds(1.0f); //by the end of this, the results menu is unlocked
+        yield return StartCoroutine(FadeUI(fullScreenBlack, 0.0f, 1.0f));
     }
     public void ScaleBlackBars(float heightTarget, float duration)
     {

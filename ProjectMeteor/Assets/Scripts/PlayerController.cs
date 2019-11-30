@@ -376,7 +376,7 @@ public class PlayerController : MonoBehaviour
                     }
                     else
                     {
-                        if (lowestMeteorPosition < meteorDeathThreshold)
+                        if (lowestMeteorPosition < meteorDeathThreshold && playerState == ACTIVELY_PLAYING)
                         {
                             lowestMeteorPosition = worldHeight;
                             GameOver(ResultsMenu.METEOR_DEATH); //From a meteor landing
@@ -400,10 +400,8 @@ public class PlayerController : MonoBehaviour
 
                 if (hit.distance > meteorAttackRange)
                 {
-                    //don't use targetedMeteorDistance BEFORE you set it...
                     gui.UpdateMeteorHeightUI(hit.distance - meteorAttackRange, holdingSword);
-                    //gui.TogglePrompt(true, "It's still too far!");
-                    //also indicate that it's the lowest one or NOT.
+                    gui.TogglePrompt(false, "");
                 }
                 else
                 {

@@ -38,6 +38,8 @@ public class DialogueManager : MonoBehaviour
     public static DialogueManager instance;
     private DialogueBase selectedScript;
     private AudioClip selectedBGM;
+
+    public HelpMenu helpMenu;
     public int debugSceneIndex = 0;
 
     public DialogueBase script1OP;
@@ -164,7 +166,7 @@ public class DialogueManager : MonoBehaviour
             EndOfDialogue(1.0f);
             return;
         }
-        Debug.Log(dialogueInfo.Count + " events remaining");
+        //Debug.Log(dialogueInfo.Count + " events remaining");
         if (GameManager.sceneIndex == GameManager.LEVEL_1_ED)
         {
             if (dialogueInfo.Count == 24)
@@ -304,7 +306,21 @@ public class DialogueManager : MonoBehaviour
         yield return StartCoroutine(FadeBlackScreen(1.0f, 2.0f));
 
         Debug.Log("LOAD NEXT PART");
-
+        if (GameManager.sceneIndex == GameManager.START_CUTSCENE) //i.e. cutscene 1OP
+        {
+            helpMenu.gameObject.SetActive(true);
+            helpMenu.GoToFirstHelpPage();
+            EventSystem.current.SetSelectedGameObject(helpMenu.GetComponentInChildren<Button>().gameObject);
+            while (helpMenu.gameObject.activeSelf)
+            {
+                if (EventSystem.current.currentSelectedGameObject == null)
+                {
+                    EventSystem.current.SetSelectedGameObject(helpMenu.GetComponentInChildren<Button>().gameObject);
+                }
+                yield return null;
+            }
+            yield return new WaitForSeconds(1.0f);
+        }
         switch(GameManager.sceneIndex)
         {
             case GameManager.LEVEL_3_ED:
@@ -335,7 +351,6 @@ public class DialogueManager : MonoBehaviour
                 Debug.Log("LOAD LEVEL 1");
                 GameManager.sceneIndex = GameManager.LEVEL_1;
                 SceneManager.LoadScene(GameManager.sceneIndex);
-
                 break;
         }
     }
