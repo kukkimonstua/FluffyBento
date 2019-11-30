@@ -382,16 +382,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TutorialManagerLVL3
       objectReference: {fileID: 0}
-    - target: {fileID: 6986637526820340394, guid: 1773e9e2e7c108f48966382977b5fc54,
-        type: 3}
-      propertyPath: meteorManager
-      value: 
-      objectReference: {fileID: 673540923}
-    - target: {fileID: 6986637526820340394, guid: 1773e9e2e7c108f48966382977b5fc54,
-        type: 3}
-      propertyPath: gui
-      value: 
-      objectReference: {fileID: 586829205}
     - target: {fileID: 6986637526820340395, guid: 1773e9e2e7c108f48966382977b5fc54,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -447,6 +437,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6986637526820340394, guid: 1773e9e2e7c108f48966382977b5fc54,
+        type: 3}
+      propertyPath: meteorManager
+      value: 
+      objectReference: {fileID: 673540923}
+    - target: {fileID: 6986637526820340394, guid: 1773e9e2e7c108f48966382977b5fc54,
+        type: 3}
+      propertyPath: gui
+      value: 
+      objectReference: {fileID: 586829205}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1773e9e2e7c108f48966382977b5fc54, type: 3}
 --- !u!1 &392199584
@@ -3140,7 +3140,7 @@ PrefabInstance:
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: specialMeteorRate
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
@@ -3589,11 +3589,6 @@ PrefabInstance:
       propertyPath: eventSystem
       value: 
       objectReference: {fileID: 1034411520}
-    - target: {fileID: 4297844066991531334, guid: f4f7f762586e18e47be6f0f7b68f1408,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7836505746320499002, guid: f4f7f762586e18e47be6f0f7b68f1408,
         type: 3}
       propertyPath: m_IsActive
@@ -3640,6 +3635,11 @@ PrefabInstance:
       value: 0.000045776367
       objectReference: {fileID: 0}
     - target: {fileID: 7975215422590684370, guid: f4f7f762586e18e47be6f0f7b68f1408,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297844066991531334, guid: f4f7f762586e18e47be6f0f7b68f1408,
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0

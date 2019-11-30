@@ -3224,7 +3224,7 @@ PrefabInstance:
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: maxMeteorsForLevel
-      value: 9
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
@@ -4453,16 +4453,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TutorialManagerLVL1
       objectReference: {fileID: 0}
-    - target: {fileID: 7803182203303289729, guid: e816bbb94c76e214caeba779885d2289,
-        type: 3}
-      propertyPath: meteorManager
-      value: 
-      objectReference: {fileID: 673540923}
-    - target: {fileID: 7803182203303289729, guid: e816bbb94c76e214caeba779885d2289,
-        type: 3}
-      propertyPath: gui
-      value: 
-      objectReference: {fileID: 586829205}
     - target: {fileID: 7803182203303289728, guid: e816bbb94c76e214caeba779885d2289,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4518,6 +4508,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7803182203303289729, guid: e816bbb94c76e214caeba779885d2289,
+        type: 3}
+      propertyPath: meteorManager
+      value: 
+      objectReference: {fileID: 673540923}
+    - target: {fileID: 7803182203303289729, guid: e816bbb94c76e214caeba779885d2289,
+        type: 3}
+      propertyPath: gui
+      value: 
+      objectReference: {fileID: 586829205}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e816bbb94c76e214caeba779885d2289, type: 3}
 --- !u!1001 &7975215423648970769

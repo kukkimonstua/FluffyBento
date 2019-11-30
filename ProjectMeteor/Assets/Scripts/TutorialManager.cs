@@ -106,7 +106,7 @@ public class TutorialManager : MonoBehaviour
         switch (PlayerController.currentLevel) {
             case GameManager.LEVEL_3:
                 yield return SayDialogue(0, "I suppose it's not surprising that you would choose to fight.");
-                yield return SayDialogue(1, "Even though you taught me everything I know, your ideas of justice are probably still different than mine.");
+                yield return SayDialogue(1, "Even though you taught me everything I know, your ideas of justice are probably still different from mine.");
                 yield return SayDialogue(2, "Well, it won't matter soon enough. Once all of us are gone, ideals in constant conflict will be a thing of the past!");
                 yield return SayDialogue(3, "So Master, hurry and get out of here! Or else my swarm of meteors will end you before everyone else!");
                 gui.UpdateSubtitles("");
@@ -114,7 +114,7 @@ public class TutorialManager : MonoBehaviour
             case GameManager.LEVEL_2:
                 yield return SayDialogue(0, "Yashiro! What in the world are you doing up here?!");
                 yield return SayDialogue(1, "...Wait. Are you trying to get to those swords?");
-                yield return SayDialogue(2, "I see. It appears safe to assume that you have encountered meteors like these before, and repelled them using your swordplay prowess.");
+                yield return SayDialogue(2, "I see. You must have encountered meteors like these before, and repelled them using your swordplay prowess.");
                 yield return SayDialogue(3, "Regardless, please exercise caution. I doubt falling from these structures will hurt you, but you will lose precious time trying to get back up.");
                 gui.UpdateSubtitles("");
                 break;
@@ -145,7 +145,7 @@ public class TutorialManager : MonoBehaviour
             case GameManager.LEVEL_2:
                 yield return SayDialogue(4, "Yashiro. That meteor over there seems to be different from the others.");
                 yield return SayDialogue(5, "It appears to be much more durable. And it’s glowing a rather unnatural colour. Hmm...");
-                yield return SayDialogue(6, "Some of the swords scattered around here seem to glowing the same colour as that meteor.");
+                yield return SayDialogue(6, "Some of the swords scattered around here seem to be glowing the same colour as that meteor.");
                 yield return SayDialogue(7, "Perhaps there’s a connection?");
                 gui.UpdateSubtitles("");
                 break;
@@ -169,9 +169,9 @@ public class TutorialManager : MonoBehaviour
                 gui.UpdateSubtitles("");
                 break;
             case GameManager.LEVEL_2:
-                yield return SayDialogue(8, "Yes, I’m sure of it now. Those unusual meteors require a sword glowing the same colour in order for you to destroy it.");
+                yield return SayDialogue(8, "Yes, I’m sure of it now. Those unusual meteors can't be destroyed without a sword glowing the same colour.");
                 yield return SayDialogue(9, "Be sure to take a good look at the meteor and the sword you have equipped before going in for the attack.");
-                yield return SayDialogue(10, "Attacking those special meteors with the wrong sword will do nothing, regardless of your swordsmanship.");
+                yield return SayDialogue(10, "Hitting those special meteors with the wrong sword will do nothing, regardless of your swordsmanship.");
                 yield return SayDialogue(11, "I know you will hate to hear this but...I am counting on you. The future of this nation is in your hands.");
                 yield return SayDialogue(12, "You must prevail.");
                 gui.UpdateSubtitles("");

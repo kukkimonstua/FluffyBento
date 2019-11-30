@@ -308,19 +308,19 @@ MonoBehaviour:
   secondActionCleared: 0
   narration: {fileID: 6285184439914523104}
   narrationClips:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8300000, guid: e99b9e07f2ebbce48ae782b2ed814639, type: 3}
+  - {fileID: 8300000, guid: 02610ca676c32374ebb6a490779ef0f7, type: 3}
+  - {fileID: 8300000, guid: 1e1e2e9d565c8564abc05b663b427bb5, type: 3}
+  - {fileID: 8300000, guid: 2d0c9c2a48b5f5545acb1d1b6b5ff36b, type: 3}
+  - {fileID: 8300000, guid: a3f7441c1da69d747837c6c2856dd4a0, type: 3}
+  - {fileID: 8300000, guid: 846575fab3d76fb4dad11520f1828b0b, type: 3}
+  - {fileID: 8300000, guid: 7228e35d48e550147b9fb0b1a1d79904, type: 3}
+  - {fileID: 8300000, guid: f7b252fe6a56bcf468ce24117b271308, type: 3}
+  - {fileID: 8300000, guid: 84c7a355c943b2145a2a0eba21e082cf, type: 3}
+  - {fileID: 8300000, guid: 92061e752c3e3b741a0d6e6f216d3472, type: 3}
+  - {fileID: 8300000, guid: 42537676c20916141a9b4ef00bc9a264, type: 3}
+  - {fileID: 8300000, guid: da3a10addc3921945bc1151a4b813e57, type: 3}
+  - {fileID: 8300000, guid: 8fba1615ba581eb4e9e1553b79b012cd, type: 3}
 --- !u!82 &6285184439914523104
 AudioSource:
   m_ObjectHideFlags: 0
