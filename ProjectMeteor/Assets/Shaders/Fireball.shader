@@ -7,9 +7,10 @@
 	}
 		SubShader{
 			Tags { "RenderType" = "Opaque" }
+			Fog { Mode off }
 
 			CGPROGRAM
-			#pragma surface surf Lambert vertex:vert
+			#pragma surface surf Lambert nofog vertex:vert
 
 			sampler2D _NoiseTex;
 			sampler2D _RampTex;
