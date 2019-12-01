@@ -94,7 +94,7 @@ public class GUIController : MonoBehaviour
         if (PlayerController.playerState == PlayerController.ACTIVELY_PLAYING)
         {
             UpdateMinimap();
-            //Track time if the timer is even visible (AKA Survival Mode)
+            //Track time only if the timer is visible (AKA Survival Mode)
             if (timerText.gameObject.activeSelf)
             {
                 UpdateTimer();
@@ -113,10 +113,9 @@ public class GUIController : MonoBehaviour
                 {
                     relatedMarker.GetComponent<MeteorMinimapMarker>().isLowest = m.GetComponent<MeteorController>().isLowest;
                 }
-                //Debug.Log(m.transform.position.x + ", " + m.transform.position.z);
             }
-            //Debug.Log("There are " + currentMeteors.Count);
         }
+        minimap.SetActive(!PauseMenu.GameIsPaused);
     }
     public void ResetMinimap()
     {
@@ -375,13 +374,20 @@ public class GUIController : MonoBehaviour
     }
     public void UpdateMeteorHeightUI(float distance, int holdingSword)
     {
-        if (distance <= 0.0f)
+        if (distance >= PlayerController.worldHeight)
         {
             meteorHeightMarker.gameObject.SetActive(false);
+        }
+        else if (distance <= 0.0f) //this means a ceiling or flying meteor is blocking your view
+        {
+            meteorHeightMarker.gameObject.SetActive(true);
+            meteorHeightMarker.GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+            meteorHeightMarker.text = "<???>";
         }
         else
         {
             meteorHeightMarker.gameObject.SetActive(true);
+            meteorHeightMarker.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
             meteorHeightMarker.text = (int) distance + "m too far";
             if (holdingSword == 0)
             {

@@ -15,6 +15,7 @@ public class MeteorMinimapMarker : MonoBehaviour
         isLowest = false;
         GetComponent<Image>().sprite = sprites[type];
         
+        /*
         switch (type)
         {
             case 3:
@@ -30,6 +31,7 @@ public class MeteorMinimapMarker : MonoBehaviour
                 GetComponent<Image>().color = new Color(230.0f / 255.0f, 160.0f / 255.0f, 0.0f / 255.0f);
                 break;
         }
+        */
         
     }
 

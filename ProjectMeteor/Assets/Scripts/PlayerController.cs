@@ -61,9 +61,10 @@ public class PlayerController : MonoBehaviour
     private int meteorsDestroyed;
     public static int maxMeteorsForLevel = 0;
     public static float lowestMeteorPosition;
+    private MeteorController currentLowestMeteor;
     private float targetedMeteorDistance;
     public float meteorAttackRange = 200.0f;
-    private float initialDeathDelay = 1.0f;
+    private float invincibilityTimer = 1.0f;
     public float meteorDeathThreshold = 100.0f;
     public static int playerState; //1 = running, 2 = attacking, 3 = game over
     private Vector3 startingPosition;
@@ -337,47 +338,48 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
+                    //All meteors are made false so that only the true lowest at the end of foreach gets to be true
+                    meteor.GetComponent<MeteorController>().isLowest = false; 
                     if (meteor.transform.position.y < lowestMeteorPosition)
                     {
-                        meteor.GetComponent<MeteorController>().isLowest = true;
+                        currentLowestMeteor = meteor.GetComponent<MeteorController>();
                         lowestMeteorPosition = meteor.transform.position.y;
-                        meteorWorldOrigin.LookAt(new Vector3(meteor.transform.position.x, meteorWorldOrigin.transform.position.y, meteor.transform.position.z));
-
-                        float leftAngleDifference = 360 - (worldOrigin.eulerAngles.y - meteorWorldOrigin.eulerAngles.y);
-                        if (meteorWorldOrigin.eulerAngles.y > worldOrigin.eulerAngles.y) leftAngleDifference = meteorWorldOrigin.eulerAngles.y - worldOrigin.eulerAngles.y;
-                        float rightAngleDifference = 360 - leftAngleDifference;
-
-                        if (leftAngleDifference < rightAngleDifference)
-                        {
-                            gui.UpdateMeteorDirectionUI(-1, leftAngleDifference, meteor.transform.position);
-                        }
-                        else
-                        {
-                            gui.UpdateMeteorDirectionUI(1, rightAngleDifference, meteor.transform.position);
-                        }
-                    }
-                    else
-                    {
-                        meteor.GetComponent<MeteorController>().isLowest = false; //All other meteors is made false
-                    }
-                    gui.UpdateMeteorLandingUI(lowestMeteorPosition, meteorDeathThreshold);
-
-                    if (initialDeathDelay > 0)
-                    {
-                        initialDeathDelay -= Time.deltaTime;
-                    }
-                    else
-                    {
-                        if (lowestMeteorPosition < meteorDeathThreshold && playerState == ACTIVELY_PLAYING)
-                        {
-                            lowestMeteorPosition = worldHeight;
-                            GameOver(ResultsMenu.METEOR_DEATH); //From a meteor landing
-
-                        }
                     }
                 }
             }
+            if (currentLowestMeteor != null)
+            {
+                currentLowestMeteor.isLowest = true;
+                meteorWorldOrigin.LookAt(new Vector3(currentLowestMeteor.transform.position.x, meteorWorldOrigin.transform.position.y, currentLowestMeteor.transform.position.z));
 
+                float leftAngleDifference = 360 - (worldOrigin.eulerAngles.y - meteorWorldOrigin.eulerAngles.y);
+                if (meteorWorldOrigin.eulerAngles.y > worldOrigin.eulerAngles.y) leftAngleDifference = meteorWorldOrigin.eulerAngles.y - worldOrigin.eulerAngles.y;
+                float rightAngleDifference = 360 - leftAngleDifference;
+
+                if (leftAngleDifference < rightAngleDifference)
+                {
+                    gui.UpdateMeteorDirectionUI(-1, leftAngleDifference, currentLowestMeteor.transform.position);
+                }
+                else
+                {
+                    gui.UpdateMeteorDirectionUI(1, rightAngleDifference, currentLowestMeteor.transform.position);
+                }
+
+                gui.UpdateMeteorLandingUI(lowestMeteorPosition, meteorDeathThreshold);
+
+                if (invincibilityTimer > 0)
+                {
+                    invincibilityTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    if (lowestMeteorPosition < meteorDeathThreshold && playerState == ACTIVELY_PLAYING)
+                    {
+                        lowestMeteorPosition = worldHeight;
+                        GameOver(ResultsMenu.METEOR_DEATH); //From a meteor landing
+                    }
+                }
+            }
         }
     }
     private float CheckAboveForMeteor()
@@ -399,12 +401,12 @@ public class PlayerController : MonoBehaviour
                 {
                     if (holdingSword == NO_SWORD_EQUIPPED)
                     {
-                        gui.UpdateMeteorHeightUI(0.0f, NO_SWORD_EQUIPPED);
+                        gui.UpdateMeteorHeightUI(worldHeight, NO_SWORD_EQUIPPED);
                         gui.TogglePrompt(true, "You need a sword!");
                     }
                     else
                     {
-                        gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+                        gui.UpdateMeteorHeightUI(worldHeight, holdingSword);
                         gui.TogglePrompt(true, "Attack Meteor", "buttonsXA");
                     }
                 }
@@ -418,7 +420,6 @@ public class PlayerController : MonoBehaviour
 
                 targetedMeteor = null;
                 gui.TogglePrompt(false, "");
-                gui.UpdateMeteorHeightUI(0.0f, holdingSword);
 
                 return worldHeight;
             }
@@ -426,11 +427,10 @@ public class PlayerController : MonoBehaviour
         else
         {
             //nothing was spotted...
-            gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+            gui.UpdateMeteorHeightUI(worldHeight, holdingSword);
 
             targetedMeteor = null;
             gui.TogglePrompt(false, "");
-            gui.UpdateMeteorHeightUI(0.0f, holdingSword);
 
             return worldHeight;
         }
@@ -447,7 +447,7 @@ public class PlayerController : MonoBehaviour
     #region COLLISIONS AND TRIGGERS
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<FlyingMeteorController>() != null && playerState == ACTIVELY_PLAYING)
+        if(collision.gameObject.GetComponent<FlyingMeteorController>() != null && playerState == ACTIVELY_PLAYING && invincibilityTimer <= 0.0f)
         {
             TakeDamage(1);
         }
@@ -742,6 +742,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Everything after this point is one frame, setting everything to the result
+        invincibilityTimer = 1.0f;
         avatarModelRotation = 0.0f;
         playerState = 1;
         CameraController.SwitchToMainCamera();
@@ -790,7 +791,6 @@ public class PlayerController : MonoBehaviour
 
             holdingSword = NO_SWORD_EQUIPPED;
             EquipSword(NO_SWORD_EQUIPPED);
-
             ResetBreakables();
             if (timingGrade >= 3)
             {
@@ -900,7 +900,7 @@ public class PlayerController : MonoBehaviour
         airDashCounter = maxAirDashes;
         prone = false;
 
-        initialDeathDelay = 1.0f;
+        invincibilityTimer = 1.0f;
         if (currentLevel == 1)
         {
             bgm.FadeInMusic(bgmLvl1, 0.0f);
