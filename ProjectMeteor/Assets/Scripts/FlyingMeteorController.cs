@@ -7,13 +7,15 @@ public class FlyingMeteorController : MonoBehaviour
     private Vector3 destination;
     //public float moveSpeed = 10.0f;
     private Rigidbody rb;
+    private GameObject origin;
 
     void Start()
     {
 
         // YOU CAN'T CREATE A NEW GAMEOBJECT, FIND ANOTHER SOLUTION
         rb = GetComponent<Rigidbody>();
-        GameObject origin = new GameObject();
+        origin = new GameObject("FM Origin");
+
         origin.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         origin.transform.Rotate(0.0f, Random.Range(0, 360.0f), 0.0f);
         destination = origin.transform.position + (origin.transform.forward * PlayerController.worldRadius);
@@ -27,5 +29,13 @@ public class FlyingMeteorController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Destroy(gameObject);
+    }
+
+    private void OnDestroy()
+    {
+        if (origin != null)
+        {
+            Destroy(origin);
+        }
     }
 }

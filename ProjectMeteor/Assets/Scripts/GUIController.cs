@@ -31,6 +31,7 @@ public class GUIController : MonoBehaviour
     public SwordEquipIcon swordEquipIcon;
     public MeteorDirectionMarker meteorDirectionMarker;
     public Text meteorHeightMarker;
+    public Text countdownText;
     public Text helpText;
     public Text timerText;
     public Text meteorCounterText;
@@ -327,6 +328,7 @@ public class GUIController : MonoBehaviour
         subtitles.gameObject.SetActive(state);
         minimap.SetActive(state);
         meteorDirectionMarker.gameObject.SetActive(state);
+        countdownText.gameObject.SetActive(state);
         healthDisplay.gameObject.SetActive(state);
         scoreText.gameObject.SetActive(state);
         swordEquipIcon.holdText.gameObject.SetActive(state);
@@ -390,28 +392,41 @@ public class GUIController : MonoBehaviour
     public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold)
     {
         //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
-        float lerpValue = 1.0f - (lowestMeteorPosition - meteorDeathThreshold) / ((PlayerController.worldHeight - meteorDeathThreshold) / 3);
 
         if (PlayerController.playerState == PlayerController.ACTIVELY_PLAYING)
         {
             if (lowestMeteorPosition < meteorDeathThreshold + ((PlayerController.worldHeight - meteorDeathThreshold) / 3))
             {
+                float lerpValue = 1.0f - (lowestMeteorPosition - meteorDeathThreshold) / ((PlayerController.worldHeight - meteorDeathThreshold) / 3);
+                float timeRemaining = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed);
+
                 meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
                 meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
-                meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "";
+                meteorLandingTimer.text = timeRemaining + "";
+                if (timeRemaining > 0 && timeRemaining <= 10)
+                {
+                    countdownText.gameObject.SetActive(true);
+                    countdownText.GetComponent<CanvasRenderer>().SetAlpha(lerpValue + Mathf.Sin(Time.time * 4.0f) * (lerpValue / 4));
+                    countdownText.text = timeRemaining + "";
+                }
+                else
+                {
+                    countdownText.text = "";
+                    countdownText.gameObject.SetActive(false);
+                }
 
-                blaze.GetComponent<CanvasRenderer>().SetAlpha(lerpValue/2 + Mathf.Sin(Time.time * 4.0f) * (lerpValue/4));
+                blaze.GetComponent<CanvasRenderer>().SetAlpha(lerpValue / 2 + Mathf.Sin(Time.time * 4.0f) * (lerpValue/4));
                 RenderSettings.fogDensity = Mathf.Lerp(minFogValue, maxFogValue, lerpValue);
-                //audio source volume uses lerpValue too
+                //audio source volume uses lerpValue too, IF WE HAD ONE
             }
             else
             {
                 meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
                 meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
-
+                countdownText.text = "";
+                countdownText.gameObject.SetActive(false);
                 blaze.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
                 RenderSettings.fogDensity = minFogValue;
-
             }
         }
     }

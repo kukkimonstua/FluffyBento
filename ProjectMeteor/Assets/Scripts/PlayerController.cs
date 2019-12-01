@@ -614,7 +614,7 @@ public class PlayerController : MonoBehaviour
                     {
                         if(!hit.transform.gameObject.GetComponent<BreakableController>().isBroken)
                         {
-                            AddScore(hit.transform.position, 500);
+                            AddScore(hit.transform.position, 100);
                             hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
                             brokeSomething = true;
                         }
