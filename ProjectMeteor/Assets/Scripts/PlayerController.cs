@@ -147,11 +147,6 @@ public class PlayerController : MonoBehaviour
                 playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * worldRadius);
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
-
-
-                //BEGIN NEW
-                
-
                 if (Input.GetAxisRaw("Horizontal") == 0 && !isDashing)
                 {
                     circularVelocity *= horizontalDrag;
@@ -177,11 +172,9 @@ public class PlayerController : MonoBehaviour
                         ResetMomentum();
                     }
                 }
-                
 
                 circularVelocity -= transform.right * speed;
                 circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed);
-                //END NEW
 
                 if (prone) circularVelocity = new Vector3(0.0f, circularVelocity.y, 0.0f);
 
@@ -454,7 +447,7 @@ public class PlayerController : MonoBehaviour
     #region COLLISIONS AND TRIGGERS
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<FlyingMeteorController>() != null)
+        if(collision.gameObject.GetComponent<FlyingMeteorController>() != null && playerState == ACTIVELY_PLAYING)
         {
             TakeDamage(1);
         }
