@@ -40,13 +40,11 @@ public class PauseMenu : MonoBehaviour
             {
                 if (eventSystem.currentSelectedGameObject != previousSelection)
                 {
-                    Debug.Log("NEW previous");
                     previousSelection = eventSystem.currentSelectedGameObject;
                 }
             }
             else
             {
-                Debug.Log("set to previous");
                 eventSystem.SetSelectedGameObject(previousSelection.gameObject);
             }
         }

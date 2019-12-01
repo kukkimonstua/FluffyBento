@@ -27,6 +27,7 @@ public class MenuButtonController : MonoBehaviour {
     private MenuButton previousSelection;
 
 	void Start () {
+        GameManager.ResetRunningScore();
 		audioSource = GetComponent<AudioSource>();
         eventSystem.SetSelectedGameObject(initialButton.gameObject); //Select initial menu option
         previousSelection = initialButton.gameObject.GetComponent<MenuButton>();

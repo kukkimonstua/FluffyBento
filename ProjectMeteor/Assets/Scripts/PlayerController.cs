@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour
     public int playerMaxHealth = 3;
     private int playerHealth;
     private int playerScore;
-    public static int runningScore;
     private int meteorsDestroyed;
     public static int maxMeteorsForLevel = 0;
     public static float lowestMeteorPosition;
@@ -311,7 +310,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
-            AddScore(transform.position, 10);
+            AddScore(transform.position, 100);
             //successPrefab.SetActive(true);
             //CameraController.cameraState = 4;
         }
@@ -615,7 +614,7 @@ public class PlayerController : MonoBehaviour
                     {
                         if(!hit.transform.gameObject.GetComponent<BreakableController>().isBroken)
                         {
-                            AddScore(hit.transform.position, 50);
+                            AddScore(hit.transform.position, 500);
                             hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
                             brokeSomething = true;
                         }
@@ -799,22 +798,21 @@ public class PlayerController : MonoBehaviour
             holdingSword = NO_SWORD_EQUIPPED;
             EquipSword(NO_SWORD_EQUIPPED);
 
-            Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
-            if (meteorsDestroyed >= maxMeteorsForLevel)
-            {
-                //Debug.Log("YOU WIN!");
-                gui.UpdateMeteorLandingUI(worldHeight, meteorDeathThreshold);
-                GameClear();
-            }
-
             ResetBreakables();
             if (timingGrade >= 3)
             {
-                AddScore(transform.position, 500);
+                AddScore(transform.position, 5000);
             }
             else
             {
-                AddScore(transform.position, timingGrade * 100);
+                AddScore(transform.position, timingGrade * 1000);
+            }
+
+            Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
+            if (meteorsDestroyed >= maxMeteorsForLevel)
+            {
+                gui.UpdateMeteorLandingUI(worldHeight, meteorDeathThreshold);
+                GameClear();
             }
         }
         else
@@ -887,7 +885,7 @@ public class PlayerController : MonoBehaviour
     private void ResetLevel()
     {
         playerHealth = playerMaxHealth;
-        playerScore = 0;
+        playerScore = GameManager.GetRunningScore();
         meteorsDestroyed = 0;
         gui.HidePlayerActionText();
         gui.ResetGUI();
@@ -935,6 +933,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(duration * 1.1f);
 
         Debug.Log("go to next level because current level is " + currentLevel);
+        GameManager.SetRunningScore(playerScore);
         if (currentLevel == 3)
         {
             GameManager.sceneIndex = GameManager.LEVEL_3_ED;
@@ -964,6 +963,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(duration * 1.1f);
         PauseMenu.GameIsPaused = false;
 
+        GameManager.AddRestartCounterToRunningScore();
         meteorManager.ResetMeteors();
         swordManager.ResetSwords();
         ResetLevel();
