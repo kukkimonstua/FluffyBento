@@ -4902,7 +4902,7 @@ Terrain:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3416558208148769782}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 5
   m_TerrainData: {fileID: 15600000, guid: edb830a3d9cdef44c8991f0418715ced, type: 2}
   m_TreeDistance: 5000
@@ -4953,7 +4953,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3416558208570043464
 Transform:
   m_ObjectHideFlags: 0
@@ -5543,7 +5543,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6370910788478905293
 Transform:
   m_ObjectHideFlags: 0
@@ -16706,6 +16706,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5128540061610365845}
     m_Modifications:
+    - target: {fileID: 3174964330132787401, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
+        type: 3}
+      propertyPath: m_Name
+      value: NW -temple (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174964330132787401, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Platform
+      objectReference: {fileID: 0}
     - target: {fileID: 1897393013073584858, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16776,16 +16786,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 137.65335
       objectReference: {fileID: 0}
-    - target: {fileID: 3174964330132787401, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
-        type: 3}
-      propertyPath: m_Name
-      value: NW -temple (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3174964330132787401, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
-        type: 3}
-      propertyPath: m_TagString
-      value: Platform
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cd90eeea8291ba458a6b9027a7cc2d4, type: 3}
 --- !u!4 &4773500594073902035 stripped
@@ -16807,6 +16807,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5128540061610365845}
     m_Modifications:
+    - target: {fileID: 1600785694531858, guid: 1a6699a9906cf1345b1773d61daa524d, type: 3}
+      propertyPath: m_Name
+      value: Big Tree 04
+      objectReference: {fileID: 0}
     - target: {fileID: 4087544216310990, guid: 1a6699a9906cf1345b1773d61daa524d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 278
@@ -16862,10 +16866,6 @@ PrefabInstance:
     - target: {fileID: 4087544216310990, guid: 1a6699a9906cf1345b1773d61daa524d, type: 3}
       propertyPath: m_LocalScale.z
       value: 2.3190928
-      objectReference: {fileID: 0}
-    - target: {fileID: 1600785694531858, guid: 1a6699a9906cf1345b1773d61daa524d, type: 3}
-      propertyPath: m_Name
-      value: Big Tree 04
       objectReference: {fileID: 0}
     - target: {fileID: 23310936043961906, guid: 1a6699a9906cf1345b1773d61daa524d,
         type: 3}
@@ -16967,6 +16967,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5128540061610365845}
     m_Modifications:
+    - target: {fileID: 1790015630011202, guid: d1510bcc3e7712d4ea89901d393ca8a4, type: 3}
+      propertyPath: m_Name
+      value: Big Tree 06
+      objectReference: {fileID: 0}
     - target: {fileID: 4430703207946392, guid: d1510bcc3e7712d4ea89901d393ca8a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 82.951935
@@ -17023,10 +17027,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 3.887304
       objectReference: {fileID: 0}
-    - target: {fileID: 1790015630011202, guid: d1510bcc3e7712d4ea89901d393ca8a4, type: 3}
-      propertyPath: m_Name
-      value: Big Tree 06
-      objectReference: {fileID: 0}
     - target: {fileID: 23988549598567164, guid: d1510bcc3e7712d4ea89901d393ca8a4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -17047,6 +17047,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2375655259391842157}
     m_Modifications:
+    - target: {fileID: 3174964330132787401, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
+        type: 3}
+      propertyPath: m_Name
+      value: NW -temple (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3174964330132787401, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Platform
+      objectReference: {fileID: 0}
     - target: {fileID: 1897393013073584858, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17116,16 +17126,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 3174964330132787401, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
-        type: 3}
-      propertyPath: m_Name
-      value: NW -temple (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3174964330132787401, guid: 5cd90eeea8291ba458a6b9027a7cc2d4,
-        type: 3}
-      propertyPath: m_TagString
-      value: Platform
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cd90eeea8291ba458a6b9027a7cc2d4, type: 3}
