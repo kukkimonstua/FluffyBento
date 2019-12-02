@@ -147,6 +147,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1488150847346602728}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: e45c2b01e20dd584d8eeea60cd1f5daa,
+        type: 3}
+      propertyPath: m_Name
+      value: sword_3
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: e45c2b01e20dd584d8eeea60cd1f5daa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -202,16 +207,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 129.817
       objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: e45c2b01e20dd584d8eeea60cd1f5daa,
-        type: 3}
-      propertyPath: m_Name
-      value: sword_3
-      objectReference: {fileID: 0}
     - target: {fileID: -1504981713932161579, guid: e45c2b01e20dd584d8eeea60cd1f5daa,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 125a992b00d587449bea89e048c07284, type: 2}
+      objectReference: {fileID: 2100000, guid: 70f5263e136e5d543b13efce3e57a804, type: 2}
     - target: {fileID: -1504981713932161579, guid: e45c2b01e20dd584d8eeea60cd1f5daa,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -237,6 +237,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1488150847346602728}
     m_Modifications:
+    - target: {fileID: 175308, guid: 6c47a679c59119141834e040b236619f, type: 3}
+      propertyPath: m_Name
+      value: Fire_Soul_Side
+      objectReference: {fileID: 0}
     - target: {fileID: 410756, guid: 6c47a679c59119141834e040b236619f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.065
@@ -293,10 +297,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.0417787
       objectReference: {fileID: 0}
-    - target: {fileID: 175308, guid: 6c47a679c59119141834e040b236619f, type: 3}
-      propertyPath: m_Name
-      value: Fire_Soul_Side
-      objectReference: {fileID: 0}
     - target: {fileID: 19857196, guid: 6c47a679c59119141834e040b236619f, type: 3}
       propertyPath: InitialModule.startSizeY.minMaxState
       value: 3
@@ -323,7 +323,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19857196, guid: 6c47a679c59119141834e040b236619f, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key1.r
-      value: 0.9490196
+      value: 0.7019608
       objectReference: {fileID: 0}
     - target: {fileID: 19857196, guid: 6c47a679c59119141834e040b236619f, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key1.g
@@ -331,19 +331,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19857196, guid: 6c47a679c59119141834e040b236619f, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key1.b
-      value: 0.16227014
+      value: 0.9490196
       objectReference: {fileID: 0}
     - target: {fileID: 19857196, guid: 6c47a679c59119141834e040b236619f, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.r
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 19857196, guid: 6c47a679c59119141834e040b236619f, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.g
-      value: 0.036535453
+      value: 0.72156864
       objectReference: {fileID: 0}
     - target: {fileID: 19857196, guid: 6c47a679c59119141834e040b236619f, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.b
-      value: 0
+      value: 0.54901963
       objectReference: {fileID: 0}
     - target: {fileID: 19857196, guid: 6c47a679c59119141834e040b236619f, type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key2.a
@@ -372,6 +372,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1488150847346602728}
     m_Modifications:
+    - target: {fileID: 173814, guid: 810eb771809ba56409dd29eab937ddb2, type: 3}
+      propertyPath: m_Name
+      value: magic_ring_02
+      objectReference: {fileID: 0}
     - target: {fileID: 455376, guid: 810eb771809ba56409dd29eab937ddb2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -423,10 +427,6 @@ PrefabInstance:
     - target: {fileID: 455376, guid: 810eb771809ba56409dd29eab937ddb2, type: 3}
       propertyPath: m_LocalScale.z
       value: 1.0000005
-      objectReference: {fileID: 0}
-    - target: {fileID: 173814, guid: 810eb771809ba56409dd29eab937ddb2, type: 3}
-      propertyPath: m_Name
-      value: magic_ring_02
       objectReference: {fileID: 0}
     - target: {fileID: 412740, guid: 810eb771809ba56409dd29eab937ddb2, type: 3}
       propertyPath: m_LocalScale.x

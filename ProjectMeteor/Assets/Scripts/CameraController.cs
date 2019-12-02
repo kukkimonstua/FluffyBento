@@ -109,7 +109,6 @@ public class CameraController : MonoBehaviour
         if (cameraShakeTimer > 0)
         {
             transform.Rotate(Mathf.Sin(cameraShakeTimer * 50.0f) * 1.3f, 0.0f, 0, Space.Self);
-            Debug.Log(cameraShakeTimer);
             cameraShakeTimer -= Time.deltaTime;
         }
 

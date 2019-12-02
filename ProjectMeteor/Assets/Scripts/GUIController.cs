@@ -31,6 +31,8 @@ public class GUIController : MonoBehaviour
     public SwordEquipIcon swordEquipIcon;
     public MeteorDirectionMarker meteorDirectionMarker;
     public Text meteorHeightMarker;
+    public Text countdownText;
+    public Text helpText;
     public Text timerText;
     public Text meteorCounterText;
 
@@ -92,7 +94,7 @@ public class GUIController : MonoBehaviour
         if (PlayerController.playerState == PlayerController.ACTIVELY_PLAYING)
         {
             UpdateMinimap();
-            //Track time if the timer is even visible (AKA Survival Mode)
+            //Track time only if the timer is visible (AKA Survival Mode)
             if (timerText.gameObject.activeSelf)
             {
                 UpdateTimer();
@@ -111,10 +113,9 @@ public class GUIController : MonoBehaviour
                 {
                     relatedMarker.GetComponent<MeteorMinimapMarker>().isLowest = m.GetComponent<MeteorController>().isLowest;
                 }
-                //Debug.Log(m.transform.position.x + ", " + m.transform.position.z);
             }
-            //Debug.Log("There are " + currentMeteors.Count);
         }
+        minimap.SetActive(!PauseMenu.GameIsPaused);
     }
     public void ResetMinimap()
     {
@@ -128,9 +129,11 @@ public class GUIController : MonoBehaviour
             }
         }
     }
-    public void UpdatePlayerMarker(Vector3 playerPosition)
+    public void UpdatePlayerMarker(Transform playerTransform)
     {
-        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerPosition.x / 4.0f, playerPosition.z / 4.0f);
+        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerTransform.position.x / 2.5f, playerTransform.position.z / 2.5f);
+        playerMarker.GetComponent<RectTransform>().eulerAngles = new Vector3(0.0f, 0.0f, 180 - playerTransform.eulerAngles.y);
+
         playerMarker.GetComponent<RectTransform>().localScale = new Vector3((Mathf.Sin(Time.time * 8) / 5) + 0.9f, 1.0f, 1.0f);
     }
     public void AddMinimapMeteor(GameObject meteor, int type)
@@ -142,7 +145,7 @@ public class GUIController : MonoBehaviour
         }
         newMarker.transform.SetParent(minimap.transform, false);
         //Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
-        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 4.0f, meteor.transform.position.z / 4.0f);
+        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 2.5f, meteor.transform.position.z / 2.5f);
 
         minimapMeteors.Add(newMarker);
         currentMeteors.Add(meteor);
@@ -256,7 +259,7 @@ public class GUIController : MonoBehaviour
         meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
 
-        if (PlayerController.currentLevel != 0) //i.e. NOT in survival mode
+        if (PlayerController.currentLevel != GameManager.SURVIVAL_MODE)
         {
             meteorCounterText.gameObject.SetActive(false);
             timerText.gameObject.SetActive(false);
@@ -299,7 +302,8 @@ public class GUIController : MonoBehaviour
         yield return StartCoroutine(FadeUI(fullScreenWhite, 1.0f, 0.2f));
         fullScreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
         yield return StartCoroutine(FadeUI(fullScreenWhite, 0.0f, 0.8f));
-        fullScreenWhite.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        yield return new WaitForSeconds(1.0f); //by the end of this, the results menu is unlocked
+        yield return StartCoroutine(FadeUI(fullScreenBlack, 0.0f, 1.0f));
     }
     public void ScaleBlackBars(float heightTarget, float duration)
     {
@@ -323,10 +327,12 @@ public class GUIController : MonoBehaviour
         subtitles.gameObject.SetActive(state);
         minimap.SetActive(state);
         meteorDirectionMarker.gameObject.SetActive(state);
+        countdownText.gameObject.SetActive(state);
         healthDisplay.gameObject.SetActive(state);
         scoreText.gameObject.SetActive(state);
+        swordEquipIcon.holdText.gameObject.SetActive(state);
 
-        if (PlayerController.currentLevel == 0) //i.e. only in survival mode
+        if (PlayerController.currentLevel == GameManager.SURVIVAL_MODE)
         {
             meteorCounterText.gameObject.SetActive(state);
             timerText.gameObject.SetActive(state);
@@ -368,13 +374,20 @@ public class GUIController : MonoBehaviour
     }
     public void UpdateMeteorHeightUI(float distance, int holdingSword)
     {
-        if (distance <= 0.0f)
+        if (distance >= PlayerController.worldHeight)
         {
             meteorHeightMarker.gameObject.SetActive(false);
+        }
+        else if (distance <= 0.0f) //this means a ceiling or flying meteor is blocking your view
+        {
+            meteorHeightMarker.gameObject.SetActive(true);
+            meteorHeightMarker.GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+            meteorHeightMarker.text = "<???>";
         }
         else
         {
             meteorHeightMarker.gameObject.SetActive(true);
+            meteorHeightMarker.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
             meteorHeightMarker.text = (int) distance + "m too far";
             if (holdingSword == 0)
             {
@@ -385,28 +398,41 @@ public class GUIController : MonoBehaviour
     public void UpdateMeteorLandingUI(float lowestMeteorPosition, float meteorDeathThreshold)
     {
         //Debug.Log(lowestMeteorPosition + " is higher than " + meteorDeathThreshold);
-        float lerpValue = 1.0f - (lowestMeteorPosition - meteorDeathThreshold) / ((PlayerController.worldHeight - meteorDeathThreshold) / 3);
 
         if (PlayerController.playerState == PlayerController.ACTIVELY_PLAYING)
         {
             if (lowestMeteorPosition < meteorDeathThreshold + ((PlayerController.worldHeight - meteorDeathThreshold) / 3))
             {
+                float lerpValue = 1.0f - (lowestMeteorPosition - meteorDeathThreshold) / ((PlayerController.worldHeight - meteorDeathThreshold) / 3);
+                float timeRemaining = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed);
+
                 meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Sin(Time.time * 10.0f) * 0.5f + 0.5f);
                 meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
-                meteorLandingTimer.text = Mathf.Round((lowestMeteorPosition - meteorDeathThreshold) / MeteorManager.fallSpeed) + "";
+                meteorLandingTimer.text = timeRemaining + "";
+                if (timeRemaining > 0 && timeRemaining <= 10)
+                {
+                    countdownText.gameObject.SetActive(true);
+                    countdownText.GetComponent<CanvasRenderer>().SetAlpha(lerpValue + Mathf.Sin(Time.time * 4.0f) * (lerpValue / 4));
+                    countdownText.text = timeRemaining + "";
+                }
+                else
+                {
+                    countdownText.text = "";
+                    countdownText.gameObject.SetActive(false);
+                }
 
-                blaze.GetComponent<CanvasRenderer>().SetAlpha(lerpValue/2 + Mathf.Sin(Time.time * 4.0f) * (lerpValue/4));
+                blaze.GetComponent<CanvasRenderer>().SetAlpha(lerpValue / 2 + Mathf.Sin(Time.time * 4.0f) * (lerpValue/4));
                 RenderSettings.fogDensity = Mathf.Lerp(minFogValue, maxFogValue, lerpValue);
-                //audio source volume uses lerpValue too
+                //audio source volume uses lerpValue too, IF WE HAD ONE
             }
             else
             {
                 meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
                 meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
-
+                countdownText.text = "";
+                countdownText.gameObject.SetActive(false);
                 blaze.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
                 RenderSettings.fogDensity = minFogValue;
-
             }
         }
     }

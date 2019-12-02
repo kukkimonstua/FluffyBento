@@ -6,6 +6,8 @@ public class MeteorManager : MonoBehaviour
 {
     public GUIController gui;
     public Transform playerOrigin;
+    public SwordManager swordManager;
+
     public Transform meteorOrigin;
     public Transform spawnPoint;
     private Vector3[] spawnPoints;
@@ -48,12 +50,21 @@ public class MeteorManager : MonoBehaviour
 
     void Update()
     {
+        /*
+        string debug = "";
+        foreach(int i in spawnPointPool)
+        {
+            debug += ", " + i;
+        }
+        Debug.Log(debug);
+        */
+
         fallSpeed = meteorSpeed;
         flyingMeteorMoveSpeed = flyingMeteorSpeed;
 
         meteorSpawnTimer += Time.deltaTime;
         if (!TutorialManager.tutorialActive
-            && PlayerController.playerState == 1
+            && PlayerController.playerState == PlayerController.ACTIVELY_PLAYING
             && GameObject.FindGameObjectsWithTag("Meteor").Length < maxMeteorsOnScreen
             && numOfMeteorsSpawned < maxMeteorsForLevel)
         {
@@ -64,7 +75,7 @@ public class MeteorManager : MonoBehaviour
             }
         }
 
-        if (flyingMeteors)
+        if (flyingMeteors && PlayerController.playerState == PlayerController.ACTIVELY_PLAYING)
         {
             flyingMeteorSpawnTimer += Time.deltaTime;
             if (flyingMeteorSpawnTimer > flyingMeteorSpawnDelay)
@@ -76,12 +87,11 @@ public class MeteorManager : MonoBehaviour
     }
     private void CreateSpawnPoints(int points)
     {
-        int numOfPoints = points;
-        spawnPoints = new Vector3[numOfPoints];
+        spawnPoints = new Vector3[points];
         spawnPointPool = new List<int>();
-        for (int i = 0; i < numOfPoints; i++)
+        for (int i = 0; i < points; i++)
         {
-            meteorOrigin.Rotate(0.0f, 360.0f / numOfPoints, 0.0f);
+            meteorOrigin.Rotate(0.0f, 360.0f / points, 0.0f);
             GameObject newSpawnPoint = new GameObject("MeteorSpawnPoint" + i);
             newSpawnPoint.transform.SetParent(transform);
             newSpawnPoint.transform.position = meteorOrigin.position + (meteorOrigin.transform.forward * PlayerController.worldRadius) + (playerOrigin.transform.up * PlayerController.worldHeight);
@@ -122,15 +132,18 @@ public class MeteorManager : MonoBehaviour
                 {
                     default:
                         meteorToSpawn = meteorZanbato;
-                        Debug.Log("red meteor appeared");
+                        swordManager.SpawnSpecificSword(1);
+                        //Debug.Log("red meteor appeared");
                         break;
                     case 2:
                         meteorToSpawn = meteorBroadsword;
-                        Debug.Log("yellow meteor appeared");
+                        swordManager.SpawnSpecificSword(2);
+                        //Debug.Log("yellow meteor appeared");
                         break;
                     case 3:
                         meteorToSpawn = meteorKatana;
-                        Debug.Log("blue meteor appeared");
+                        swordManager.SpawnSpecificSword(3);
+                        //Debug.Log("blue meteor appeared");
                         break;
                 }
             }
@@ -158,11 +171,18 @@ public class MeteorManager : MonoBehaviour
         numOfMeteorsSpawned++;
         meteorSpawnTimer = 0.0f;
     }
+
     private void SpawnFlyingMeteor()
     {
+        //new
+        meteorOrigin.LookAt(new Vector3(playerOrigin.position.x, meteorOrigin.position.y, playerOrigin.position.z));
+        meteorOrigin.Rotate(0.0f, Random.Range(-45.0f, 45.0f), 0.0f);
+        spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * PlayerController.worldRadius) + (playerOrigin.transform.up * PlayerController.worldHeight);
+        Instantiate(flyingMeteor, spawnPoint.position, spawnPoint.rotation);
+
+        //Old
         meteorOrigin.Rotate(0.0f, Random.Range(0, 360.0f), 0.0f);
         spawnPoint.position = meteorOrigin.position + (meteorOrigin.transform.forward * PlayerController.worldRadius * Random.Range(0, 1.0f)) + (playerOrigin.transform.up * PlayerController.worldHeight);
-
         Instantiate(flyingMeteor, spawnPoint.position, spawnPoint.rotation);
     }
 
@@ -171,9 +191,16 @@ public class MeteorManager : MonoBehaviour
 
         PlayerController.maxMeteorsForLevel = maxMeteorsForLevel;
 
-        ResetSpawnPointPool(-1);
+        if (TutorialManager.tutorialActive)
+        {
+            ResetSpawnPointPool(spawnPointPool.Count - 1); //TEMP, this removes the tutorial meteor's spawn point
+        }
+        else
+        {
+            ResetSpawnPointPool(-1);
+        }
+
         meteorSpawnTimer = 0.0f;
-        flyingMeteorSpawnTimer = 0.0f;
         if (currentMeteors.Length > 0)
         {
             currentMeteors = GameObject.FindGameObjectsWithTag("Meteor");
@@ -181,12 +208,23 @@ public class MeteorManager : MonoBehaviour
             {
                 if (meteor.GetComponent<MeteorController>() != null)
                 {
-                    Destroy(meteor); //THIS CAN DESTROY FILES, USE CAREFULLY
+                    Destroy(meteor);
                 }
             }
         }
         numOfMeteorsSpawned = 1; //Temp solution: assume this will ALWAYS be 1...
+        if (PlayerController.currentLevel == GameManager.SURVIVAL_MODE) numOfMeteorsSpawned = 0; //UNLESS IT IS SURVIVAL MODE
+
+
         //numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
         Debug.Log(GameObject.FindGameObjectsWithTag("Meteor").Length + " were found");
+
+
+        flyingMeteorSpawnTimer = 0.0f;
+        FlyingMeteorController[] currentFlyingMeteors = GameObject.FindObjectsOfType<FlyingMeteorController>();
+        foreach (FlyingMeteorController cfm in currentFlyingMeteors)
+        {
+            Destroy(cfm.gameObject);
+        }
     }
 }

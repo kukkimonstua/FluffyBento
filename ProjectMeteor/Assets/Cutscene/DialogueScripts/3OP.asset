@@ -84,7 +84,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: Hide... Why...? Why would you stain yourself with a sin so black...?
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 32ff311badcd7e147897c0023b1a6333, type: 3}
+    portrait: {fileID: 21300000, guid: fe0e1fb2a17a6d1408b2ab9d5b8267e4, type: 3}
     isLeftPortrait: 0
     myText: What? Master, I don't get what you're saying.
   - myName: Yashiro

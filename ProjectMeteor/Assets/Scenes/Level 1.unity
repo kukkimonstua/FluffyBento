@@ -295,7 +295,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-257802
+  m_Name: pb_Mesh-379176
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -464,7 +464,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-258266
+  m_Name: pb_Mesh-379640
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -639,7 +639,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-257832
+  m_Name: pb_Mesh-379206
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -808,7 +808,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-258122
+  m_Name: pb_Mesh-379496
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1171,7 +1171,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-258074
+  m_Name: pb_Mesh-379448
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1503,7 +1503,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-258036
+  m_Name: pb_Mesh-379410
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2306,7 +2306,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-257912
+  m_Name: pb_Mesh-379286
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2536,7 +2536,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-257562
+  m_Name: pb_Mesh-378936
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2699,7 +2699,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-258106
+  m_Name: pb_Mesh-379480
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2874,7 +2874,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-258124
+  m_Name: pb_Mesh-379498
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3037,7 +3037,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-257828
+  m_Name: pb_Mesh-379202
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3224,8 +3224,13 @@ PrefabInstance:
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: maxMeteorsForLevel
-      value: 9
+      value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
+        type: 3}
+      propertyPath: swordManager
+      value: 
+      objectReference: {fileID: 691160522}
     - target: {fileID: 944358063281928567, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4448,16 +4453,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TutorialManagerLVL1
       objectReference: {fileID: 0}
-    - target: {fileID: 7803182203303289729, guid: e816bbb94c76e214caeba779885d2289,
-        type: 3}
-      propertyPath: meteorManager
-      value: 
-      objectReference: {fileID: 673540923}
-    - target: {fileID: 7803182203303289729, guid: e816bbb94c76e214caeba779885d2289,
-        type: 3}
-      propertyPath: gui
-      value: 
-      objectReference: {fileID: 586829205}
     - target: {fileID: 7803182203303289728, guid: e816bbb94c76e214caeba779885d2289,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4513,6 +4508,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7803182203303289729, guid: e816bbb94c76e214caeba779885d2289,
+        type: 3}
+      propertyPath: meteorManager
+      value: 
+      objectReference: {fileID: 673540923}
+    - target: {fileID: 7803182203303289729, guid: e816bbb94c76e214caeba779885d2289,
+        type: 3}
+      propertyPath: gui
+      value: 
+      objectReference: {fileID: 586829205}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e816bbb94c76e214caeba779885d2289, type: 3}
 --- !u!1001 &7975215423648970769

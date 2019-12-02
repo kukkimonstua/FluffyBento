@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 97637a2a763b7f24b8da4e139e4144ca, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -195,7 +195,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185770
+  m_Name: pb_Mesh-403844
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -725,7 +725,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185476
+  m_Name: pb_Mesh-403550
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -939,7 +939,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 1
-  m_Color: {r: 1, g: 0.9016667, b: 0.8392157, a: 1}
+  m_Color: {r: 0.23082057, g: 0.24758637, b: 0.3679245, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -1015,7 +1015,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185914
+  m_Name: pb_Mesh-403988
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1178,7 +1178,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185684
+  m_Name: pb_Mesh-403758
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1864,7 +1864,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185210
+  m_Name: pb_Mesh-403284
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2027,7 +2027,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185480
+  m_Name: pb_Mesh-403554
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2190,7 +2190,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185450
+  m_Name: pb_Mesh-403524
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2353,7 +2353,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185772
+  m_Name: pb_Mesh-403846
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2516,7 +2516,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185754
+  m_Name: pb_Mesh-403828
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2679,7 +2679,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185722
+  m_Name: pb_Mesh-403796
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2938,7 +2938,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-185560
+  m_Name: pb_Mesh-403634
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3130,7 +3130,7 @@ PrefabInstance:
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: flyingMeteorSpawnDelay
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
@@ -3140,13 +3140,18 @@ PrefabInstance:
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: specialMeteorRate
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: flyingMeteorSpeed
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 944358063281928566, guid: 612561d6cc276ae49bb10ce9d96137f2,
+        type: 3}
+      propertyPath: swordManager
+      value: 
+      objectReference: {fileID: 691160522}
     - target: {fileID: 944358063281928567, guid: 612561d6cc276ae49bb10ce9d96137f2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3331,6 +3336,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5027751198360439378, guid: 44b25c30ff1b3b84ab3c0356c0509782,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 89afefb354e7eb340a149d49fc385511, type: 2}
+    - target: {fileID: 5027751198360439378, guid: 44b25c30ff1b3b84ab3c0356c0509782,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 70f5263e136e5d543b13efce3e57a804, type: 2}
+    - target: {fileID: 5027751198360439378, guid: 44b25c30ff1b3b84ab3c0356c0509782,
+        type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 89afefb354e7eb340a149d49fc385511, type: 2}
+    - target: {fileID: 5027751198360439378, guid: 44b25c30ff1b3b84ab3c0356c0509782,
+        type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 70f5263e136e5d543b13efce3e57a804, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44b25c30ff1b3b84ab3c0356c0509782, type: 3}
 --- !u!1001 &5683882563223650676

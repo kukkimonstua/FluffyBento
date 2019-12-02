@@ -145,9 +145,9 @@ Material:
     - _DstBlend: 0
     - _EmissionParallaxDepth: 0
     - _EmissionParallaxDepthMaskInvert: 0
-    - _GlossBlend: 0.5
+    - _GlossBlend: 0
     - _GlossMapScale: 1
-    - _GlossPower: 0.5
+    - _GlossPower: 0
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _LightSampling: 0
@@ -166,7 +166,7 @@ Material:
     - _OutlineTextureColorRate: 0.05
     - _OutlineUseColorShift: 0
     - _OutlineValueFromBase: 1
-    - _OutlineWidth: 0.1
+    - _OutlineWidth: 20
     - _Parallax: 0.02
     - _PointAddIntensity: 1
     - _PointShadowSteps: 2
@@ -212,7 +212,7 @@ Material:
     - _UseDoubleSided: 0
     - _UseEmissionParallax: 0
     - _UseGloss: 0
-    - _UseOutline: 0
+    - _UseOutline: 1
     - _UsePositionRelatedCalc: 0
     - _UseReflection: 0
     - _UseReflectionProbe: 1

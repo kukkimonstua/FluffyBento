@@ -7,6 +7,10 @@ public class SwordEquipIcon : MonoBehaviour
 {
     public Image currentlyEquipped;
     public Image targetedSwordIcon;
+    public Text holdText;
+    public Animator anim;
+
+    [Header("Sprites")]
     public Sprite emptyIcon;
     public Sprite zanbatoIcon;
     public Sprite broadswordIcon;
@@ -29,6 +33,16 @@ public class SwordEquipIcon : MonoBehaviour
             case 3:
                 currentlyEquipped.sprite = katanaIcon;
                 break;
+        }
+        if (swordType <= 0)
+        {
+            holdText.gameObject.SetActive(false);
+        }
+        else
+        {
+            anim.ResetTrigger("equip");
+            anim.SetTrigger("equip");
+            holdText.gameObject.SetActive(true);
         }
     }
     public void ShowTargetedSwordType(int swordType)

@@ -58,13 +58,13 @@ public class PlayerController : MonoBehaviour
     public int playerMaxHealth = 3;
     private int playerHealth;
     private int playerScore;
-    public static int runningScore;
     private int meteorsDestroyed;
     public static int maxMeteorsForLevel = 0;
     public static float lowestMeteorPosition;
+    private MeteorController currentLowestMeteor;
     private float targetedMeteorDistance;
     public float meteorAttackRange = 200.0f;
-    private float initialDeathDelay = 1.0f;
+    private float invincibilityTimer = 1.0f;
     public float meteorDeathThreshold = 100.0f;
     public static int playerState; //1 = running, 2 = attacking, 3 = game over
     private Vector3 startingPosition;
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip bgmLvl3;
 
     public GameObject successPrefab;
-
+    public const int DISABLED = 0;
     public const int ACTIVELY_PLAYING = 1;
     public const int ATTACKING_METEOR = 2;
     public const int GAME_OVER = 3;
@@ -110,6 +110,11 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         currentLevel = sceneLevel;
+        if (currentLevel == GameManager.SURVIVAL_MODE)
+        {
+            TutorialManager.tutorialActive = false;
+            CameraController.tutorialCameraTimer = 0.0f;
+        }
         worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
         worldHeight = 300.0f;
         rb = GetComponent<Rigidbody>();
@@ -148,19 +153,6 @@ public class PlayerController : MonoBehaviour
                 playerOrigin.position = worldOrigin.position + (worldOrigin.transform.forward * worldRadius);
                 transform.position = new Vector3(playerOrigin.position.x, transform.position.y, playerOrigin.position.z);
 
-
-
-                //BEGIN NEW
-                if (Input.GetAxisRaw("Horizontal") > 0 || Input.GetAxisRaw("Horizontal") < 0)
-                {
-                    lastDirectionPressed = Input.GetAxisRaw("Horizontal"); //Used for dash and wall jump
-                }
-                if (!isWallJumping)
-                {
-                    speed += Input.GetAxisRaw("Horizontal") * acceleration * 0.4f * Time.deltaTime;
-                    speed = Mathf.Clamp(speed, -acceleration, acceleration);
-                }
-
                 if (Input.GetAxisRaw("Horizontal") == 0 && !isDashing)
                 {
                     circularVelocity *= horizontalDrag;
@@ -169,16 +161,26 @@ public class PlayerController : MonoBehaviour
                         speed *= horizontalDrag;
                     }
                 }
-                //Debug.Log(speed + " from adding " + Input.GetAxisRaw("Horizontal"));
-                if (Input.GetAxisRaw("Horizontal") > 0.0f && speed < 0.0f
-                    || Input.GetAxisRaw("Horizontal") < 0.0f && speed > 0.0f)
+
+                if (!isWallJumping)
                 {
-                    ResetMomentum();
+                    if (Input.GetAxisRaw("Horizontal") > 0 || Input.GetAxisRaw("Horizontal") < 0)
+                    {
+                        lastDirectionPressed = Input.GetAxisRaw("Horizontal"); //Used for dash and wall jump
+                    }
+                    speed += Input.GetAxisRaw("Horizontal") * acceleration * 0.4f * Time.deltaTime;
+                    speed = Mathf.Clamp(speed, -acceleration, acceleration);
+
+                    //Debug.Log(speed + " from adding " + Input.GetAxisRaw("Horizontal"));
+                    if (Input.GetAxisRaw("Horizontal") > 0.0f && speed < 0.0f
+                        || Input.GetAxisRaw("Horizontal") < 0.0f && speed > 0.0f)
+                    {
+                        ResetMomentum();
+                    }
                 }
 
                 circularVelocity -= transform.right * speed;
                 circularVelocity = Vector3.ClampMagnitude(circularVelocity, moveSpeed);
-                //END NEW
 
                 if (prone) circularVelocity = new Vector3(0.0f, circularVelocity.y, 0.0f);
 
@@ -280,8 +282,7 @@ public class PlayerController : MonoBehaviour
                             }
                         }
                     }
-
-                    gui.UpdatePlayerMarker(transform.position);
+                    gui.UpdatePlayerMarker(avatarModel.transform);
                     UpdateAnimations();
                     QuickDebugging(); //REMOVE WHEN DONE
                 }
@@ -307,7 +308,7 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
-            AddScore(transform.position, 10);
+            AddScore(transform.position, 100);
             //successPrefab.SetActive(true);
             //CameraController.cameraState = 4;
         }
@@ -341,47 +342,48 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
+                    //All meteors are made false so that only the true lowest at the end of foreach gets to be true
+                    meteor.GetComponent<MeteorController>().isLowest = false; 
                     if (meteor.transform.position.y < lowestMeteorPosition)
                     {
-                        meteor.GetComponent<MeteorController>().isLowest = true;
+                        currentLowestMeteor = meteor.GetComponent<MeteorController>();
                         lowestMeteorPosition = meteor.transform.position.y;
-                        meteorWorldOrigin.LookAt(new Vector3(meteor.transform.position.x, meteorWorldOrigin.transform.position.y, meteor.transform.position.z));
-
-                        float leftAngleDifference = 360 - (worldOrigin.eulerAngles.y - meteorWorldOrigin.eulerAngles.y);
-                        if (meteorWorldOrigin.eulerAngles.y > worldOrigin.eulerAngles.y) leftAngleDifference = meteorWorldOrigin.eulerAngles.y - worldOrigin.eulerAngles.y;
-                        float rightAngleDifference = 360 - leftAngleDifference;
-
-                        if (leftAngleDifference < rightAngleDifference)
-                        {
-                            gui.UpdateMeteorDirectionUI(-1, leftAngleDifference, meteor.transform.position);
-                        }
-                        else
-                        {
-                            gui.UpdateMeteorDirectionUI(1, rightAngleDifference, meteor.transform.position);
-                        }
-                    }
-                    else
-                    {
-                        meteor.GetComponent<MeteorController>().isLowest = false; //All other meteors is made false
-                    }
-                    gui.UpdateMeteorLandingUI(lowestMeteorPosition, meteorDeathThreshold);
-
-                    if (initialDeathDelay > 0)
-                    {
-                        initialDeathDelay -= Time.deltaTime;
-                    }
-                    else
-                    {
-                        if (lowestMeteorPosition < meteorDeathThreshold)
-                        {
-                            lowestMeteorPosition = worldHeight;
-                            GameOver(ResultsMenu.METEOR_DEATH); //From a meteor landing
-
-                        }
                     }
                 }
             }
+            if (currentLowestMeteor != null)
+            {
+                currentLowestMeteor.isLowest = true;
+                meteorWorldOrigin.LookAt(new Vector3(currentLowestMeteor.transform.position.x, meteorWorldOrigin.transform.position.y, currentLowestMeteor.transform.position.z));
 
+                float leftAngleDifference = 360 - (worldOrigin.eulerAngles.y - meteorWorldOrigin.eulerAngles.y);
+                if (meteorWorldOrigin.eulerAngles.y > worldOrigin.eulerAngles.y) leftAngleDifference = meteorWorldOrigin.eulerAngles.y - worldOrigin.eulerAngles.y;
+                float rightAngleDifference = 360 - leftAngleDifference;
+
+                if (leftAngleDifference < rightAngleDifference)
+                {
+                    gui.UpdateMeteorDirectionUI(-1, leftAngleDifference, currentLowestMeteor.transform.position);
+                }
+                else
+                {
+                    gui.UpdateMeteorDirectionUI(1, rightAngleDifference, currentLowestMeteor.transform.position);
+                }
+
+                gui.UpdateMeteorLandingUI(lowestMeteorPosition, meteorDeathThreshold);
+
+                if (invincibilityTimer > 0)
+                {
+                    invincibilityTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    if (lowestMeteorPosition < meteorDeathThreshold && playerState == ACTIVELY_PLAYING)
+                    {
+                        lowestMeteorPosition = worldHeight;
+                        GameOver(ResultsMenu.METEOR_DEATH); //From a meteor landing
+                    }
+                }
+            }
         }
     }
     private float CheckAboveForMeteor()
@@ -396,21 +398,19 @@ public class PlayerController : MonoBehaviour
 
                 if (hit.distance > meteorAttackRange)
                 {
-                    //don't use targetedMeteorDistance BEFORE you set it...
                     gui.UpdateMeteorHeightUI(hit.distance - meteorAttackRange, holdingSword);
-                    //gui.TogglePrompt(true, "It's still too far!");
-                    //also indicate that it's the lowest one or NOT.
+                    gui.TogglePrompt(false, "");
                 }
                 else
                 {
                     if (holdingSword == NO_SWORD_EQUIPPED)
                     {
-                        gui.UpdateMeteorHeightUI(0.0f, NO_SWORD_EQUIPPED);
+                        gui.UpdateMeteorHeightUI(worldHeight, NO_SWORD_EQUIPPED);
                         gui.TogglePrompt(true, "You need a sword!");
                     }
                     else
                     {
-                        gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+                        gui.UpdateMeteorHeightUI(worldHeight, holdingSword);
                         gui.TogglePrompt(true, "Attack Meteor", "buttonsXA");
                     }
                 }
@@ -424,7 +424,6 @@ public class PlayerController : MonoBehaviour
 
                 targetedMeteor = null;
                 gui.TogglePrompt(false, "");
-                gui.UpdateMeteorHeightUI(0.0f, holdingSword);
 
                 return worldHeight;
             }
@@ -432,11 +431,10 @@ public class PlayerController : MonoBehaviour
         else
         {
             //nothing was spotted...
-            gui.UpdateMeteorHeightUI(0.0f, holdingSword);
+            gui.UpdateMeteorHeightUI(worldHeight, holdingSword);
 
             targetedMeteor = null;
             gui.TogglePrompt(false, "");
-            gui.UpdateMeteorHeightUI(0.0f, holdingSword);
 
             return worldHeight;
         }
@@ -453,7 +451,7 @@ public class PlayerController : MonoBehaviour
     #region COLLISIONS AND TRIGGERS
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<FlyingMeteorController>() != null)
+        if(collision.gameObject.GetComponent<FlyingMeteorController>() != null && playerState == ACTIVELY_PLAYING && invincibilityTimer <= 0.0f)
         {
             TakeDamage(1);
         }
@@ -529,7 +527,7 @@ public class PlayerController : MonoBehaviour
         float counter = 0;
         while (counter < duration)
         {
-            circularVelocity = transform.right * -direction * moveSpeed * (1.0f - (counter / duration));
+            circularVelocity = transform.right * -direction * moveSpeed * Mathf.Clamp(0.9f - (counter / duration), 0.0f, 1.0f);
 
             if (Mathf.Abs(rb.velocity.y) > 10.0f)
             {
@@ -577,12 +575,19 @@ public class PlayerController : MonoBehaviour
         }
         rb.velocity = Vector3.up * jumpForce * jumpMultiplier;
 
-        speed = -lastDirectionPressed * moveSpeed / 4;
-        circularVelocity = transform.right * -speed;
-        lastDirectionPressed *= -1;
-
+        ResetMomentum();
         audioSource.PlayOneShot(wallJumpSound);
-        yield return new WaitForSeconds(duration);
+
+        float counter = 0.0f;
+        while (counter < duration)
+        {
+            speed = -lastDirectionPressed * moveSpeed / 3;
+            circularVelocity = transform.right * -speed;
+
+            counter += Time.deltaTime;
+            yield return null;
+        }
+        lastDirectionPressed *= -1;
 
         isWallJumping = false;
         wallJumping = false;
@@ -606,11 +611,10 @@ public class PlayerController : MonoBehaviour
                     {
                         if(!hit.transform.gameObject.GetComponent<BreakableController>().isBroken)
                         {
-                            AddScore(hit.transform.position, 50);
+                            AddScore(hit.transform.position, 100);
                             hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
                             brokeSomething = true;
                         }
-                        
                     }
                 }
                 else
@@ -630,7 +634,7 @@ public class PlayerController : MonoBehaviour
         EquipSword(holdingSword);
         Destroy(pickedUpSword);
 
-        if (TutorialManager.tutorialActive && currentLevel == 1)
+        if (TutorialManager.tutorialActive && currentLevel == GameManager.LEVEL_1)
         {
             tutorialManager.firstActionCleared = true;
         }
@@ -717,7 +721,7 @@ public class PlayerController : MonoBehaviour
 
         playerState = ATTACKING_METEOR;
         gui.ToggleNonTimingWindowGUI(false);
-        gui.ScaleBlackBars(75.0f, 0.5f);
+        gui.ScaleBlackBars(120.0f, 0.5f);
 
         //Get the current position of the object to be moved
         Vector3 startPos = fromPosition.position;
@@ -734,12 +738,14 @@ public class PlayerController : MonoBehaviour
             fromPosition.position = Vector3.Lerp(startPos, toPosition, counter / duration);
             yield return null;
         }
+
         while (!timingWindow.eventOver)
         {
             yield return null;
         }
 
         //Everything after this point is one frame, setting everything to the result
+        invincibilityTimer = 1.0f;
         avatarModelRotation = 0.0f;
         playerState = 1;
         CameraController.SwitchToMainCamera();
@@ -755,11 +761,12 @@ public class PlayerController : MonoBehaviour
 
                 meteorsDestroyed++;
                 gui.UpdateMeteorsDestroyed(meteorsDestroyed);
+                CameraController.cameraShakeTimer = 1.0f;
                 audioSource.PlayOneShot(explosionSound);
 
                 if (TutorialManager.tutorialActive)
                 {
-                    if (currentLevel == 2 || currentLevel == 3)
+                    if (currentLevel == GameManager.LEVEL_2 || currentLevel == GameManager.LEVEL_3)
                     {
                         if (!tutorialManager.firstActionCleared)
                         {
@@ -782,28 +789,26 @@ public class PlayerController : MonoBehaviour
             else
             {
                 prone = true;
-                gui.TogglePrompt(true, "What?! It didn't work!");
+                gui.TogglePrompt(true, "What?!\nIt didn't work!");
             }
 
             holdingSword = NO_SWORD_EQUIPPED;
             EquipSword(NO_SWORD_EQUIPPED);
+            ResetBreakables();
+            if (timingGrade >= 3)
+            {
+                AddScore(transform.position, 5000);
+            }
+            else
+            {
+                AddScore(transform.position, timingGrade * 1000);
+            }
 
             Debug.Log(meteorsDestroyed + "/" + maxMeteorsForLevel);
             if (meteorsDestroyed >= maxMeteorsForLevel)
             {
-                //Debug.Log("YOU WIN!");
                 gui.UpdateMeteorLandingUI(worldHeight, meteorDeathThreshold);
                 GameClear();
-            }
-
-            ResetBreakables();
-            if (timingGrade >= 3)
-            {
-                AddScore(transform.position, 500);
-            }
-            else
-            {
-                AddScore(transform.position, timingGrade * 100);
             }
         }
         else
@@ -876,7 +881,7 @@ public class PlayerController : MonoBehaviour
     private void ResetLevel()
     {
         playerHealth = playerMaxHealth;
-        playerScore = 0;
+        playerScore = GameManager.GetRunningScore();
         meteorsDestroyed = 0;
         gui.HidePlayerActionText();
         gui.ResetGUI();
@@ -889,7 +894,7 @@ public class PlayerController : MonoBehaviour
         avatarModelRotation = 0.0f;
         CameraController.SwitchToMainCamera();
 
-        playerState = 1;
+        playerState = ACTIVELY_PLAYING;
         holdingSword = NO_SWORD_EQUIPPED;
         EquipSword(NO_SWORD_EQUIPPED);
         isGrounded = false;
@@ -897,23 +902,24 @@ public class PlayerController : MonoBehaviour
         touchedWallDirection = 0;
         airDashCounter = maxAirDashes;
         prone = false;
-
-        initialDeathDelay = 1.0f;
-        if (currentLevel == 1)
+        lowestMeteorPosition = worldHeight;
+        invincibilityTimer = 1.0f;
+        switch (currentLevel)
         {
-            bgm.FadeInMusic(bgmLvl1, 0.0f);
-        }
-        if (currentLevel == 2)
-        {
-            bgm.FadeInMusic(bgmLvl2, 0.0f);
-        }
-        if (currentLevel == 3)
-        {
-            bgm.FadeInMusic(bgmLvl3, 0.0f);
+            case GameManager.LEVEL_3:
+                bgm.FadeInMusic(bgmLvl3, 0.0f);
+                break;
+            case GameManager.LEVEL_2:
+                bgm.FadeInMusic(bgmLvl2, 0.0f);
+                break;
+            default:
+                bgm.FadeInMusic(bgmLvl1, 0.0f);
+                break;
         }
     }
     public void GoToNextLevel()
     {
+        playerState = DISABLED;
         StartCoroutine(FadeToNextLevel(1.0f));
     }
     private IEnumerator FadeToNextLevel(float duration)
@@ -923,24 +929,30 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(duration * 1.1f);
 
         Debug.Log("go to next level because current level is " + currentLevel);
-        if (currentLevel == 3)
+        GameManager.SetRunningScore(playerScore);
+        switch (currentLevel)
         {
-            GameManager.sceneIndex = GameManager.LEVEL_3_ED;
-            SceneManager.LoadScene(GameManager.START_CUTSCENE);
-        }
-        else if (currentLevel == 2)
-        {
-            GameManager.sceneIndex = GameManager.LEVEL_2_ED;
-            SceneManager.LoadScene(GameManager.START_CUTSCENE);
-        }
-        else
-        {
-            GameManager.sceneIndex = GameManager.LEVEL_1_ED;
-            SceneManager.LoadScene(GameManager.START_CUTSCENE);
+            case GameManager.SURVIVAL_MODE: //On survival mode, you just return to main menu
+                GameManager.sceneIndex = GameManager.MAIN_MENU_INDEX;
+                SceneManager.LoadScene(GameManager.sceneIndex);
+                break;
+            case GameManager.LEVEL_3:
+                GameManager.sceneIndex = GameManager.LEVEL_3_ED;
+                SceneManager.LoadScene(GameManager.START_CUTSCENE);
+                break;
+            case GameManager.LEVEL_2:
+                GameManager.sceneIndex = GameManager.LEVEL_2_ED;
+                SceneManager.LoadScene(GameManager.START_CUTSCENE);
+                break;
+            default:
+                GameManager.sceneIndex = GameManager.LEVEL_1_ED;
+                SceneManager.LoadScene(GameManager.START_CUTSCENE);
+                break;
         }
     }
     public void RestartLevel()
     {
+        playerState = DISABLED;
         StartCoroutine(FadeToRestart(1.0f));
     }
     private IEnumerator FadeToRestart(float duration)
@@ -951,13 +963,31 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(duration * 1.1f);
         PauseMenu.GameIsPaused = false;
 
+        if (currentLevel != GameManager.SURVIVAL_MODE) GameManager.AddRestartCounterToRunningScore();
         meteorManager.ResetMeteors();
         swordManager.ResetSwords();
         ResetLevel();
-        tutorialManager.ResetTutorial();
+        CheckToResetTutorial();
     }
+
+    private void CheckToResetTutorial()
+    {
+        if (currentLevel == GameManager.SURVIVAL_MODE)
+        {
+            TutorialManager.tutorialActive = false;
+        }
+        else
+        {
+            if (tutorialManager != null)
+            {
+                tutorialManager.ResetTutorial();
+            }
+        }
+    }
+
     public void QuitGame()
     {
+        playerState = DISABLED;
         StartCoroutine(FadeToQuit(1.0f));
     }
     private IEnumerator FadeToQuit(float duration)
