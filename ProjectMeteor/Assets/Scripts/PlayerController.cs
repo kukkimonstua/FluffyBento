@@ -718,7 +718,7 @@ public class PlayerController : MonoBehaviour
 
         playerState = ATTACKING_METEOR;
         gui.ToggleNonTimingWindowGUI(false);
-        gui.ScaleBlackBars(75.0f, 0.5f);
+        gui.ScaleBlackBars(120.0f, 0.5f);
 
         //Get the current position of the object to be moved
         Vector3 startPos = fromPosition.position;

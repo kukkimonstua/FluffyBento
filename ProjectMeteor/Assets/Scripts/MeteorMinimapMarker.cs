@@ -14,37 +14,18 @@ public class MeteorMinimapMarker : MonoBehaviour
     {
         isLowest = false;
         GetComponent<Image>().sprite = sprites[type];
-        
-        /*
-        switch (type)
-        {
-            case 3:
-                GetComponent<Image>().color = new Color(145.0f / 255.0f, 242.0f / 255.0f, 255.0f / 255.0f);
-                break;
-            case 2:
-                GetComponent<Image>().color = new Color(255.0f / 255.0f, 255.0f / 255.0f, 145.0f / 255.0f);
-                break;
-            case 1:
-                GetComponent<Image>().color = new Color(255.0f / 255.0f, 145.0f / 255.0f, 177.0f / 255.0f);
-                break;
-            default:
-                GetComponent<Image>().color = new Color(230.0f / 255.0f, 160.0f / 255.0f, 0.0f / 255.0f);
-                break;
-        }
-        */
-        
     }
 
     void Update()
     {
         if (isLowest)
         {
-            GetComponent<CanvasRenderer>().SetAlpha(0.9f);
+            GetComponent<CanvasRenderer>().SetAlpha(0.8f);
             GetComponent<RectTransform>().localScale = new Vector3((Mathf.Sin(Time.time * 8) / 5) + 0.9f, (Mathf.Sin(Time.time * 8) / 5) + 0.9f, 0.0f);
         }
         else
         {
-            GetComponent<CanvasRenderer>().SetAlpha(0.5f);
+            GetComponent<CanvasRenderer>().SetAlpha(0.4f);
             GetComponent<RectTransform>().localScale = new Vector3(0.75f, 0.75f, 0.0f);
         }
     }

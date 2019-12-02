@@ -40,6 +40,7 @@ public class DialogueManager : MonoBehaviour
     private AudioClip selectedBGM;
 
     public HelpMenu helpMenu;
+    public CreditsController credits;
     public int debugSceneIndex = 0;
 
     public DialogueBase script1OP;
@@ -321,6 +322,16 @@ public class DialogueManager : MonoBehaviour
             }
             yield return new WaitForSeconds(1.0f);
         }
+        if (GameManager.sceneIndex == GameManager.LEVEL_3_ED) //i.e. final cutscene
+        {
+            credits.gameObject.SetActive(true);
+            credits.StartCredits();
+            while (credits.gameObject.activeSelf)
+            {
+                yield return null;
+            }
+        }
+
         switch(GameManager.sceneIndex)
         {
             case GameManager.LEVEL_3_ED:

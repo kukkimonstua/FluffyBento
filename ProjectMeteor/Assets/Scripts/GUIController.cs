@@ -131,7 +131,7 @@ public class GUIController : MonoBehaviour
     }
     public void UpdatePlayerMarker(Transform playerTransform)
     {
-        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerTransform.position.x / 4.0f, playerTransform.position.z / 4.0f);
+        playerMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(playerTransform.position.x / 2.5f, playerTransform.position.z / 2.5f);
         playerMarker.GetComponent<RectTransform>().eulerAngles = new Vector3(0.0f, 0.0f, 180 - playerTransform.eulerAngles.y);
 
         playerMarker.GetComponent<RectTransform>().localScale = new Vector3((Mathf.Sin(Time.time * 8) / 5) + 0.9f, 1.0f, 1.0f);
@@ -145,7 +145,7 @@ public class GUIController : MonoBehaviour
         }
         newMarker.transform.SetParent(minimap.transform, false);
         //Debug.Log(meteor.transform.position.x + " and " + meteor.transform.position.z);
-        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 4.0f, meteor.transform.position.z / 4.0f);
+        newMarker.GetComponent<RectTransform>().anchoredPosition = new Vector2(meteor.transform.position.x / 2.5f, meteor.transform.position.z / 2.5f);
 
         minimapMeteors.Add(newMarker);
         currentMeteors.Add(meteor);

@@ -50,6 +50,15 @@ public class MeteorManager : MonoBehaviour
 
     void Update()
     {
+        /*
+        string debug = "";
+        foreach(int i in spawnPointPool)
+        {
+            debug += ", " + i;
+        }
+        Debug.Log(debug);
+        */
+
         fallSpeed = meteorSpeed;
         flyingMeteorMoveSpeed = flyingMeteorSpeed;
 
@@ -182,7 +191,15 @@ public class MeteorManager : MonoBehaviour
 
         PlayerController.maxMeteorsForLevel = maxMeteorsForLevel;
 
-        ResetSpawnPointPool(-1);
+        if (TutorialManager.tutorialActive)
+        {
+            ResetSpawnPointPool(spawnPointPool.Count - 1); //TEMP, this removes the tutorial meteor's spawn point
+        }
+        else
+        {
+            ResetSpawnPointPool(-1);
+        }
+
         meteorSpawnTimer = 0.0f;
         if (currentMeteors.Length > 0)
         {
