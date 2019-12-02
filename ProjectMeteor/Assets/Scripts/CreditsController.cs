@@ -35,10 +35,8 @@ public class CreditsController : MonoBehaviour
 
     private IEnumerator RunCredits()
     {
-        Debug.Log("start");
         bgm.FadeInMusic(creditsBgm, 0.0f);
-        StartCoroutine(FadeBackground(1.0f, 2.0f));
-        
+        StartCoroutine(FadeBackground(1.0f, 2.0f));        
 
         creditsPanel.localPosition = new Vector3(creditsPanel.localPosition.x, startPosition.localPosition.y, creditsPanel.localPosition.z);
         while (creditsPanel.localPosition.y < endPosition.localPosition.y + (creditsPanel.sizeDelta.y))
@@ -63,7 +61,6 @@ public class CreditsController : MonoBehaviour
         {
             yield return null;
         }
-        Debug.Log("end");
         CloseCredits();
     }
 

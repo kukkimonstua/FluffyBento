@@ -18,7 +18,7 @@ public class MenuButtonController : MonoBehaviour {
     public GameObject startScreenPanel;
     public GameObject mainMenuPanel;
     public GameObject levelSelectPanel;
-
+    public CreditsController credits;
 
     public Button initialButton;
     public EventSystem eventSystem;
@@ -145,6 +145,26 @@ public class MenuButtonController : MonoBehaviour {
     {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
         Debug.Log("show extras!");
+        StartCoroutine(PlayCredits());
+    }
+    private IEnumerator PlayCredits()
+    {
+        eventSystem.enabled = false;
+        bgm.FadeOutMusic(1.0f);
+        yield return new WaitForSeconds(1.0f);
+
+        fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+
+        credits.gameObject.SetActive(true);
+        credits.StartCredits();
+        while (credits.gameObject.activeSelf)
+        {
+            yield return null;
+        }
+
+        bgm.FadeInMusic(bgmClip, 1.0f);
+        fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
+        eventSystem.enabled = true;
     }
 
     private IEnumerator FadeLoadScreen(float alphaTarget, float duration, float delay, int sceneTarget)
