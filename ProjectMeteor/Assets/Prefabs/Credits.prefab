@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creditsPanel: {fileID: 3438437996985009778}
-  scrollSpeed: 2
+  scrollSpeed: 1.5
   startPosition: {fileID: 9002533980609294043}
   endPosition: {fileID: 8250058254629737931}
   background: {fileID: 6280164299197296688}
@@ -282,8 +282,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 499}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 0, y: 1750}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5357917656373641655
 CanvasRenderer:
@@ -313,7 +313,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 92f383c2e3ecba54d908c814cae8e647, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -400,12 +400,93 @@ MonoBehaviour:
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
-    m_LineSpacing: 1
+    m_LineSpacing: 1.5
   m_Text: "Meteor Striker\r\n\r\nby\r\nTeam FluffyBento\r\n\n\n\n\r\nAndy Bae\r\nEmily
-    Chow\r\nHoward Chu\r\nWilliam Lore\r\n\r\nCast\r\nHide - Andy Bae\r\nChika - Nicole
-    Bae\r\n\r\nCharacter Design\r\nCeiiru\r\n\r\nSprite Design\r\nSimplyDogster\r\n\r\nIcon
-    Design\r\nDurrani\r\n\r\nSound effects from freesound.org and soundbible.com\r\nMusic
-    from YouTube Audio Library\r\n\r\nAn IAT 410 Project for Fall 2019\r"
+    Chow\r\nHoward Chu\r\nWilliam Lore\r\n\r\n~Cast~\r\nHide - Andy Bae\r\nChika -
+    Nicole Bae\r\n\r\n~Narrative Designer~\r\nAndy Bae\r\n\r\n~Programming~\r\nAndy
+    Bae\r\nWilliam Lore\r\n\r\n~3D Modeler~\r\nHoward Chu\r\n\r\n~Character Modeler
+    and Animator~\r\nEmily Chow\r\n\r\n~Environmental Design~\r\nEmily Chow\r\nHoward
+    Chu\r\n\r\n~Level Design~\r\nEmily Chow\r\nWilliam Lore\r\n\r\n~Cutscene System
+    Design~\r\nAndy Bae\r\nWilliam Lore\r\n\r\n~Character Designer~\r\nYoher Wang\r\nceiiru.portfoliobox.net\r\n\r\n~Sprite
+    Artist~\r\nSabrina Kedzior\r\n\r\n~Icon + Sound Design~\r\nAbdullah Umar Durrani\r\ndurrani19.artstation.com\r\n\r\nAdditional
+    sound effects from freesound.org and soundbible.com\r\nMusic from YouTube Audio
+    Library\r\n\r\n~Special Thanks~\r\nNicole Bae\r\nYoher Wang\r\nSabrina Kedzior\r\nAbdullah
+    Umar Durrani\r\nand all our playtesters!\r\n\r\nAn IAT 410 Project for Fall 2019\r\n\r\n"
+--- !u!1 &5709178756655662488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8147861070847736399}
+  - component: {fileID: 1166147306158521683}
+  - component: {fileID: 757340918048935952}
+  m_Layer: 5
+  m_Name: SIAT
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8147861070847736399
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5709178756655662488}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3438437996985009778}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -1912}
+  m_SizeDelta: {x: 500, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1166147306158521683
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5709178756655662488}
+  m_CullTransparentMesh: 0
+--- !u!114 &757340918048935952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5709178756655662488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: dbf51762d89b201449220b533c0b8fe3, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &6284807462204215602
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,13 +551,14 @@ RectTransform:
   m_Children:
   - {fileID: 765888026750359211}
   - {fileID: 2106862365284246962}
+  - {fileID: 8147861070847736399}
   m_Father: {fileID: 7158004271675900708}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 246}
-  m_SizeDelta: {x: -400, y: 1500}
+  m_SizeDelta: {x: -400, y: 4200}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &7846488732149812284
 GameObject:
@@ -582,12 +664,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 89f9fe209e658ef47af6130c37a04fa3, type: 3}
---- !u!4 &32658981340945314 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8223017586767743749, guid: 89f9fe209e658ef47af6130c37a04fa3,
-    type: 3}
-  m_PrefabInstance: {fileID: 8244404018384294055}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &32658981340945317 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8223017586767743746, guid: 89f9fe209e658ef47af6130c37a04fa3,
@@ -600,3 +676,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ded0eb450787bbe44804130875bc6f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &32658981340945314 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8223017586767743749, guid: 89f9fe209e658ef47af6130c37a04fa3,
+    type: 3}
+  m_PrefabInstance: {fileID: 8244404018384294055}
+  m_PrefabAsset: {fileID: 0}
