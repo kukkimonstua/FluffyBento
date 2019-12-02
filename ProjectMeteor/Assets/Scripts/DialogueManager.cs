@@ -277,7 +277,6 @@ public class DialogueManager : MonoBehaviour
     {
         if (!cutsceneEnded)
         {
-            Debug.Log("End this cutscene!"); //Replace with audio feedback
             sfx.PlayOneShot(skipText);
             fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
             CompleteText();
@@ -289,7 +288,6 @@ public class DialogueManager : MonoBehaviour
         if (!cutsceneEnded)
         {
             cutsceneEnded = true;
-            Debug.Log("conversation over");
 
             dialogueBackground.SetActive(false);
             dialogueName.gameObject.SetActive(false);
@@ -306,7 +304,6 @@ public class DialogueManager : MonoBehaviour
         bgm.FadeOutMusic(2.0f);
         yield return StartCoroutine(FadeBlackScreen(1.0f, 2.0f));
 
-        Debug.Log("LOAD NEXT PART");
         if (GameManager.sceneIndex == GameManager.START_CUTSCENE) //i.e. cutscene 1OP
         {
             helpMenu.gameObject.SetActive(true);
@@ -335,7 +332,6 @@ public class DialogueManager : MonoBehaviour
         switch(GameManager.sceneIndex)
         {
             case GameManager.LEVEL_3_ED:
-                Debug.Log("LOAD MAIN MENU OR CREDITS");
                 GameManager.sceneIndex = GameManager.MAIN_MENU_INDEX;
                 SceneManager.LoadScene(GameManager.sceneIndex);
                 break;
@@ -349,17 +345,14 @@ public class DialogueManager : MonoBehaviour
                 break;
 
             case GameManager.LEVEL_3_OP:
-                Debug.Log("LOAD LEVEL 3");
                 GameManager.sceneIndex = GameManager.LEVEL_3;
                 SceneManager.LoadScene(GameManager.sceneIndex);
                 break;
             case GameManager.LEVEL_2_OP:
-                Debug.Log("LOAD LEVEL 2");
                 GameManager.sceneIndex = GameManager.LEVEL_2;
                 SceneManager.LoadScene(GameManager.sceneIndex);
                 break;
             default:
-                Debug.Log("LOAD LEVEL 1");
                 GameManager.sceneIndex = GameManager.LEVEL_1;
                 SceneManager.LoadScene(GameManager.sceneIndex);
                 break;

@@ -110,6 +110,11 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         currentLevel = sceneLevel;
+        if (currentLevel == GameManager.SURVIVAL_MODE)
+        {
+            TutorialManager.tutorialActive = false;
+            CameraController.tutorialCameraTimer = 0.0f;
+        }
         worldRadius = Vector3.Distance(transform.position, worldOrigin.position);
         worldHeight = 300.0f;
         rb = GetComponent<Rigidbody>();
@@ -277,7 +282,6 @@ public class PlayerController : MonoBehaviour
                             }
                         }
                     }
-
                     gui.UpdatePlayerMarker(avatarModel.transform);
                     UpdateAnimations();
                     QuickDebugging(); //REMOVE WHEN DONE
@@ -611,7 +615,6 @@ public class PlayerController : MonoBehaviour
                             hit.transform.gameObject.GetComponent<BreakableController>().GetBroken();
                             brokeSomething = true;
                         }
-                        
                     }
                 }
                 else
@@ -631,7 +634,7 @@ public class PlayerController : MonoBehaviour
         EquipSword(holdingSword);
         Destroy(pickedUpSword);
 
-        if (TutorialManager.tutorialActive && currentLevel == 1)
+        if (TutorialManager.tutorialActive && currentLevel == GameManager.LEVEL_1)
         {
             tutorialManager.firstActionCleared = true;
         }
@@ -763,7 +766,7 @@ public class PlayerController : MonoBehaviour
 
                 if (TutorialManager.tutorialActive)
                 {
-                    if (currentLevel == 2 || currentLevel == 3)
+                    if (currentLevel == GameManager.LEVEL_2 || currentLevel == GameManager.LEVEL_3)
                     {
                         if (!tutorialManager.firstActionCleared)
                         {
@@ -786,7 +789,7 @@ public class PlayerController : MonoBehaviour
             else
             {
                 prone = true;
-                gui.TogglePrompt(true, "What?! It didn't work!");
+                gui.TogglePrompt(true, "What?!\nIt didn't work!");
             }
 
             holdingSword = NO_SWORD_EQUIPPED;
@@ -899,19 +902,19 @@ public class PlayerController : MonoBehaviour
         touchedWallDirection = 0;
         airDashCounter = maxAirDashes;
         prone = false;
-
+        lowestMeteorPosition = worldHeight;
         invincibilityTimer = 1.0f;
-        if (currentLevel == 1)
+        switch (currentLevel)
         {
-            bgm.FadeInMusic(bgmLvl1, 0.0f);
-        }
-        if (currentLevel == 2)
-        {
-            bgm.FadeInMusic(bgmLvl2, 0.0f);
-        }
-        if (currentLevel == 3)
-        {
-            bgm.FadeInMusic(bgmLvl3, 0.0f);
+            case GameManager.LEVEL_3:
+                bgm.FadeInMusic(bgmLvl3, 0.0f);
+                break;
+            case GameManager.LEVEL_2:
+                bgm.FadeInMusic(bgmLvl2, 0.0f);
+                break;
+            default:
+                bgm.FadeInMusic(bgmLvl1, 0.0f);
+                break;
         }
     }
     public void GoToNextLevel()
@@ -927,20 +930,24 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log("go to next level because current level is " + currentLevel);
         GameManager.SetRunningScore(playerScore);
-        if (currentLevel == 3)
+        switch (currentLevel)
         {
-            GameManager.sceneIndex = GameManager.LEVEL_3_ED;
-            SceneManager.LoadScene(GameManager.START_CUTSCENE);
-        }
-        else if (currentLevel == 2)
-        {
-            GameManager.sceneIndex = GameManager.LEVEL_2_ED;
-            SceneManager.LoadScene(GameManager.START_CUTSCENE);
-        }
-        else
-        {
-            GameManager.sceneIndex = GameManager.LEVEL_1_ED;
-            SceneManager.LoadScene(GameManager.START_CUTSCENE);
+            case GameManager.SURVIVAL_MODE: //On survival mode, you just return to main menu
+                GameManager.sceneIndex = GameManager.MAIN_MENU_INDEX;
+                SceneManager.LoadScene(GameManager.sceneIndex);
+                break;
+            case GameManager.LEVEL_3:
+                GameManager.sceneIndex = GameManager.LEVEL_3_ED;
+                SceneManager.LoadScene(GameManager.START_CUTSCENE);
+                break;
+            case GameManager.LEVEL_2:
+                GameManager.sceneIndex = GameManager.LEVEL_2_ED;
+                SceneManager.LoadScene(GameManager.START_CUTSCENE);
+                break;
+            default:
+                GameManager.sceneIndex = GameManager.LEVEL_1_ED;
+                SceneManager.LoadScene(GameManager.START_CUTSCENE);
+                break;
         }
     }
     public void RestartLevel()
@@ -956,12 +963,28 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(duration * 1.1f);
         PauseMenu.GameIsPaused = false;
 
-        GameManager.AddRestartCounterToRunningScore();
+        if (currentLevel != GameManager.SURVIVAL_MODE) GameManager.AddRestartCounterToRunningScore();
         meteorManager.ResetMeteors();
         swordManager.ResetSwords();
         ResetLevel();
-        tutorialManager.ResetTutorial();
+        CheckToResetTutorial();
     }
+
+    private void CheckToResetTutorial()
+    {
+        if (currentLevel == GameManager.SURVIVAL_MODE)
+        {
+            TutorialManager.tutorialActive = false;
+        }
+        else
+        {
+            if (tutorialManager != null)
+            {
+                tutorialManager.ResetTutorial();
+            }
+        }
+    }
+
     public void QuitGame()
     {
         playerState = DISABLED;

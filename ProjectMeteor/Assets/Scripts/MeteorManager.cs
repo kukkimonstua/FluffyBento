@@ -213,13 +213,15 @@ public class MeteorManager : MonoBehaviour
             }
         }
         numOfMeteorsSpawned = 1; //Temp solution: assume this will ALWAYS be 1...
+        if (PlayerController.currentLevel == GameManager.SURVIVAL_MODE) numOfMeteorsSpawned = 0; //UNLESS IT IS SURVIVAL MODE
+
+
         //numOfMeteorsSpawned = GameObject.FindGameObjectsWithTag("Meteor").Length; //This counts the meteors that appeared from default.
         Debug.Log(GameObject.FindGameObjectsWithTag("Meteor").Length + " were found");
 
 
         flyingMeteorSpawnTimer = 0.0f;
         FlyingMeteorController[] currentFlyingMeteors = GameObject.FindObjectsOfType<FlyingMeteorController>();
-        Debug.Log(currentFlyingMeteors.Length + " were flying");
         foreach (FlyingMeteorController cfm in currentFlyingMeteors)
         {
             Destroy(cfm.gameObject);

@@ -259,7 +259,7 @@ public class GUIController : MonoBehaviour
         meteorLandingDanger.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
         meteorLandingTimer.GetComponent<CanvasRenderer>().SetAlpha(0.0f);
 
-        if (PlayerController.currentLevel != 0) //i.e. NOT in survival mode
+        if (PlayerController.currentLevel != GameManager.SURVIVAL_MODE)
         {
             meteorCounterText.gameObject.SetActive(false);
             timerText.gameObject.SetActive(false);
@@ -332,7 +332,7 @@ public class GUIController : MonoBehaviour
         scoreText.gameObject.SetActive(state);
         swordEquipIcon.holdText.gameObject.SetActive(state);
 
-        if (PlayerController.currentLevel == 0) //i.e. only in survival mode
+        if (PlayerController.currentLevel == GameManager.SURVIVAL_MODE)
         {
             meteorCounterText.gameObject.SetActive(state);
             timerText.gameObject.SetActive(state);

@@ -111,42 +111,57 @@ public class MenuButtonController : MonoBehaviour {
     public void StartStoryMode()
     {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
-
-        Debug.Log("start the story!");
         StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.START_CUTSCENE));
         bgm.FadeOutMusic(3.0f);
-
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //Load itself, lol
     }
     public void StartLevel2()
     {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
-        Debug.Log("start from level 2!");
         StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.LEVEL_2_OP));
         bgm.FadeOutMusic(3.0f);
-
     }
     public void StartLevel3()
     {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
-        Debug.Log("start from level 3!");
         StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.LEVEL_3_OP));
         bgm.FadeOutMusic(3.0f);
-
     }
 
 
     public void StartSurvivalMode()
     {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
-        Debug.Log("let the carnage begin!");
+        StartCoroutine(FadeLoadScreen(1.0f, 2.0f, 1.0f, GameManager.SURVIVAL_MODE));
+        bgm.FadeOutMusic(3.0f);
     }
     public void ShowExtras()
     {
         eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
-        Debug.Log("show extras!");
         StartCoroutine(PlayCredits());
     }
+    public void QuitTheGame()
+    {
+        eventSystem.currentSelectedGameObject.GetComponent<MenuButton>().IsPressed(true);
+        StartCoroutine(FadeToQuit());
+        bgm.FadeOutMusic(3.0f);
+    }
+    private IEnumerator FadeToQuit()
+    {
+        eventSystem.enabled = false;
+        yield return new WaitForSeconds(1.0f);
+
+        float alpha = fullscreenBlack.GetComponent<CanvasRenderer>().GetAlpha();
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 2.0f)
+        {
+            fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Lerp(alpha, 1.0f, t));
+            yield return null;
+        }
+        fullscreenBlack.GetComponent<CanvasRenderer>().SetAlpha(1.0f);
+
+        Debug.Log("GAME IS DEAD");
+        Application.Quit();
+    }
+
     private IEnumerator PlayCredits()
     {
         eventSystem.enabled = false;
@@ -195,6 +210,5 @@ public class MenuButtonController : MonoBehaviour {
             
         }
         eventSystem.enabled = true;
-        
     }
 }
