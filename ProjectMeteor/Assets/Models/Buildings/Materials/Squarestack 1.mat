@@ -8,8 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Squarestack 1
-  m_Shader: {fileID: 4800000, guid: 9566a373fffe627408d31026ce69389d, type: 3}
-  m_ShaderKeywords: MTOON_OUTLINE_COLOR_FIXED MTOON_OUTLINE_WIDTH_SCREEN _NORMALMAP
+  m_Shader: {fileID: 4800000, guid: 273873a89ee343b45a1471ba4c363d79, type: 3}
+  m_ShaderKeywords: MTOON_OUTLINE_COLOR_FIXED MTOON_OUTLINE_WIDTH_SCREEN OUTLINES
+    TCP2_RAMPTEXT _NORMALMAP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -93,6 +94,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _PointShadowborderBlurMask:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 2800000, guid: a2daa9b606711a643808bebed4c59a0c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ReceiveShadowTexture:
@@ -188,8 +193,11 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _Offset1: 0
+    - _Offset2: 0
     - _OtherShadowAdjust: -0.1
     - _OtherShadowBorderSharpness: 3
+    - _Outline: 12.07
     - _OutlineColorMode: 0
     - _OutlineCullMode: 1
     - _OutlineHueShiftFromBase: 0
@@ -209,6 +217,8 @@ Material:
     - _PointShadowUseStep: 0
     - _PointShadowborder: 0.5
     - _PointShadowborderBlur: 0.01
+    - _RampSmooth: 0.1
+    - _RampThreshold: 0.5
     - _ReceiveShadowRate: 1
     - _ReflectionNormalMix: 1
     - _ReflectionReflectionPower: 1
@@ -249,6 +259,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _TexLod: 5
     - _UVSec: 0
     - _UseDoubleSided: 0
     - _UseEmissionParallax: 0
@@ -265,15 +276,18 @@ Material:
     - _Version: 1025
     - _VertexColorBlendDiffuse: 0
     - _VertexColorBlendEmissive: 0
+    - _ZSmooth: -0.5
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.6037736, g: 0.4256998, b: 0.26486292, a: 1}
+    - _Color: {r: 1, g: 0.8084906, b: 0.5896226, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionParallaxColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HColor: {r: 1, g: 1, b: 1, a: 1}
     - _MatcapColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}
     - _ShadeColor: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 1}
     - _ShadowPlanB2CustomShadowTextureRGB: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowPlanBCustomShadowTextureRGB: {r: 1, g: 1, b: 1, a: 1}
