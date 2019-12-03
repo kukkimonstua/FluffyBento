@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Wood_bright
   m_Shader: {fileID: 4800000, guid: 9566a373fffe627408d31026ce69389d, type: 3}
-  m_ShaderKeywords: _EMISSION
+  m_ShaderKeywords: OUTLINES _EMISSION
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -158,8 +158,11 @@ Material:
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
+    - _Offset1: 0
+    - _Offset2: 0
     - _OtherShadowAdjust: -0.1
     - _OtherShadowBorderSharpness: 3
+    - _Outline: 1
     - _OutlineHueShiftFromBase: 0
     - _OutlineSaturationFromBase: 1
     - _OutlineShadeMix: 0
@@ -177,27 +180,27 @@ Material:
     - _ReflectionNormalMix: 1
     - _ReflectionReflectionPower: 1
     - _ReflectionShadeMix: 0
-    - _ReflectionSuppressBaseColorValue: 1
+    - _ReflectionSuppressBaseColorValue: 0.1
     - _RimBlend: 1
     - _RimFresnelPower: 1
     - _RimShadeMix: 0
     - _RimUpperSideWidth: 0
-    - _RimUseBaseTexture: 0
+    - _RimUseBaseTexture: 1
     - _ShadowCapBlend: 1
     - _ShadowCapBlendMode: 3
-    - _ShadowCapNormalMix: 1
+    - _ShadowCapNormalMix: 0
     - _ShadowCasterCulling: 2
     - _ShadowIndirectIntensity: 0.25
     - _ShadowPlanB2HueShiftFromBase: 0
     - _ShadowPlanB2SaturationFromBase: 1
-    - _ShadowPlanB2UseCustomShadowTexture: 0
-    - _ShadowPlanB2ValueFromBase: 1
+    - _ShadowPlanB2UseCustomShadowTexture: 1
+    - _ShadowPlanB2ValueFromBase: 2
     - _ShadowPlanB2border: 0.55
     - _ShadowPlanB2borderBlur: 0.55
     - _ShadowPlanBDefaultShadowMix: 1
     - _ShadowPlanBHueShiftFromBase: 0
     - _ShadowPlanBSaturationFromBase: 1
-    - _ShadowPlanBUseCustomShadowTexture: 0
+    - _ShadowPlanBUseCustomShadowTexture: 0.55
     - _ShadowPlanBUsePlanB: 0
     - _ShadowPlanBValueFromBase: 1
     - _ShadowSteps: 4
@@ -211,13 +214,13 @@ Material:
     - _UVSec: 0
     - _UseDoubleSided: 0
     - _UseEmissionParallax: 0
-    - _UseGloss: 0
-    - _UseOutline: 0
-    - _UsePositionRelatedCalc: 0
+    - _UseGloss: 1
+    - _UseOutline: 1
+    - _UsePositionRelatedCalc: 5
     - _UseReflection: 0
     - _UseReflectionProbe: 1
     - _UseRim: 0
-    - _UseVertexLight: 1
+    - _UseVertexLight: 0
     - _Version: 1025
     - _VertexColorBlendDiffuse: 0
     - _VertexColorBlendEmissive: 0
