@@ -167,7 +167,7 @@ Material:
     - _Offset2: 0
     - _OtherShadowAdjust: -0.1
     - _OtherShadowBorderSharpness: 3
-    - _Outline: 7.13
+    - _Outline: 3.29
     - _OutlineHueShiftFromBase: 0
     - _OutlineSaturationFromBase: 1
     - _OutlineShadeMix: 0
@@ -242,11 +242,11 @@ Material:
     - _EmissionColorUI: {r: 0.8014706, g: 0.6593843, b: 0.35358995, a: 1}
     - _EmissionParallaxColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlossColor: {r: 1, g: 1, b: 1, a: 1}
-    - _HColor: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 1}
+    - _HColor: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 0}
     - _MatcapColor: {r: 1, g: 1, b: 1, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _SColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
+    - _SColor: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 0}
     - _ShadowPlanB2CustomShadowTextureRGB: {r: 1, g: 1, b: 1, a: 1}
     - _ShadowPlanBCustomShadowTextureRGB: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
