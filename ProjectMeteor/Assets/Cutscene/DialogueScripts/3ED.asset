@@ -59,7 +59,7 @@ MonoBehaviour:
     isLeftPortrait: 0
     myText: Am...bition...?
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    portrait: {fileID: 21300000, guid: 96189ea41dbfb3241b3afc287b9e4987, type: 3}
     isLeftPortrait: 0
     myText: You think this was an ambition?! I--
   - myName: Yashiro
@@ -83,12 +83,12 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: No one can say if it's the right call or not!
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    portrait: {fileID: 21300000, guid: 96189ea41dbfb3241b3afc287b9e4987, type: 3}
     isLeftPortrait: 0
     myText: That's what I'm saying! I don't want anyone deciding that something is
       right or wrong!
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    portrait: {fileID: 21300000, guid: 96189ea41dbfb3241b3afc287b9e4987, type: 3}
     isLeftPortrait: 0
     myText: NEVER AGAIN!
   - myName: Yashiro
@@ -105,12 +105,12 @@ MonoBehaviour:
     isLeftPortrait: 0
     myText: My father who foolishly tossed aside his son to die for a worthless cause...
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    portrait: {fileID: 21300000, guid: 96189ea41dbfb3241b3afc287b9e4987, type: 3}
     isLeftPortrait: 0
     myText: I don't care who was good or evil! I don't care who was in the right or
       in the wrong!
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    portrait: {fileID: 21300000, guid: 8cdd60d857abe70428d89dc0caf3116e, type: 3}
     isLeftPortrait: 0
     myText: I just...wanted the senseless bloodshed to end...
   - myName: Yashiro
@@ -118,15 +118,15 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: '...'
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    portrait: {fileID: 21300000, guid: 8cdd60d857abe70428d89dc0caf3116e, type: 3}
     isLeftPortrait: 0
     myText: '...Master. What do I do now?'
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    portrait: {fileID: 21300000, guid: 8cdd60d857abe70428d89dc0caf3116e, type: 3}
     isLeftPortrait: 0
     myText: There's blood on my hands. Blood spilled over the pursuit of my own ideals.
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    portrait: {fileID: 21300000, guid: 8cdd60d857abe70428d89dc0caf3116e, type: 3}
     isLeftPortrait: 0
     myText: Or...was it simply vengeance, as you say...?
   - myName: Yashiro
@@ -151,11 +151,11 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: Go.
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
     isLeftPortrait: 0
     myText: '...!'
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
+    portrait: {fileID: 21300000, guid: 9ae70af997f469d4abdcf30f7eb2ddc2, type: 3}
     isLeftPortrait: 0
     myText: '...Wh-what?'
   - myName: Yashiro
@@ -163,11 +163,11 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: The world is vast. Leave this land, and start anew.
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    portrait: {fileID: 21300000, guid: 96189ea41dbfb3241b3afc287b9e4987, type: 3}
     isLeftPortrait: 0
     myText: How could you expect me to do that?!
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 09055f8a7f5d2064b9a9ef07e4b8d635, type: 3}
+    portrait: {fileID: 21300000, guid: 96189ea41dbfb3241b3afc287b9e4987, type: 3}
     isLeftPortrait: 0
     myText: There's no place for me in this world anymore!
   - myName: Yashiro
@@ -234,7 +234,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: Find your own path, Hide. You are my apprentice no more.
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 5221926e1401a7a4e8e28c5216dc668f, type: 3}
+    portrait: {fileID: 21300000, guid: 9ae70af997f469d4abdcf30f7eb2ddc2, type: 3}
     isLeftPortrait: 0
     myText: Master...
   - myName: Hide

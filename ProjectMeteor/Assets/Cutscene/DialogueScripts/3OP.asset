@@ -68,7 +68,7 @@ MonoBehaviour:
     isLeftPortrait: 0
     myText: Wha-- M-Master Yashiro?!
   - myName: Hide
-    portrait: {fileID: 21300000, guid: f2fd7efc59c74054bb76813b6e86eee0, type: 3}
+    portrait: {fileID: 21300000, guid: 038a9ac3e74ae83439e37ca9dbca5f1c, type: 3}
     isLeftPortrait: 0
     myText: You're already back! I thought you would be gone much longer!
   - myName: Yashiro

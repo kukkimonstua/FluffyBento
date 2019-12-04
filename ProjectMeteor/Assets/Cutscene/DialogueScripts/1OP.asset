@@ -110,7 +110,7 @@ MonoBehaviour:
     isLeftPortrait: 1
     myText: "They look oddly big, yes, but I wouldn\u2019t call them meteors."
   - myName: Hide
-    portrait: {fileID: 21300000, guid: 27fcaf6093e426643b56006fa9530c8e, type: 3}
+    portrait: {fileID: 21300000, guid: fe0e1fb2a17a6d1408b2ab9d5b8267e4, type: 3}
     isLeftPortrait: 0
     myText: No, these are DEFINITELY meteors! Just come outside, Master!
   - myName: Yashiro
