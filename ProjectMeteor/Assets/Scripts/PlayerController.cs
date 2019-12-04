@@ -952,6 +952,7 @@ public class PlayerController : MonoBehaviour
     }
     public void RestartLevel()
     {
+        if (currentLevel != GameManager.SURVIVAL_MODE && playerState != VICTORY) GameManager.AddRestartCounterToRunningScore();
         playerState = DISABLED;
         StartCoroutine(FadeToRestart(1.0f));
     }
@@ -963,7 +964,6 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(duration * 1.1f);
         PauseMenu.GameIsPaused = false;
 
-        if (currentLevel != GameManager.SURVIVAL_MODE) GameManager.AddRestartCounterToRunningScore();
         meteorManager.ResetMeteors();
         swordManager.ResetSwords();
         ResetLevel();
